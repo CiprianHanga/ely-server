@@ -157,6 +157,7 @@ enum
     SPELL_FIREBALL = 9053,
     SPELL_FROST_NOVA = 11831,
     SPELL_IDOL_SHUTDOWN = 12774,
+    SPELL_ROOT_SELF = 23973,
 
     // summon spells only exist in 1.x
     //SPELL_SUMMON_1 = 12694, // NPC_WITHERED_BATTLE_BOAR
@@ -272,7 +273,7 @@ struct npc_belnistraszAI : public npc_escortAI
                 switch (m_uiRitualPhase)
                 {
                     case 0:
-                        DoCast(m_creature, 23973, true); // roots self so he stays put while channeling
+                        DoCast(m_creature, SPELL_ROOT_SELF, true); // roots self so he stays put while channeling
                         DoCastSpellIfCan(m_creature, SPELL_IDOL_SHUTDOWN);
                         m_uiRitualTimer = 1000;
                         break;
