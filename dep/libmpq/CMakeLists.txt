@@ -15,8 +15,35 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-add_subdirectory(src)
-add_subdirectory(recastnavigation)
-if (USE_EXTRACTORS)
-	add_subdirectory(libmpq)
-endif()
+
+set (libMPQ_SRCS
+	libmpq/common.c
+	libmpq/common.h
+	libmpq/crypt_buf.h
+	libmpq/explode.c
+	libmpq/explode.h
+	libmpq/extract.c
+	libmpq/extract.h
+	libmpq/huffman.c
+	libmpq/huffman.h
+	libmpq/mpq.c
+	libmpq/mpq.h
+	libmpq/mpq-internal.h
+	libmpq/pack_begin.h
+	libmpq/pack_end.h
+	libmpq/platform.h
+	libmpq/wave.c
+	libmpq/wave.h
+)
+
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR},
+	${CMAKE_SOURCE_DIR}/dep/include/zlib
+	${CMAKE_SOURCE_DIR}/dep/include/bzip2
+)
+
+add_library(libmpq STATIC
+	${libMPQ_SRCS}
+)
+
+SET_TARGET_PROPERTIES (libmpq PROPERTIES FOLDER "3rd Party")

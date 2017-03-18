@@ -1,4 +1,5 @@
-# This file is part of the CMaNGOS Project. See AUTHORS file for Copyright information
+# Copyright (C) 2005-2011 MaNGOS <http://getmangos.com/>
+# Copyright (C) 2009-2011 MaNGOSZero <https://github.com/mangos/zero>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,6 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-add_library (libmpq common.cpp  explode.cpp  extract.cpp  huffman.cpp  mpq.cpp  parser.cpp  wave.cpp )
-# link libmpq with zlib
-target_link_libraries (libmpq z)
+
+add_subdirectory(extractor)
+add_subdirectory(vmap_assembler)
+add_subdirectory(vmap_extractor)
+add_subdirectory(mmap)
