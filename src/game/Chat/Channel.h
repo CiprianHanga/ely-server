@@ -70,11 +70,6 @@ enum ChatNotify
     CHAT_THROTTLED_NOTICE             = 0x1F,               //+ "[%s] The number of messages that can be sent to this channel is limited, please wait to send another message.";
 };
 
-/**
- * These are the channel id's for the special channels that's always there, this is currently only
- * used to find the Local Defense channel as it's muted by default except for if you've got PvP rank 9
- * \see Channel::m_channelId
- */
 enum ChannelIds
 {
     CHANNEL_ID_GENERAL           = 1,
