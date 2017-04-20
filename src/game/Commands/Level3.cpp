@@ -6443,6 +6443,7 @@ bool ChatHandler::HandleDebugMoveCommand(char* args)
     {
         case 0:
             target->GetMotionMaster()->Clear(true, true);
+            target->GetMotionMaster()->MoveIdle();
             break;
         case 1:
             target->GetMotionMaster()->MoveIdle();
