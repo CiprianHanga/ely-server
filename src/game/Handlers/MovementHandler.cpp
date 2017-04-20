@@ -263,7 +263,6 @@ void WorldSession::HandleMovementOpcodes(WorldPacket & recv_data)
     DEBUG_LOG("WORLD: Recvd %s (%u, 0x%X) opcode", LookupOpcodeName(opcode), opcode, opcode);
 
     Unit *mover = _player->GetMover();
-    DEBUG_LOG("WorldSession::HandleMovementOpcodes - mover guid: %s", mover->GetGuidStr().c_str());
     if (mover->GetObjectGuid() != _clientMoverGuid)
         return;
         
@@ -799,6 +798,7 @@ void WorldSession::HandleMoveRootAck(WorldPacket& recv_data)
     HandleMoverRelocation(movementInfo);
     _player->UpdateFallInformationIfNeed(movementInfo, recv_data.GetOpcode());
     
+    // Set unit client state for brevity, though it should not be used
     _player->addUnitState(UNIT_STAT_CLIENT_ROOT);
 }
 

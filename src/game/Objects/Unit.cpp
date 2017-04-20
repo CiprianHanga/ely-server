@@ -9360,7 +9360,6 @@ void Unit::SetFleeing(bool apply, ObjectGuid casterGuid, uint32 spellID, uint32 
 
 void Unit::SetFeared(bool apply, ObjectGuid casterGuid, uint32 spellID, uint32 time)
 {
-    DEBUG_LOG("Unit::SetFeared - Fear mod, apply: %d, feared: %s", apply, GetName());
     if (apply && HasAuraType(SPELL_AURA_PREVENTS_FLEEING))
         return;
 
@@ -10847,17 +10846,11 @@ void Unit::UpdateSplineMovement(uint32 t_diff)
     movespline->updateState(t_diff);
     
     bool arrived = movespline->Finalized();
-
-    if (IsPlayer())
-        DEBUG_LOG("Unit::UpdateSplineMovement - spline for %s, arrived: %d", GetName(), arrived);
     
     if (arrived)
         DisableSpline();
     else if (!movespline->isCyclic() && movespline->getLastPointSent() >= 0 && movespline->getLastPointSent() < (movespline->currentPathIdx() + 3))
     {
-        if (IsPlayer())
-            DEBUG_LOG("Unit::UpdateSplineMovement - non cyclic, sending update packet");
-            
         WorldPacket data(SMSG_MONSTER_MOVE, 64);
         data << GetPackGUID();
         movespline->setLastPointSent(Movement::PacketBuilder::WriteMonsterMove(*movespline, data, movespline->getLastPointSent() + 1));
@@ -11085,7 +11078,6 @@ void Unit::SetMovement(UnitMovementType pType)
     if (!mePlayer && !controller)
         return;
 
-    // NOSTALRIUS: TODO: Envoyer 'MSG_MOVE_ROOT' aux autres, ou un Heartbeat ?
     switch (pType)
     {
         case MOVE_ROOT:
@@ -11111,6 +11103,8 @@ void Unit::SetMovement(UnitMovementType pType)
         mePlayer->GetCheatData()->OrderSent(&data);
         mePlayer->GetSession()->SendPacket(&data);
         
+        // Send root messages now rather than on acks from the force messages
+        // so our state is consistent
         if (pType == MOVE_ROOT || pType == MOVE_UNROOT) {
             WorldPacket rootData(pType == MOVE_ROOT ? MSG_MOVE_ROOT : MSG_MOVE_UNROOT, 31);
             rootData << GetPackGUID();
