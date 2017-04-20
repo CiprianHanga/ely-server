@@ -263,8 +263,10 @@ void WorldSession::HandleMovementOpcodes(WorldPacket & recv_data)
     DEBUG_LOG("WORLD: Recvd %s (%u, 0x%X) opcode", LookupOpcodeName(opcode), opcode, opcode);
 
     Unit *mover = _player->GetMover();
+    DEBUG_LOG("WorldSession::HandleMovementOpcodes - mover guid: %s", mover->GetGuidStr().c_str());
     if (mover->GetObjectGuid() != _clientMoverGuid)
         return;
+        
     Player *plMover = mover->GetTypeId() == TYPEID_PLAYER ? (Player*)mover : NULL;
 
     // ignore, waiting processing in WorldSession::HandleMoveWorldportAckOpcode and WorldSession::HandleMoveTeleportAck
@@ -400,10 +402,10 @@ void WorldSession::HandleForceSpeedChangeAckOpcodes(WorldPacket &recv_data)
     data << movementInfo;
     data << float(newspeed);
     _player->SendMovementMessageToSet(std::move(data), false);
-
+    
     if (!_player->GetMover()->movespline->Finalized())
     {
-        WorldPacket splineData(SMSG_MONSTER_MOVE, 31);
+        WorldPacket splineData(SMSG_MONSTER_MOVE, 64);
         splineData << _player->GetMover()->GetPackGUID();
         Movement::PacketBuilder::WriteMonsterMove(*(_player->GetMover()->movespline), splineData);
         _player->SendMovementMessageToSet(std::move(splineData), false);
@@ -439,7 +441,8 @@ void WorldSession::HandleMoveNotActiveMoverOpcode(WorldPacket &recv_data)
     recv_data >> mi;
     _clientMoverGuid = ObjectGuid();
 
-    if (_player->GetMover()->GetObjectGuid() == old_mover_guid)
+    // Client sent not active mover, but maybe the mover is actually set?
+    if (_player->GetMover() && _player->GetMover()->GetObjectGuid() == old_mover_guid)
     {
         DETAIL_LOG("HandleMoveNotActiveMover: incorrect mover guid: mover is %s and should be %s instead of %s",
                        _player->GetMover()->GetGuidStr().c_str(),
@@ -761,15 +764,39 @@ void WorldSession::HandleMoveUnRootAck(WorldPacket& recv_data)
     if (!_player->GetCheatData()->HandleAnticheatTests(movementInfo, this, &recv_data))
         return;
 
+    
     // Position change
     HandleMoverRelocation(movementInfo);
     _player->UpdateFallInformationIfNeed(movementInfo, recv_data.GetOpcode());
 
-    WorldPacket data(MSG_MOVE_UNROOT, recv_data.size());
+    DEBUG_LOG("WorldSession::HandleMoveUnRootAck - client movement info x: %f, y: %f, z: %f",
+              movementInfo.GetPos()->x, movementInfo.GetPos()->y, movementInfo.GetPos()->z);
+    
+    DEBUG_LOG("WorldSession::HandleMoveUnRootAck - server movement info x: %f, y: %f, z: %f",
+              _player->m_movementInfo.GetPos()->x, _player->m_movementInfo.GetPos()->y, _player->m_movementInfo.GetPos()->z);
+    
+    /*Movement::MoveSpline* spline = _player->GetMover()->movespline;
+    DEBUG_LOG("WorldSession::HandleMoveUnRootAck - movespline curr info x: %f, y: %f, z: %f",
+              spline->GetPoint(spline->currentPathIdx())[0], spline->GetPoint(spline->currentPathIdx())[1], spline->GetPoint(spline->currentPathIdx())[2]);*/
+    
+    /*WorldPacket data(MSG_MOVE_UNROOT, recv_data.size());
     data << _player->GetPackGUID();
+    // write player movement data, not the one sent by client
+    //_player->m_movementInfo.Write(data);
     movementInfo.Write(data);
-    _player->SendMovementMessageToSet(std::move(data), true, _player);
+    _player->SendMovementMessageToSet(std::move(data), false);
+    */
     _player->clearUnitState(UNIT_STAT_CLIENT_ROOT);
+    
+    // Resend spline data after unroot opcode & move info. Only send to
+    // set, client already knows about it
+    /*if (!_player->GetMover()->movespline->Finalized())
+    {
+        WorldPacket splineData(SMSG_MONSTER_MOVE, 64);
+        splineData << _player->GetMover()->GetPackGUID();
+        Movement::PacketBuilder::WriteMonsterMove(*(_player->GetMover()->movespline), splineData);
+        _player->SendMovementMessageToSet(std::move(splineData), false);
+    }*/
 }
 
 void WorldSession::HandleMoveRootAck(WorldPacket& recv_data)
@@ -798,11 +825,24 @@ void WorldSession::HandleMoveRootAck(WorldPacket& recv_data)
     // Position change
     HandleMoverRelocation(movementInfo);
     _player->UpdateFallInformationIfNeed(movementInfo, recv_data.GetOpcode());
+    
+    DEBUG_LOG("WorldSession::HandleMoveRootAck - client movement info x: %f, y: %f, z: %f",
+              movementInfo.GetPos()->x, movementInfo.GetPos()->y, movementInfo.GetPos()->z);
+    
+    DEBUG_LOG("WorldSession::HandleMoveRootAck - server movement info x: %f, y: %f, z: %f",
+              _player->m_movementInfo.GetPos()->x, _player->m_movementInfo.GetPos()->y, _player->m_movementInfo.GetPos()->z);
+    
+    Movement::MoveSpline* spline = _player->GetMover()->movespline;
+    if (!spline->Finalized())
+        DEBUG_LOG("WorldSession::HandleMoveRootAck - movespline curr info x: %f, y: %f, z: %f",
+              spline->GetPoint(spline->currentPathIdx())[0], spline->GetPoint(spline->currentPathIdx())[1], spline->GetPoint(spline->currentPathIdx())[2]);
 
     WorldPacket data(MSG_MOVE_ROOT, recv_data.size());
     data << _player->GetPackGUID();
     movementInfo.Write(data);
-    _player->SendMovementMessageToSet(std::move(data), true, _player);
+    _player->SendMovementMessageToSet(std::move(data), false);
+    
+    _player->addUnitState(UNIT_STAT_CLIENT_ROOT);
 }
 
 void WorldSession::HandleMoveSplineDoneOpcode(WorldPacket& recv_data)

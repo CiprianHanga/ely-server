@@ -57,6 +57,9 @@ void MoveSplineInit::Move(PathFinder const* pfinder)
 
 int32 MoveSplineInit::Launch()
 {
+    if (unit.IsPlayer())
+    DEBUG_LOG("MoveSplineInit::Launch - Launching spline type %s", movementType);
+        
     float realSpeedRun = 0.0f;
     MoveSpline& move_spline = *unit.movespline;
 
@@ -90,6 +93,8 @@ int32 MoveSplineInit::Launch()
     uint32 oldMoveFlags = moveFlags;
     if (args.flags.done)
     {
+        if (unit.IsPlayer())
+        DEBUG_LOG("MoveSplineInit::Launch - Client flags says movement is done");
         args.flags = MoveSplineFlag::Done;
         moveFlags &= ~(MOVEFLAG_SPLINE_ENABLED | MOVEFLAG_MASK_MOVING);
     }
@@ -117,17 +122,26 @@ int32 MoveSplineInit::Launch()
         return 0;
 
     unit.m_movementInfo.SetMovementFlags((MovementFlags)moveFlags);
-    unit.clearUnitState(UNIT_STAT_CLIENT_ROOT);
     move_spline.SetMovementOrigin(movementType);
     move_spline.Initialize(args);
-
+    
+    if (unit.IsPlayer())
+    DEBUG_LOG("MoveSplineInit::Launch - spline initialized, building packet");
+    
     WorldPacket data(SMSG_MONSTER_MOVE, 64);
+    if (unit.IsPlayer())
+    DEBUG_LOG("MoveSplineInit::Launch - mover GUID: %s", 
+              unit.GetGuidStr().c_str());
     data << unit.GetPackGUID();
+    
+    // If we're on a transport, push the transport's guid to the front as the
+    // mover
     if (newTransport)
     {
         data.SetOpcode(SMSG_MONSTER_MOVE_TRANSPORT);
         data << newTransport->GetPackGUID();
     }
+
     if (unit.GetTransport() && unit.GetTransport() != newTransport)
         unit.GetTransport()->RemovePassenger(&unit);
     if (newTransport && unit.GetTransport() != newTransport)
@@ -136,6 +150,8 @@ int32 MoveSplineInit::Launch()
     // Stop packet
     if (args.flags.done)
     {
+        if (unit.IsPlayer())
+        DEBUG_LOG("MoveSplineInit::Launch - sending stop packet");
         data << real_position.x << real_position.y << real_position.z;
         data << move_spline.GetId();
         data << uint8(1); // MonsterMoveStop=1
@@ -153,6 +169,11 @@ int32 MoveSplineInit::Launch()
     // Since packet size is stored with an uint8, packet size is limited for compressed packets
     if ((data.wpos() + 2) > 0xFF)
         compress = false;
+    
+    if (unit.IsPlayer()) {
+        DEBUG_LOG("MoveSplineInit::Launch - Packet built. Compress: %d", compress);
+        DEBUG_LOG("MoveSplineInit::Launch - UNIT_STAT_CLIENT_ROOT: %d", unit.hasUnitState(UNIT_STAT_CLIENT_ROOT));
+    }
 
     MovementData mvtData(compress ? NULL : &unit);
     // Nostalrius: client has a hardcoded limit to spline movement speed : 4*runSpeed.
@@ -166,6 +187,9 @@ int32 MoveSplineInit::Launch()
     if (moveFlags & MOVEFLAG_WALK_MODE && !(oldMoveFlags & MOVEFLAG_WALK_MODE)) // Switch to walk mode
         mvtData.SetSplineOpcode(SMSG_SPLINE_MOVE_SET_WALK_MODE, unit.GetObjectGuid());
 
+    // Clear client root here, after we've added it to the packet
+    unit.clearUnitState(UNIT_STAT_CLIENT_ROOT);
+        
     mvtData.AddPacket(data);
     // Do not forget to restore velocity after movement !
     if (args.velocity > 4 * realSpeedRun && !args.flags.done)
@@ -176,8 +200,14 @@ int32 MoveSplineInit::Launch()
     if (compress)
     {
         WorldPacket data2;
-        mvtData.BuildPacket(data2);
-        unit.SendMovementMessageToSet(std::move(data2), true);
+        if (mvtData.BuildPacket(data2)) {
+            if (unit.IsPlayer())
+            DEBUG_LOG("MoveSplineInit::Launch - Sending compressed movement packet to members in cell");
+            unit.SendMovementMessageToSet(std::move(data2), true);
+        }
+        else {
+            sLog.outError("[MoveSplineInit] Unable to compress move packet, move spline not sent");
+        }
     }
     return move_spline.Duration();
 }
