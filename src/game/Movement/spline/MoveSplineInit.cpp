@@ -164,7 +164,7 @@ int32 MoveSplineInit::Launch()
         compress = true;
     else if ((data.wpos() + 2) > 0x10)
         compress = true;
-    else if (unit.hasUnitState(UNIT_STAT_CLIENT_ROOT))
+    else if (oldMoveFlags & MOVEFLAG_ROOT)
         compress = true;
     // Since packet size is stored with an uint8, packet size is limited for compressed packets
     if ((data.wpos() + 2) > 0xFF)
@@ -180,7 +180,7 @@ int32 MoveSplineInit::Launch()
     // We need to fix this, in case of charges for example (if character has movement slowing effects)
     if (args.velocity > 4 * realSpeedRun && !args.flags.done) // From client
         mvtData.SetUnitSpeed(SMSG_SPLINE_SET_RUN_SPEED, unit.GetObjectGuid(), args.velocity);
-    if (unit.hasUnitState(UNIT_STAT_CLIENT_ROOT))
+    if (oldMoveFlags & MOVEFLAG_ROOT)
         mvtData.SetSplineOpcode(SMSG_SPLINE_MOVE_UNROOT, unit.GetObjectGuid());
     if (oldMoveFlags & MOVEFLAG_WALK_MODE && !(moveFlags & MOVEFLAG_WALK_MODE)) // Switch to run mode
         mvtData.SetSplineOpcode(SMSG_SPLINE_MOVE_SET_RUN_MODE, unit.GetObjectGuid());
