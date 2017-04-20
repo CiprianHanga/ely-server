@@ -764,39 +764,12 @@ void WorldSession::HandleMoveUnRootAck(WorldPacket& recv_data)
     if (!_player->GetCheatData()->HandleAnticheatTests(movementInfo, this, &recv_data))
         return;
 
-    
-    // Position change
+    // Update position if it has changed (possible on UNROOT ack?)
     HandleMoverRelocation(movementInfo);
     _player->UpdateFallInformationIfNeed(movementInfo, recv_data.GetOpcode());
 
-    DEBUG_LOG("WorldSession::HandleMoveUnRootAck - client movement info x: %f, y: %f, z: %f",
-              movementInfo.GetPos()->x, movementInfo.GetPos()->y, movementInfo.GetPos()->z);
-    
-    DEBUG_LOG("WorldSession::HandleMoveUnRootAck - server movement info x: %f, y: %f, z: %f",
-              _player->m_movementInfo.GetPos()->x, _player->m_movementInfo.GetPos()->y, _player->m_movementInfo.GetPos()->z);
-    
-    /*Movement::MoveSpline* spline = _player->GetMover()->movespline;
-    DEBUG_LOG("WorldSession::HandleMoveUnRootAck - movespline curr info x: %f, y: %f, z: %f",
-              spline->GetPoint(spline->currentPathIdx())[0], spline->GetPoint(spline->currentPathIdx())[1], spline->GetPoint(spline->currentPathIdx())[2]);*/
-    
-    /*WorldPacket data(MSG_MOVE_UNROOT, recv_data.size());
-    data << _player->GetPackGUID();
-    // write player movement data, not the one sent by client
-    //_player->m_movementInfo.Write(data);
-    movementInfo.Write(data);
-    _player->SendMovementMessageToSet(std::move(data), false);
-    */
+    // Clear unit client state for brevity, though it should not be used
     _player->clearUnitState(UNIT_STAT_CLIENT_ROOT);
-    
-    // Resend spline data after unroot opcode & move info. Only send to
-    // set, client already knows about it
-    /*if (!_player->GetMover()->movespline->Finalized())
-    {
-        WorldPacket splineData(SMSG_MONSTER_MOVE, 64);
-        splineData << _player->GetMover()->GetPackGUID();
-        Movement::PacketBuilder::WriteMonsterMove(*(_player->GetMover()->movespline), splineData);
-        _player->SendMovementMessageToSet(std::move(splineData), false);
-    }*/
 }
 
 void WorldSession::HandleMoveRootAck(WorldPacket& recv_data)
@@ -825,22 +798,6 @@ void WorldSession::HandleMoveRootAck(WorldPacket& recv_data)
     // Position change
     HandleMoverRelocation(movementInfo);
     _player->UpdateFallInformationIfNeed(movementInfo, recv_data.GetOpcode());
-    
-    DEBUG_LOG("WorldSession::HandleMoveRootAck - client movement info x: %f, y: %f, z: %f",
-              movementInfo.GetPos()->x, movementInfo.GetPos()->y, movementInfo.GetPos()->z);
-    
-    DEBUG_LOG("WorldSession::HandleMoveRootAck - server movement info x: %f, y: %f, z: %f",
-              _player->m_movementInfo.GetPos()->x, _player->m_movementInfo.GetPos()->y, _player->m_movementInfo.GetPos()->z);
-    
-    Movement::MoveSpline* spline = _player->GetMover()->movespline;
-    if (!spline->Finalized())
-        DEBUG_LOG("WorldSession::HandleMoveRootAck - movespline curr info x: %f, y: %f, z: %f",
-              spline->GetPoint(spline->currentPathIdx())[0], spline->GetPoint(spline->currentPathIdx())[1], spline->GetPoint(spline->currentPathIdx())[2]);
-
-    WorldPacket data(MSG_MOVE_ROOT, recv_data.size());
-    data << _player->GetPackGUID();
-    movementInfo.Write(data);
-    _player->SendMovementMessageToSet(std::move(data), false);
     
     _player->addUnitState(UNIT_STAT_CLIENT_ROOT);
 }

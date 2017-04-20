@@ -11110,6 +11110,14 @@ void Unit::SetMovement(UnitMovementType pType)
     {
         mePlayer->GetCheatData()->OrderSent(&data);
         mePlayer->GetSession()->SendPacket(&data);
+        
+        if (pType == MOVE_ROOT || pType == MOVE_UNROOT) {
+            WorldPacket rootData(pType == MOVE_ROOT ? MSG_MOVE_ROOT : MSG_MOVE_UNROOT, 31);
+            rootData << GetPackGUID();
+            rootData << m_movementInfo;
+            
+            mePlayer->SendMovementMessageToSet(std::move(rootData), false);
+        }
     }
     if (controller)
         controller->GetSession()->SendPacket(&data);
