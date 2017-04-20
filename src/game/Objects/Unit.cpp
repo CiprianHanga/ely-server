@@ -9336,15 +9336,16 @@ void Unit::StopMoving()
     // not need send any packets if not in world
     if (!IsInWorld())
         return;
-
+        
     Movement::MoveSplineInit init(*this, "StopMoving");
-    if (Transport* t = GetTransport())
+    if (Transport* t = GetTransport()) {
         init.SetTransport(t->GetGUIDLow());
-    if (GetTypeId() == TYPEID_PLAYER && !movespline->Finalized())
+    }
+    
+    if (GetTypeId() == TYPEID_PLAYER && !movespline->Finalized()) {
         init.SetStop(); // Will trigger CMSG_MOVE_SPLINE_DONE from client.
-    else
-        init.SetFacing(GetOrientation());
-    init.Launch();
+        init.Launch();
+    }
 
     DisableSpline();
 }
@@ -9359,6 +9360,7 @@ void Unit::SetFleeing(bool apply, ObjectGuid casterGuid, uint32 spellID, uint32 
 
 void Unit::SetFeared(bool apply, ObjectGuid casterGuid, uint32 spellID, uint32 time)
 {
+    DEBUG_LOG("Unit::SetFeared - Fear mod, apply: %d, feared: %s", apply, GetName());
     if (apply && HasAuraType(SPELL_AURA_PREVENTS_FLEEING))
         return;
 
@@ -10843,12 +10845,19 @@ void Unit::UpdateSplineMovement(uint32 t_diff)
         return;
 
     movespline->updateState(t_diff);
+    
     bool arrived = movespline->Finalized();
 
+    if (IsPlayer())
+        DEBUG_LOG("Unit::UpdateSplineMovement - spline for %s, arrived: %d", GetName(), arrived);
+    
     if (arrived)
         DisableSpline();
     else if (!movespline->isCyclic() && movespline->getLastPointSent() >= 0 && movespline->getLastPointSent() < (movespline->currentPathIdx() + 3))
     {
+        if (IsPlayer())
+            DEBUG_LOG("Unit::UpdateSplineMovement - non cyclic, sending update packet");
+            
         WorldPacket data(SMSG_MONSTER_MOVE, 64);
         data << GetPackGUID();
         movespline->setLastPointSent(Movement::PacketBuilder::WriteMonsterMove(*movespline, data, movespline->getLastPointSent() + 1));
