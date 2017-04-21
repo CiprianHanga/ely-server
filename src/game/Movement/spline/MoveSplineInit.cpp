@@ -181,8 +181,6 @@ int32 MoveSplineInit::Launch()
     {
         WorldPacket data2;
         if (mvtData.BuildPacket(data2)) {
-            if (unit.IsPlayer())
-            DEBUG_LOG("MoveSplineInit::Launch - Sending compressed movement packet to members in cell");
             unit.SendMovementMessageToSet(std::move(data2), true);
         }
         else {
