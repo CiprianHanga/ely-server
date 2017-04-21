@@ -89,3 +89,4 @@ sql/migrations/*.py
 # Generating by CMake
 revision.h
 migrations_list.h
+src/scripts/kalimdor/silithus/temple_of_ahnqiraj/boss_skeram.cpp
