@@ -404,7 +404,7 @@ void WorldSession::HandleForceSpeedChangeAckOpcodes(WorldPacket &recv_data)
     
     if (!_player->GetMover()->movespline->Finalized())
     {
-        WorldPacket splineData(SMSG_MONSTER_MOVE, 64);
+        WorldPacket splineData(SMSG_MONSTER_MOVE, 31);
         splineData << _player->GetMover()->GetPackGUID();
         Movement::PacketBuilder::WriteMonsterMove(*(_player->GetMover()->movespline), splineData);
         _player->SendMovementMessageToSet(std::move(splineData), false);

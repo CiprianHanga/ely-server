@@ -10844,9 +10844,8 @@ void Unit::UpdateSplineMovement(uint32 t_diff)
         return;
 
     movespline->updateState(t_diff);
-    
     bool arrived = movespline->Finalized();
-    
+
     if (arrived)
         DisableSpline();
     else if (!movespline->isCyclic() && movespline->getLastPointSent() >= 0 && movespline->getLastPointSent() < (movespline->currentPathIdx() + 3))
