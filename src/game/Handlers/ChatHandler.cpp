@@ -260,6 +260,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket & recv_data)
 
                     chn->Say(playerPointer->GetObjectGuid(), msg.c_str(), channel.c_str(), lang);
                     channelid = chn->GetChannelId();
+
                     if (lang != LANG_ADDON && chn->HasFlag(Channel::ChannelFlags::CHANNEL_FLAG_GENERAL))
                         if (AntispamInterface *a = sAnticheatLib->GetAntispam())
                             a->addMessage(msg, type, GetPlayerPointer(), nullptr);

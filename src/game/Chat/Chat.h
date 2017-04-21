@@ -259,6 +259,9 @@ class MANGOS_DLL_SPEC ChatHandler
         // Managing saved variables
         bool HandleVariableCommand(char* args);
         bool HandleReloadVariablesCommand(char* args);
+        //  AQ variables
+        bool HandleGetWarEffortResource(char* args);
+        bool HandleSetWarEffortResource(char* args);
         // Deplacement
         bool HandleGoForwardCommand(char* args);
         bool HandleGoUpCommand(char* args);
@@ -485,6 +488,7 @@ class MANGOS_DLL_SPEC ChatHandler
 
         bool HandleLookupAccountEmailCommand(char* args);
         bool HandleLookupAccountIpCommand(char* args);
+        bool HandleLookupAccountIponlineCommand(char* args);
         bool HandleLookupAccountNameCommand(char* args);
         bool HandleLookupAreaCommand(char* args);
         bool HandleLookupCreatureCommand(char* args);
@@ -496,6 +500,7 @@ class MANGOS_DLL_SPEC ChatHandler
         bool HandleLookupPlayerIpCommand(char* args);
         bool HandleLookupPlayerAccountCommand(char* args);
         bool HandleLookupPlayerEmailCommand(char* args);
+        bool HandleLookupPlayerNameCommand(char* args);
         bool HandleLookupPoolCommand(char* args);
         bool HandleLookupQuestCommand(char* args);
         bool HandleLookupSkillCommand(char* args);
@@ -519,6 +524,31 @@ class MANGOS_DLL_SPEC ChatHandler
         bool HandleModifyHonorCommand(char* args);
         bool HandleModifyRepCommand(char* args);
         bool HandleModifyGenderCommand(char* args);
+        bool HandleModifyStrengthCommand(char* args);
+        bool HandleModifyAgilityCommand(char* args);
+        bool HandleModifyStaminaCommand(char* args);
+        bool HandleModifyIntellectCommand(char* args);
+        bool HandleModifySpiritCommand(char* args);
+        bool HandleModifyArmorCommand(char* args);
+        bool HandleModifyHolyCommand(char* args);
+        bool HandleModifyFireCommand(char* args);
+        bool HandleModifyNatureCommand(char* args);
+        bool HandleModifyFrostCommand(char* args);
+        bool HandleModifyShadowCommand(char* args);
+        bool HandleModifyArcaneCommand(char* args);
+        bool HandleModifyMeleeApCommand(char* args);
+        bool HandleModifyRangedApCommand(char* args);
+        bool HandleModifySpellPowerCommand(char* args);
+        bool HandleModifyMeleeCritCommand(char* args);
+        bool HandleModifyRangedCritCommand(char* args);
+        bool HandleModifySpellCritCommand(char* args);
+        bool HandleModifyMainSpeedCommand(char* args);
+        bool HandleModifyOffSpeedCommand(char* args);
+        bool HandleModifyRangedSpeedCommand(char* args);
+        bool HandleModifyCastSpeedCommand(char* args);
+        bool HandleModifyBlockCommand(char* args);
+        bool HandleModifyDodgeCommand(char* args);
+        bool HandleModifyParryCommand(char* args);
 
         //-----------------------Npc Commands-----------------------
         bool HandleNpcAddCommand(char* args);
@@ -847,6 +877,7 @@ class MANGOS_DLL_SPEC ChatHandler
                                                             // select by arg (name/link) or in-game selection online/offline player
 
         // Utility methods for commands
+        bool ShowAccountIpListHelper(char* args, bool onlineonly);
         bool ShowAccountListHelper(QueryResult* result, uint32* limit = nullptr, bool title = true, bool error = true);
         void ShowFactionListHelper(FactionEntry const * factionEntry, LocaleConstant loc, FactionState const* repState = nullptr, Player * target = nullptr );
         void ShowItemListHelper(uint32 itemId, int loc_idx, Player* target = nullptr);

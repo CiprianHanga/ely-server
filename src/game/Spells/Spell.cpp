@@ -260,7 +260,7 @@ void SpellCastTargets::write(ByteBuffer& data) const
         data << m_strTarget;
 }
 
-Spell::Spell(Unit* caster, SpellEntry const *info, bool triggered, ObjectGuid originalCasterGUID, SpellEntry const* triggeredBy): m_immediateHandled(false), m_needSpellLog(false), m_canTrigger(false)
+Spell::Spell(Unit* caster, SpellEntry const *info, bool triggered, ObjectGuid originalCasterGUID, SpellEntry const* triggeredBy, Unit* victim): m_immediateHandled(false), m_needSpellLog(false), m_canTrigger(false)
 {
     MANGOS_ASSERT(caster != NULL && info != NULL);
     MANGOS_ASSERT(info == sSpellMgr.GetSpellEntry(info->Id) && "`info` must be pointer to sSpellStore element");
@@ -326,7 +326,7 @@ Spell::Spell(Unit* caster, SpellEntry const *info, bool triggered, ObjectGuid or
     m_needAliveTargetMask = 0;
 
     // determine reflection
-    m_canReflect = IsReflectableSpell(m_spellInfo);
+    m_canReflect = IsReflectableSpell(m_spellInfo, caster, victim);
 
     m_isClientStarted = false;
 
@@ -806,7 +806,7 @@ void Spell::AddUnitTarget(Unit* pVictim, SpellEffectIndex effIndex)
     target.damage = 0;
 
     // Calculate hit result
-    target.missCondition = m_caster->SpellHitResult(pVictim, m_spellInfo, m_canReflect, this);
+    target.missCondition = m_caster->SpellHitResult(pVictim, m_spellInfo, effIndex, m_canReflect, this);
 
     // spell fly from visual cast object
     WorldObject* affectiveObject = GetAffectiveCasterObject();
@@ -833,7 +833,7 @@ void Spell::AddUnitTarget(Unit* pVictim, SpellEffectIndex effIndex)
     if (target.missCondition == SPELL_MISS_REFLECT)
     {
         // Calculate reflected spell result on caster
-        target.reflectResult =  m_caster->SpellHitResult(m_caster, m_spellInfo, m_canReflect, this);
+        target.reflectResult =  m_caster->SpellHitResult(m_caster, m_spellInfo, effIndex, m_canReflect, this);
 
         if (target.reflectResult == SPELL_MISS_REFLECT)     // Impossible reflect again, so simply deflect spell
             target.reflectResult = SPELL_MISS_PARRY;
@@ -1019,7 +1019,8 @@ void Spell::DoAllEffectOnTarget(TargetInfo *target)
         DoSpellHitOnUnit(unit, mask);
     if (missInfo == SPELL_MISS_REFLECT && target->reflectResult == SPELL_MISS_NONE)
     {
-        DoSpellHitOnUnit(m_caster, mask, true);
+        isReflected = true;
+        DoSpellHitOnUnit(m_caster, mask);
         unitTarget = m_caster;
     }
     else                                                    // in 1.12.1 we need explicit miss info
@@ -1274,15 +1275,19 @@ void Spell::DoAllEffectOnTarget(TargetInfo *target)
         ((Creature*)m_caster)->AI()->SpellHitTarget(unit, m_spellInfo);
 }
 
-void Spell::DoSpellHitOnUnit(Unit *unit, uint32 effectMask, bool isReflected)
+void Spell::DoSpellHitOnUnit(Unit *unit, uint32 effectMask)
 {
     if (!unit)
         return;
 
-    if (!effectMask)
-        return;
-
     Unit* realCaster = GetAffectiveCaster();
+
+    if (!effectMask)
+    {
+        if (realCaster && !unit->isInCombat())
+            unit->AttackedBy(realCaster);
+        return;
+    }
 
     // Nostalrius: IsAuraResist pour les ModMechanicResistance des effets.
     if (IsSpellAppliesAura(m_spellInfo, effectMask) && unit->IsAuraResist(m_spellInfo))
@@ -4543,9 +4548,32 @@ SpellCastResult Spell::CheckCast(bool strict)
     }
     // Fin Nostalrius
 
-    // check cooldowns to prevent cheating (ignore passive spells, that client side visual only)
+    /*  Check cooldowns to prevent cheating (ignore passive spells, that client side visual only)
+
+        If the cast is an item cast, check the spell proto on the item for the category
+        cooldown to check, rather than this spell's category. This is due to bad
+        categories in the default Spell DBC.
+     */
+
+    uint32 spellCat = m_spellInfo->Category;
+    if (m_IsCastByItem)
+    {
+        // Find correct item category matching the current spell on item
+        // used when item spells have custom categories due to wrong category
+        // on spell
+        ItemPrototype const* proto = m_CastItem->GetProto();
+        for (int i = 0; i < MAX_ITEM_PROTO_SPELLS; i++)
+        {
+            if (proto->Spells[i].SpellId == m_spellInfo->Id)
+            {
+                spellCat = proto->Spells[i].SpellCategory;
+                break;
+            }
+        }
+    }
+
     if (m_caster->GetTypeId() == TYPEID_PLAYER && !(m_spellInfo->Attributes & SPELL_ATTR_PASSIVE) &&
-            (m_caster->HasSpellCooldown(m_spellInfo->Id) || m_caster->HasSpellCategoryCooldown(m_spellInfo->Category)))
+            (m_caster->HasSpellCooldown(m_spellInfo->Id) || m_caster->HasSpellCategoryCooldown(spellCat)))
     {
         if (m_triggeredByAuraSpell)
             return SPELL_FAILED_DONT_REPORT;
@@ -4872,7 +4900,7 @@ SpellCastResult Spell::CheckCast(bool strict)
     // Nostalrius: impossible to cast spells while banned / feared / confused ...
     // Except divine shields, pvp trinkets for example
     // TODO: This condition allows an antifear item to be used while stuned for example.
-    if (!m_IsTriggeredSpell && !IsSpellAppliesAura(m_spellInfo, SPELL_AURA_SCHOOL_IMMUNITY) && !IsSpellAppliesAura(m_spellInfo, SPELL_AURA_MECHANIC_IMMUNITY) &&
+    if (!m_IsTriggeredSpell && !IsSpellHaveAura(m_spellInfo, SPELL_AURA_SCHOOL_IMMUNITY) && !IsSpellHaveAura(m_spellInfo, SPELL_AURA_MECHANIC_IMMUNITY) &&
             m_caster->hasUnitState(UNIT_STAT_ISOLATED | UNIT_STAT_STUNNED | UNIT_STAT_PENDING_STUNNED | UNIT_STAT_CONFUSED | UNIT_STAT_FLEEING))
         return SPELL_FAILED_DONT_REPORT;
 
@@ -6510,6 +6538,7 @@ SpellCastResult Spell::CheckItems()
             if (!p_caster)
                 break;
             uint32 rank = 0;
+            uint32 itemtype;
             Unit::AuraList const& mDummyAuras = p_caster->GetAurasByType(SPELL_AURA_DUMMY);
             for (Unit::AuraList::const_iterator i = mDummyAuras.begin(); i != mDummyAuras.end(); ++i)
             {
@@ -6535,13 +6564,33 @@ SpellCastResult Spell::CheckItems()
                 {22103, 22104, 22105}               // Master Healthstone
             };
 
-            for (int i = 0; i < 6; ++i)
-                for (int j = 0; j < 3; ++j)
-                    if (p_caster->HasItemCount(itypes[i][j], 1))
-                    {
-                        p_caster->SendEquipError(EQUIP_ERR_CANT_CARRY_MORE_OF_THIS, nullptr, nullptr, itypes[i][j]);
-                        return SPELL_FAILED_DONT_REPORT;
-                    }
+            switch (m_spellInfo->Id)
+            {
+                case  6201:
+                    itemtype = itypes[0][rank];
+                    break; // Minor Healthstone
+                case  6202:
+                    itemtype = itypes[1][rank];
+                    break; // Lesser Healthstone
+                case  5699:
+                    itemtype = itypes[2][rank];
+                    break; // Healthstone
+                case 11729:
+                    itemtype = itypes[3][rank];
+                    break; // Greater Healthstone
+                case 11730:
+                    itemtype = itypes[4][rank];
+                    break; // Major Healthstone
+                case 27230:
+                    itemtype = itypes[5][rank];
+                    break; // Master Healthstone
+            }
+
+            if (p_caster->HasItemCount(itemtype, 1))
+            {
+                p_caster->SendEquipError(EQUIP_ERR_CANT_CARRY_MORE_OF_THIS, nullptr, nullptr, itemtype);
+                return SPELL_FAILED_DONT_REPORT;
+            }
         }
     }
     for (int i = 0; i < MAX_EFFECT_INDEX; ++i)
