@@ -311,8 +311,8 @@ struct npc_tesla_coilAI : public Scripted_NoMovementAI
         if (!m_pInstance || m_pInstance->GetData(TYPE_THADDIUS) == DONE)
             return true;
 
-        GameObject* pNoxTeslaFeugen = m_pInstance->GetSingleGameObjectFromStorage(GO_CONS_NOX_TESLA_FEUGEN);
-        GameObject* pNoxTeslaStalagg = m_pInstance->GetSingleGameObjectFromStorage(GO_CONS_NOX_TESLA_STALAGG);
+        GameObject* pNoxTeslaFeugen = m_pInstance->GetGameObject(82254);
+        GameObject* pNoxTeslaStalagg = m_pInstance->GetGameObject(82255);
 
         // Try again, till Tesla GOs are spawned
         if (!pNoxTeslaFeugen || !pNoxTeslaStalagg)
@@ -340,7 +340,7 @@ struct npc_tesla_coilAI : public Scripted_NoMovementAI
         {
             m_bReapply = false;
             m_creature->InterruptNonMeleeSpells(true);
-            GameObject* pGo = m_pInstance->GetSingleGameObjectFromStorage(m_bToFeugen ? GO_CONS_NOX_TESLA_FEUGEN : GO_CONS_NOX_TESLA_STALAGG);
+            GameObject* pGo = m_pInstance->GetGameObject(m_bToFeugen ? 82254 : 82255);
 
             if (pGo && pGo->GetGoType() == GAMEOBJECT_TYPE_BUTTON && pGo->getLootState() == GO_ACTIVATED)
                 pGo->ResetDoorOrButton();
@@ -382,7 +382,7 @@ struct npc_tesla_coilAI : public Scripted_NoMovementAI
                 m_creature->RemoveAurasDueToSpell(m_bToFeugen ? SPELL_FEUGEN_TESLA_PASSIVE : SPELL_STALAGG_TESLA_PASSIVE);
                 DoCastSpellIfCan(m_creature, SPELL_SHOCK_OVERLOAD, CAST_INTERRUPT_PREVIOUS);
                 DoScriptText(EMOTE_TESLA_OVERLOAD, m_creature);
-                m_pInstance->DoUseDoorOrButton(m_bToFeugen ? GO_CONS_NOX_TESLA_FEUGEN : GO_CONS_NOX_TESLA_STALAGG);
+                m_pInstance->DoUseDoorOrButton(m_bToFeugen ? 82254 : 82255);
             }
             else
                 m_uiOverloadTimer -= uiDiff;
