@@ -1981,7 +1981,7 @@ void DungeonMap::UnloadAll(bool pForce)
     }
 
     if (m_resetAfterUnload == true)
-        GetPersistanceState()->DeleteRespawnTimesAndData();
+        GetPersistanceState()->DeleteRespawnTimes();
 
     Map::UnloadAll(pForce);
 }
