@@ -311,8 +311,8 @@ struct npc_tesla_coilAI : public Scripted_NoMovementAI
         if (!m_pInstance || m_pInstance->GetData(TYPE_THADDIUS) == DONE)
             return true;
 
-        GameObject* pNoxTeslaFeugen = m_pInstance->GetSingleGameObjectFromStorage(GO_CONS_NOX_TESLA_FEUGEN);
-        GameObject* pNoxTeslaStalagg = m_pInstance->GetSingleGameObjectFromStorage(GO_CONS_NOX_TESLA_STALAGG);
+        GameObject* pNoxTeslaFeugen = m_pInstance->GetGameObject(m_pInstance->GetData64(GO_CONS_NOX_TESLA_FEUGEN));
+        GameObject* pNoxTeslaStalagg = m_pInstance->GetGameObject(m_pInstance->GetData64(GO_CONS_NOX_TESLA_STALAGG));
 
         // Try again, till Tesla GOs are spawned
         if (!pNoxTeslaFeugen || !pNoxTeslaStalagg)
@@ -340,7 +340,7 @@ struct npc_tesla_coilAI : public Scripted_NoMovementAI
         {
             m_bReapply = false;
             m_creature->InterruptNonMeleeSpells(true);
-            GameObject* pGo = m_pInstance->GetSingleGameObjectFromStorage(m_bToFeugen ? GO_CONS_NOX_TESLA_FEUGEN : GO_CONS_NOX_TESLA_STALAGG);
+            GameObject* pGo = m_pInstance->GetGameObject(m_bToFeugen ? m_pInstance->GetData64(GO_CONS_NOX_TESLA_FEUGEN) : m_pInstance->GetData64(GO_CONS_NOX_TESLA_STALAGG));
 
             if (pGo && pGo->GetGoType() == GAMEOBJECT_TYPE_BUTTON && pGo->getLootState() == GO_ACTIVATED)
                 pGo->ResetDoorOrButton();

@@ -57,6 +57,12 @@ enum
     NPC_SPECT_RIDER             = 16150,
     NPC_SPECT_HORSE             = 16149,
 
+    NPC_SAPPHIRON               = 15989,
+    NPC_KELTHUZAD               = 15990,
+    NPC_THE_LICHKING            = 16980,
+    NPC_MR_BIGGLESWORTH         = 16998,
+
+
     // End boss adds
     NPC_SOLDIER_FROZEN          = 16427,
     NPC_UNSTOPPABLE_ABOM        = 16428,
@@ -111,6 +117,8 @@ enum
     GO_MILI_PORTAL              = 181578,
     GO_CONS_PORTAL              = 181576,
 
+    SAY_KELTHUZAD_CAT_DIED = -1533089,
+
     AREATRIGGER_FROSTWYRM       = 4120,                    //not needed here, but AT to be scripted
     AREATRIGGER_KELTHUZAD       = 4112,
     AREATRIGGER_GOTHIK          = 4116
@@ -134,6 +142,8 @@ class instance_naxxramas : public ScriptedInstance
 
         void OnCreatureCreate(Creature* pCreature);
         void OnObjectCreate(GameObject* pGo);
+
+        void OnCreatureDeath(Creature* pCreature) override;
 
         void SetData(uint32 uiType, uint32 uiData);
         uint32 GetData(uint32 uiType);
@@ -189,6 +199,8 @@ class instance_naxxramas : public ScriptedInstance
         uint64 m_uiPathExitDoorGUID;
         uint64 m_uiGlutExitDoorGUID;
         uint64 m_uiThadDoorGUID;
+        uint64 m_uiTeslaCoilStalaggGUID;
+        uint64 m_uiTeslaCoilFeugenGUID;
 
         uint64 m_uiAnubDoorGUID;
         uint64 m_uiAnubGateGUID;
@@ -213,6 +225,10 @@ class instance_naxxramas : public ScriptedInstance
         uint64 m_uiHeigExitDoorGUID;
         uint64 m_uiLoathebDoorGUID;
 
+        uint64 m_uiSapphironGUID;
+        uint64 m_uiKelthuzadGUID;
+        uint64 m_uiLichKingGUID;
+        uint64 m_uiMrBiggleworthGUID;
         uint64 m_uiKelthuzadDoorGUID;
         float m_fChamberCenterX;
         float m_fChamberCenterY;
