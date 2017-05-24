@@ -430,7 +430,7 @@ UPDATE `creature_template` SET `gossip_menu_id`=4783 WHERE `entry`=2879;
 DELETE FROM `npc_gossip` WHERE `npc_guid`=26755;
 INSERT INTO `gossip_menu` VALUES (4011, 4867, 96);
 INSERT INTO `gossip_menu` VALUES (4011, 4998, 97);
-INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4011, 0, 3, 'I seek training in the ways of the Hunter.', 5, 16, 0, 0, 0, 0, 0, '', 0);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4011, 0, 3, 'I am in need of training.', 5, 16, 0, 0, 0, 0, 0, '', 0);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4011, 1, 0, 'I wish to unlearn my talents.', 1, 1, 4461, 0, 0, 0, 0, '', 135);
 UPDATE `creature_template` SET `gossip_menu_id`=4011 WHERE `entry`=3038;
 
@@ -438,7 +438,7 @@ UPDATE `creature_template` SET `gossip_menu_id`=4011 WHERE `entry`=3038;
 DELETE FROM `npc_gossip` WHERE `npc_guid`=26756;
 INSERT INTO `gossip_menu` VALUES (4023, 4889, 96);
 INSERT INTO `gossip_menu` VALUES (4023, 4996, 97);
-INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4023, 0, 3, 'I seek training in the ways of the Hunter.', 5, 16, 0, 0, 0, 0, 0, '', 0);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4023, 0, 3, 'I wish to train.', 5, 16, 0, 0, 0, 0, 0, '', 0);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4023, 1, 0, 'I wish to unlearn my talents.', 1, 1, 4461, 0, 0, 0, 0, '', 135);
 UPDATE `creature_template` SET `gossip_menu_id`=4023 WHERE `entry`=3039;
 
@@ -458,7 +458,7 @@ UPDATE `creature_template` SET `gossip_menu_id`=4524 WHERE `entry`=3061;
 DELETE FROM `npc_gossip` WHERE `npc_guid`=26905;
 INSERT INTO `gossip_menu` VALUES (4012, 4868, 96);
 INSERT INTO `gossip_menu` VALUES (4012, 4998, 97);
-INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4012, 0, 3, 'I seek training in the ways of the Hunter.', 5, 16, 0, 0, 0, 0, 0, '', 0);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4012, 0, 3, 'I am a hunter and wish to train.', 5, 16, 0, 0, 0, 0, 0, '', 0);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4012, 1, 0, 'I wish to unlearn my talents.', 1, 1, 4461, 0, 0, 0, 0, '', 135);
 UPDATE `creature_template` SET `gossip_menu_id`=4012 WHERE `entry`=3065;
 
@@ -466,14 +466,14 @@ UPDATE `creature_template` SET `gossip_menu_id`=4012 WHERE `entry`=3065;
 DELETE FROM `npc_gossip` WHERE `npc_guid`=7649;
 INSERT INTO `gossip_menu` VALUES (4648, 4987, 96);
 INSERT INTO `gossip_menu` VALUES (4648, 5004, 97);
-INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4648, 0, 3, 'I seek training in the ways of the Hunter.', 5, 16, 0, 0, 0, 0, 0, '', 0);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4648, 0, 3, 'I wish to train.', 5, 16, 0, 0, 0, 0, 0, '', 0);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4648, 1, 0, 'I wish to unlearn my talents.', 1, 1, 4461, 0, 0, 0, 0, '', 135);
 UPDATE `creature_template` SET `gossip_menu_id`=4648 WHERE `entry`=3154;
 
 -- Thotar
 DELETE FROM `npc_gossip` WHERE `npc_guid`=7293;
 INSERT INTO `gossip_menu` VALUES (4017, 4888, 0);
-INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4017, 0, 3, 'I seek training in the ways of the Hunter.', 5, 16, 0, 0, 0, 0, 0, '', 0);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4017, 0, 3, 'Please train me.', 5, 16, 0, 0, 0, 0, 0, '', 0);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4017, 1, 0, 'I wish to unlearn my talents.', 1, 1, 4461, 0, 0, 0, 0, '', 135);
 UPDATE `creature_template` SET `gossip_menu_id`=4017 WHERE `entry`=3171;
 
@@ -538,7 +538,7 @@ UPDATE `creature_template` SET `gossip_menu_id`=4783 WHERE `entry`=3698;
 -- Danlaar Nightstride
 INSERT INTO `gossip_menu` VALUES (4092, 4867, 96);
 INSERT INTO `gossip_menu` VALUES (4092, 4993, 97);
-INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4092, 0, 3, 'I seek training in the ways of the Hunter.', 5, 16, 0, 0, 0, 0, 0, '', 0);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4092, 0, 3, 'I would like training.', 5, 16, 0, 0, 0, 0, 0, '', 0);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4092, 1, 0, 'I wish to unlearn my talents.', 1, 1, 4461, 0, 0, 0, 0, '', 135);
 UPDATE `creature_template` SET `gossip_menu_id`=4092 WHERE `entry`=3963;
 
@@ -546,7 +546,7 @@ UPDATE `creature_template` SET `gossip_menu_id`=4092 WHERE `entry`=3963;
 DELETE FROM `npc_gossip` WHERE `npc_guid`=46217;
 INSERT INTO `gossip_menu` VALUES (4621, 4994, 96);
 INSERT INTO `gossip_menu` VALUES (4621, 4993, 97);
-INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4621, 0, 3, 'I seek training in the ways of the Hunter.', 5, 16, 0, 0, 0, 0, 0, '', 0);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4621, 0, 3, 'I would like training.', 5, 16, 0, 0, 0, 0, 0, '', 0);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4621, 1, 0, 'I wish to unlearn my talents.', 1, 1, 4461, 0, 0, 0, 0, '', 135);
 UPDATE `creature_template` SET `gossip_menu_id`=4621 WHERE `entry`=4138;
 
