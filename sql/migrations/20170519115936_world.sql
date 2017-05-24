@@ -485,7 +485,7 @@ DELETE FROM `npc_gossip` WHERE `npc_guid`=7449;
 DELETE FROM `gossip_menu` WHERE `entry`=4010;
 INSERT INTO `gossip_menu` VALUES (4010, 4866, 96);
 INSERT INTO `gossip_menu` VALUES (4010, 5003, 97);
-INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4010, 0, 3, 'I seek training in the ways of the Hunter.', 5, 16, 0, 0, 0, 0, 0, '', 0);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4010, 0, 3, 'I have come for training.', 5, 16, 0, 0, 0, 0, 0, '', 0);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4010, 1, 0, 'I wish to unlearn my talents.', 1, 1, 4461, 0, 0, 0, 0, '', 135);
 UPDATE `creature_template` SET `gossip_menu_id`=4010 WHERE `entry`=3352;
 
@@ -606,7 +606,11 @@ UPDATE `creature_template` SET `gossip_menu_id`=4783 WHERE `entry`=10086;
 
 -- Xao'tsu (Pet Trainer)
 DELETE FROM `npc_gossip` WHERE `npc_guid`=6606;
-UPDATE `creature_template` SET `gossip_menu_id`=4783 WHERE `entry`=10088;
+INSERT INTO `gossip_menu` VALUES (4784, 5838, 96);
+INSERT INTO `gossip_menu` VALUES (4784, 5839, 97);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4784, 1, 3, 'Train me in the ways of the beast.', 5, 16, 0, 0, 0, 0, 0, NULL, 0);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (4784, 2, 0, 'I wish to untrain my pet.', 17, 16, 0, 0, 0, 0, 0, NULL, 0);
+UPDATE `creature_template` SET `gossip_menu_id`=4784 WHERE `entry`=10088;
 
 -- Silvaria (Pet Trainer)
 DELETE FROM `npc_gossip` WHERE `npc_guid`=46410;
