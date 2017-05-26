@@ -417,9 +417,9 @@ void Spell::EffectSchoolDMG(SpellEffectIndex effect_idx)
                 // Ferocious Bite
                 if (m_spellInfo->IsFitToFamilyMask<CF_DRUID_RIP_BITE>() && m_spellInfo->SpellVisual == 6587)
                 {
-					// ( AP * 3% * combo + energy * 2,7 + damage )
-					if (uint32 combo = ((Player*)m_caster)->GetComboPoints())
-						damage += int32(m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * combo * 0.03f);
+                    // ( AP * 3% * combo + energy * 2,7 + damage )
+                    if (uint32 combo = ((Player*)m_caster)->GetComboPoints())
+                        damage += int32(m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * combo * 0.03f);
                     damage += int32(m_caster->GetPower(POWER_ENERGY) * m_spellInfo->DmgMultiplier[effect_idx]);
                     m_caster->SetPower(POWER_ENERGY, 0);
                 }
