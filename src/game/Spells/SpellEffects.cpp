@@ -752,17 +752,19 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
                         return;
 
                     uint32 spell_id = 0;
-                    switch (urand(1, 2))
-                    {
-                        // Flip Out - ninja
-                        case 1:
-                            spell_id = (m_caster->getGender() == GENDER_MALE ? 8219 : 8220);
-                            break;
-                        // Yaaarrrr - pirate
-                        case 2:
-                            spell_id = (m_caster->getGender() == GENDER_MALE ? 8221 : 8222);
-                            break;
-                    }
+                    uint32 spells[6] = { 
+                        (m_caster->getGender() == GENDER_MALE ? 8219 : 8220), // Flip Out - ninja
+                        (m_caster->getGender() == GENDER_MALE ? 8221 : 8222), // Yaaarrrr - pirate
+                        8223, // Oops - goo
+                        8215, // Rapid Cast
+                        8224, // Cowardice
+                        8226  // Fake Death
+                    };
+
+                    if (sWorld.GetWowPatch() < WOW_PATCH_107)
+                        spell_id = spells[urand(0, 5)];
+                    else
+                        spell_id = spells[urand(0, 1)];
 
                     m_caster->CastSpell(m_caster, spell_id, true, nullptr);
                     return;
