@@ -3703,26 +3703,9 @@ void Map::ScriptsProcess()
                     terminateResult = sObjectMgr.IsPlayerMeetToCondition(step.script->terminateCond.conditionId, player, player->GetMap(), second, CONDITION_FROM_DBSCRIPTS);
                 }
 
-                if (terminateResult && step.script->terminateCond.failQuest && player)
+                if (player && terminateResult && step.script->terminateCond.failQuest)
                 {
-                    if (Group* group = player->GetGroup())
-                    {
-                        for (GroupReference* groupRef = group->GetFirstMember(); groupRef != NULL; groupRef = groupRef->next())
-                        {
-                            Player* member = groupRef->getSource();
-                            if (member->GetQuestStatus(step.script->terminateCond.failQuest) == QUEST_STATUS_INCOMPLETE)
-                            {
-                                member->FailQuest(step.script->terminateCond.failQuest);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (player->GetQuestStatus(step.script->terminateCond.failQuest) == QUEST_STATUS_INCOMPLETE)
-                        {
-                            player->FailQuest(step.script->terminateCond.failQuest);
-                        }
-                    }
+                    player->GroupEventFailHappens(step.script->terminateCond.failQuest);
                 }
                 if (terminateResult) // Terminate further steps of this script
                 {
