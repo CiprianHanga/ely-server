@@ -1343,8 +1343,7 @@ struct npc_master_woodAI : public ScriptedAI
                             m_uiRudeCount = 3;
                             break;
                         case 3:
-                            m_creature->SetFactionTemporary(FACTION_HOSTILE, TEMPFACTION_RESTORE_COMBAT_STOP);
-                            m_creature->AI()->AttackStart(pPlayer);
+                            m_creature->GetMotionMaster()->MoveCharge(pPlayer, 1000, true);
                             m_uiRudeCount = 0;
                             break;
                     }
