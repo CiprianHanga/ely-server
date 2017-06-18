@@ -23,3 +23,17 @@ REPLACE INTO `db_script_string` (`entry`, `content_default`, `content_loc1`, `co
 -- Remove quest giver flag when starting RP event.
 INSERT INTO `quest_end_scripts` (`id`, `delay`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `comments`) VALUES (411, 0, 29, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'The Prodigal Lich Returns - Remove quest giver flag');
 INSERT INTO `quest_end_scripts` (`id`, `delay`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `comments`) VALUES (411, 26, 29, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'The Prodigal Lich Returns - Add quest giver flag');
+
+-- NPC: Nazgrel
+-- Add missing equipment. He should have an axe on his back.
+INSERT INTO `creature_equip_template` VALUES (3230, 14870, 0, 0);
+UPDATE `creature_template` SET `equipment_id`=3230 WHERE `entry`=3230;
+UPDATE `creature_template_addon` SET `b2_0_sheath`=0 WHERE `entry`=3230;
+
+-- NPCs: Kor'kron Elite and Deathguard Elite
+-- They are not actually supposed to be elite.
+UPDATE `creature_template` SET `rank`=0 WHERE `entry` IN (7980, 14304);
+
+-- Quest: Find the Gems
+-- Fix typo in text. (by bdebaere)
+UPDATE `quest_template` SET `RequestItemsText`='Talvash\'s image comes into focus from the waters of the scrying bowl.$b$b"Wow, you\'re still alive! Did you manage to find the gems? Are you truly the savior of my reputation I have hoped for? Please tell me you didn\'t waste a charge on the phial just to chat; those things are NOT cheap, and I\'m already in dire financial straits.' WHERE `entry`=2201;
