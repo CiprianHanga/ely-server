@@ -96,3 +96,6 @@ UPDATE `script_waypoint` SET `location_x`=-10918.619, `location_y`=-706.129, `lo
 UPDATE `script_waypoint` SET `location_x`=-10934.555, `location_y`=-677.592, `location_z`=55.604 WHERE `entry`=1100 && `pointid`=17;
 UPDATE `script_waypoint` SET `location_x`=-10951.566, `location_y`=-602.768, `location_z`=55.289 WHERE `entry`=1100 && `pointid`=20;
 UPDATE `script_waypoint` SET `location_x`=-10915.642, `location_y`=-534.164, `location_z`=53.903 WHERE `entry`=1100 && `pointid`=22;
+
+-- Update level and stats for Watcher Merant, Watcher Gelwin, Watcher Selkin, Watcher Thayer
+UPDATE `creature_template` SET `minlevel`=20, `maxlevel`=20, `minhealth`=484, `maxhealth`=484, `armor`=852, `mindmg`=40, `maxdmg`=47, `attackpower`=90, `unit_flags`=4096 WHERE `entry` IN (1098, 1099, 1100, 1101);
