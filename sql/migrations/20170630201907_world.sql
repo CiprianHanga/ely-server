@@ -10,7 +10,7 @@ INSERT INTO `gossip_menu` VALUES (2861, 3554, 943);
 UPDATE `creature_template` SET `gossip_menu_id`=2861 WHERE `entry`=3432;
 
 -- Add missing gossip text for Mebok Myzzyrix
-INSERT INTO `npc_text` VALUES (224,'Yes yes yes! You\'re just the $c I\'m looking for!\r\n\r\nSit! We have much to discuss!!','',0,1,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0);
+INSERT INTO `npc_text` VALUES (224,'Yes yes yes! You\'re just the $r I\'m looking for!\r\n\r\nSit! We have much to discuss!!','',0,1,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0,'','',0,0,0,0,0,0,0,0);
 INSERT INTO `npc_gossip` VALUES (14408, 224);
 
 -- Add gossip menu for Sputtervalve
