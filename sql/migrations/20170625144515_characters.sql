@@ -1,0 +1,15 @@
+INSERT INTO `migrations` VALUES ('20170625144515');
+ALTER TABLE character_aura
+MODIFY basepoints0 FLOAT,
+MODIFY basepoints1 FLOAT,
+MODIFY basepoints2 FLOAT,
+ADD COLUMN bonus0 FLOAT AFTER basepoints2,
+ADD COLUMN bonus1 FLOAT AFTER bonus0,
+ADD COLUMN bonus2 FLOAT AFTER bonus1;
+ALTER TABLE pet_aura
+MODIFY basepoints0 FLOAT,
+MODIFY basepoints1 FLOAT,
+MODIFY basepoints2 FLOAT,
+ADD COLUMN bonus0 FLOAT AFTER basepoints2,
+ADD COLUMN bonus1 FLOAT AFTER bonus0,
+ADD COLUMN bonus2 FLOAT AFTER bonus1;

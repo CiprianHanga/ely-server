@@ -357,7 +357,7 @@ class Spell
         SpellCastResult CheckPower() const;
         SpellCastResult CheckCasterAuras() const;
 
-        int32 CalculateDamage(SpellEffectIndex i, Unit* target) { return m_caster->CalculateSpellDamage(target, m_spellInfo, i, &m_currentBasePoints[i], this); }
+        float CalculateDamage(SpellEffectIndex i, Unit* target) { return m_caster->CalculateSpellDamage(target, m_spellInfo, i, &m_currentBasePoints[i], this); }
         static uint32 CalculatePowerCost(SpellEntry const* spellInfo, Unit* caster, Spell* spell = NULL, Item* castItem = NULL);
 
         bool HaveTargetsForEffect(SpellEffectIndex effect) const;
@@ -545,7 +545,7 @@ class Spell
         Corpse* corpseTarget; // Nostalrius
         GameObject* gameObjTarget;
         SpellAuraHolder* m_spellAuraHolder;                 // spell aura holder for current target, created only if spell has aura applying effect
-        int32 damage;
+        float damage;
         bool isReflected = false;
 
         // this is set in Spell Hit, but used in Apply Aura handler

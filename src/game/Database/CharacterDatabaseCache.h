@@ -29,7 +29,8 @@ struct PetAuraCache
     int32 maxduration, remaintime;
     uint32 effIndexMask;
 
-    int32 basepoints[3];
+    float basepoints[3];
+    float bonus[3];
     uint32 periodictime[3];
 };
 typedef std::vector<PetAuraCache> PetAuras;

@@ -26,10 +26,27 @@
 #include "DBCEnums.h"
 #include "ObjectGuid.h"
 
-struct Modifier
+struct DamageModifier
+{
+    DamageModifier() :
+        m_base(0),
+        m_bonus(0)
+    {
+    }
+
+    float m_base;
+    float m_bonus;
+
+    int32 total(bool use_dither = false, float base_coeff=1) const;
+    float raw(float base_coeff=1) const;
+    void commit(float base_coeff = 1);
+    void applyMult(float f);
+    void reset();
+};
+
+struct AuraModifier : DamageModifier
 {
     AuraType m_auraname;
-    int32 m_amount;
     int32 m_miscvalue;
     uint32 periodictime;
 };
@@ -393,8 +410,8 @@ class MANGOS_DLL_SPEC Aura
         virtual ~Aura();
 
         void SetModifier(AuraType t, int32 a, uint32 pt, int32 miscValue);
-        Modifier*       GetModifier()       { return &m_modifier; }
-        Modifier const* GetModifier() const { return &m_modifier; }
+        AuraModifier*       GetModifier()       { return &m_modifier; }
+        AuraModifier const* GetModifier() const { return &m_modifier; }
         int32 GetMiscValue() const { return m_spellAuraHolder->GetSpellProto()->EffectMiscValue[m_effIndex]; }
 
         SpellEntry const* GetSpellProto() const { return GetHolder()->GetSpellProto(); }
@@ -420,9 +437,10 @@ class MANGOS_DLL_SPEC Aura
         uint32 GetStackAmount() const { return GetHolder()->GetStackAmount(); }
 
         void CalculatePeriodic(Player * modOwner, bool create);
-        void SetLoadedState(int32 damage, uint32 periodicTime)
+        void SetLoadedState(float base, float bonus, uint32 periodicTime)
         {
-            m_modifier.m_amount = damage;
+            m_modifier.m_base = base;
+            m_modifier.m_bonus = bonus;
             m_modifier.periodictime = periodicTime;
 
             if(uint32 maxticks = GetAuraMaxTicks())
@@ -504,7 +522,7 @@ class MANGOS_DLL_SPEC Aura
 
         void ReapplyAffectedPassiveAuras();
 
-        Modifier m_modifier;
+        AuraModifier m_modifier;
         SpellModifier *m_spellmod;
 
         time_t m_applyTime;
