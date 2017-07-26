@@ -1623,9 +1623,9 @@ void ScriptMgr::CollectPossibleEventIds(std::set<uint32>& eventIds)
     }
 
     // Load all possible script entries from spells
-    for (uint32 i = 1; i < sSpellStore.GetNumRows(); ++i)
+    for (uint32 i = 1; i < sSpellMgr.GetMaxSpellId(); ++i)
     {
-        DBCSpellEntry const* spell = sSpellStore.LookupEntry(i);
+        SpellEntry* spell = ((SpellEntry*)sSpellMgr.GetSpellEntry(i));
         if (spell)
         {
             for (int j = 0; j < MAX_EFFECT_INDEX; ++j)
