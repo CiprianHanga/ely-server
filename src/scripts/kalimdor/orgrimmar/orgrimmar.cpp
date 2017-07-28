@@ -187,8 +187,8 @@ enum
 {
     QUEST_FOR_ALL_TO_SEE                = 7491,
 
-    YELL_ONY_REWARD_1_HORDE             = -143921,
-    YELL_ONY_REWARD_2_HORDE             = -143922,
+    YELL_ONY_REWARD_1_HORDE             = -1900113,
+    YELL_ONY_REWARD_2_HORDE             = -1900112,
 
     GO_ONYXIAS_HEAD_HORDE               = 179556
 };
