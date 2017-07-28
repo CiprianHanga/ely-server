@@ -1080,8 +1080,8 @@ enum
 {
     QUEST_CELEBRATING_GOOD_TIMES        = 7496,
 
-    YELL_ONY_ALLY_REWARD_1              = -143941,
-    YELL_ONY_ALLY_REWARD_2              = -143942,
+    YELL_ONY_ALLY_REWARD_1              = -1900111,
+    YELL_ONY_ALLY_REWARD_2              = -1900110,
 
     GO_ONYXIAS_HEAD_ALLY                = 179558,
 
