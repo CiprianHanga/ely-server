@@ -339,10 +339,8 @@ enum
 
     QUEST_LORD_OF_BLACKROCK_HORDE       = 7784,
 
-    YELL_NEF_REWARD_1_MALE_HORDE       = -147201,
-    YELL_NEF_REWARD_2_MALE_HORDE       = -147202,
-    YELL_NEF_REWARD_1_FEMALE_HORDE     = -147203,
-    YELL_NEF_REWARD_2_FEMALE_HORDE     = -147204,
+    YELL_NEF_REWARD_1_HORDE     = -1900106,
+    YELL_NEF_REWARD_2_HORDE     = -1900105,
 
     GO_NEFARIANS_HEAD_HORDE            = 179881,
 };
@@ -420,7 +418,7 @@ struct npc_overlord_saurfangAI : public ScriptedAI
                         if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
                         {
                             m_creature->HandleEmote(EMOTE_ONESHOT_SHOUT);
-                            m_creature->MonsterYellToZone(pPlayer->getGender() ? YELL_NEF_REWARD_1_FEMALE_HORDE : YELL_NEF_REWARD_1_MALE_HORDE, 0, pPlayer);
+                            m_creature->MonsterYellToZone(YELL_NEF_REWARD_1_HORDE, 0, pPlayer);
                         }
                         m_uiDialogueTimer = 10000;
                         break;
@@ -428,7 +426,7 @@ struct npc_overlord_saurfangAI : public ScriptedAI
                         if (Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid))
                         {
                             m_creature->HandleEmote(EMOTE_ONESHOT_SHOUT);
-                            m_creature->MonsterYellToZone(pPlayer->getGender() ? YELL_NEF_REWARD_2_FEMALE_HORDE : YELL_NEF_REWARD_2_MALE_HORDE, 0, pPlayer);
+                            m_creature->MonsterYellToZone(YELL_NEF_REWARD_2_HORDE, 0, pPlayer);
                         }
                         if (GameObject* pGo = m_creature->FindNearestGameObject(GO_NEFARIANS_HEAD_HORDE, 150.0f))
                         {
