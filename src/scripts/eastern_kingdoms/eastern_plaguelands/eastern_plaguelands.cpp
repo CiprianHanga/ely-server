@@ -1988,7 +1988,10 @@ struct npc_joseph_redpathAI : public ScriptedAI
             case 3:
             {
                 if (Creature* pamela = m_creature->FindNearestCreature(NPC_PAMELA_REDPATH, 20.0f, true))
+                {
                     m_creature->SetFacingToObject(pamela);
+                    pamela->SetFacingToObject(m_creature);
+                }
                 EventTimer = 2000;
                 break;
             }
