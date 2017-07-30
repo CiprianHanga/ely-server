@@ -1955,12 +1955,43 @@ struct npc_joseph_redpathAI : public ScriptedAI
     {
         if (uiType != POINT_MOTION_TYPE)
             return;
-
-        if (uiPointId == 0)
+        
+        switch(uiPointId)
         {
-            if (Creature* pamela = m_creature->FindNearestCreature(NPC_PAMELA_REDPATH, 20.0f, true))
-                m_creature->SetFacingToObject(pamela);
-            EventTimer = 2000;
+            case 0:
+            {
+                m_creature->GetMotionMaster()->MovePoint(1, 1434.22f, -3668.756f, 76.671f, MOVE_PATHFINDING, 1.5f);
+                break;
+            }
+            case 1:
+            {
+                m_creature->GetMotionMaster()->MovePoint(2, 1438.526f, -3632.733f, 78.268f, MOVE_PATHFINDING, 1.2f);
+                DoScriptText(SAY_JOSEPH_1, m_creature);
+                EventTimer = 3000;
+                break;
+            }
+            case 2:
+            {
+                if (Creature* pamela = m_creature->FindNearestCreature(NPC_PAMELA_REDPATH, 150.0f, true))
+                {
+                    DoScriptText(SAY_PAMELA_2, pamela);
+                    m_creature->SetWalk(false);
+                    float x, y, z = 0;
+                    pamela->GetContactPoint(m_creature, x, y, z, 1.0f);
+                    m_creature->GetMotionMaster()->MovePoint(3, x, y, z, MOVE_PATHFINDING, 4.0f);
+                    EventTimer = 0;
+                }
+                else
+                    EventTimer = 1;
+                break;
+            }
+            case 3:
+            {
+                if (Creature* pamela = m_creature->FindNearestCreature(NPC_PAMELA_REDPATH, 20.0f, true))
+                    m_creature->SetFacingToObject(pamela);
+                EventTimer = 2000;
+                break;
+            }
         }
     }
 
@@ -1973,69 +2004,57 @@ struct npc_joseph_redpathAI : public ScriptedAI
                 case 0:
                 {
                     m_creature->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-                    DoScriptText(SAY_JOSEPH_1, m_creature);
+                    
+                    m_creature->GetMotionMaster()->MovePoint(0, 1431.501f, -3684.229f, 75.726f, MOVE_PATHFINDING, 1.5f);
                     ++EventStep;
-                    EventTimer = 1000;
+                    EventTimer = 0;
                     break;
                 }
                 case 1:
                 {
                     if (Creature* pamela = m_creature->FindNearestCreature(NPC_PAMELA_REDPATH, 150.0f, true))
+                    { 
                         DoScriptText(SAY_PAMELA_1, pamela);
+                        pamela->GetMotionMaster()->MovePoint(0, 1450.733f, -3599.974f, 85.621f, MOVE_PATHFINDING, 4.0f);
+                    }
                     ++EventStep;
-                    EventTimer = 2000;
+                    EventTimer = 0;
                     break;
                 }
                 case 2:
                 {
                     if (Creature* pamela = m_creature->FindNearestCreature(NPC_PAMELA_REDPATH, 150.0f, true))
                     {
-                        DoScriptText(SAY_PAMELA_2, pamela);
-                        m_creature->SetWalk(false);
-                        float x, y, z = 0;
-                        pamela->GetContactPoint(m_creature, x, y, z, 1.0f);
-                        m_creature->GetMotionMaster()->MovePoint(0, x, y, z, MOVE_PATHFINDING, 4.0f);
-                        EventTimer = 0;
-                    }
-                    else
-                        EventTimer = 1;
-                    ++EventStep;
-                    break;
-                }
-                case 3:
-                {
-                    if (Creature* pamela = m_creature->FindNearestCreature(NPC_PAMELA_REDPATH, 150.0f, true))
-                    {
                         DoScriptText(SAY_PAMELA_3, pamela);
                     }
                     ++EventStep;
-                    EventTimer = 4000;
+                    EventTimer = 5000;
                     break;
                 }
-                case 4:
+                case 3:
                 {
                     DoScriptText(SAY_JOSEPH_2, m_creature);
                     ++EventStep;
                     EventTimer = 3000;
                     break;
                 }
-                case 5:
+                case 4:
                 {
                     if (Creature* pamela = m_creature->FindNearestCreature(NPC_PAMELA_REDPATH, 150.0f, true))
                     {
                         DoScriptText(SAY_PAMELA_4, pamela);
                     }
                     ++EventStep;
-                    EventTimer = 2000;
+                    EventTimer = 4000;
                     break;
                 }
-                case 6:
+                case 5:
                 {
                     DoScriptText(SAY_JOSEPH_3, m_creature);
                     m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-                    m_creature->ForcedDespawn(120000);
+                    m_creature->ForcedDespawn(6000);
                     if (Creature* pamela = m_creature->FindNearestCreature(NPC_PAMELA_REDPATH, 150.0f, true))
-                        pamela->ForcedDespawn(120000);
+                        pamela->ForcedDespawn(4000);
                     EventTimer = 0;
                     break;
                 }
