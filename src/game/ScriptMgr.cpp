@@ -1788,7 +1788,8 @@ void Script::RegisterSelf(bool bReportError)
     }
     else
     {
-        sLog.outError("Script registering but ScriptName %s is not assigned in database. Script will not be used.", Name.c_str());
+        if (!(strstr(Name.c_str(), "generic") || strstr(Name.c_str(), "npc_escort"))) // Don't report generic scripts.
+            sLog.outError("Script registering but ScriptName %s is not assigned in database. Script will not be used.", Name.c_str());
         delete this;
     }
 }
