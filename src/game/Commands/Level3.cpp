@@ -973,13 +973,12 @@ bool ChatHandler::HandleAccountSetLockedCommand(char* args)
     if (!account_id)
         return false;
 
-    // Let set addon state only for lesser (strong) security level
+    // Let set locked state only for lesser (strong) security level
     // or to self account
     if (GetAccountId() && GetAccountId() != account_id &&
         HasLowerSecurityAccount(NULL, account_id, true))
         return false;
 
-    // allow or quoted string with possible spaces or literal without spaces
     uint32 value;
     if (!ExtractUInt32(&args, value))
     {
