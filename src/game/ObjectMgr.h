@@ -122,7 +122,7 @@ struct QuestGreetingLocale
     QuestGreetingLocale() : Emote(0), EmoteDelay(0) { }
 
     std::vector<std::string> Content;                       // 0 -> default, i -> i-1 locale index
-    uint32 Emote;
+    uint16 Emote;
     uint32 EmoteDelay;
 };
 
@@ -179,7 +179,7 @@ typedef UNORDERED_MAP<uint32,QuestLocale> QuestLocaleMap;
 typedef UNORDERED_MAP<uint32,NpcTextLocale> NpcTextLocaleMap;
 typedef UNORDERED_MAP<uint32,PageTextLocale> PageTextLocaleMap;
 typedef UNORDERED_MAP<int32,MangosStringLocale> MangosStringLocaleMap;
-typedef UNORDERED_MAP<int32, QuestGreetingLocale> QuestGreetingLocaleMap;
+typedef UNORDERED_MAP<uint32,QuestGreetingLocale> QuestGreetingLocaleMap;
 typedef UNORDERED_MAP<uint32,GossipMenuItemsLocale> GossipMenuItemsLocaleMap;
 typedef UNORDERED_MAP<uint32,PointOfInterestLocale> PointOfInterestLocaleMap;
 typedef UNORDERED_MAP<uint32,AreaLocale> AreaLocaleMap;

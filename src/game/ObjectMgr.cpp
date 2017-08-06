@@ -7199,7 +7199,7 @@ bool ObjectMgr::LoadQuestGreetings()
             }
         }
 
-        data.Emote = fields[10].GetUInt32();
+        data.Emote = fields[10].GetUInt16();
         data.EmoteDelay = fields[11].GetUInt32();
 
         if (data.Emote && !sEmotesStore.LookupEntry(data.Emote))
