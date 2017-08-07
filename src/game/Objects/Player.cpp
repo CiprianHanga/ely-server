@@ -10463,6 +10463,196 @@ void Player::DestroyItemCount(uint32 item, uint32 count, bool update, bool unequ
     }
 }
 
+void Player::DestroyItemCountCheckBank(uint32 item, uint32 count, bool update, bool unequip_check)
+{
+    // Same as DestroyItemCount but removes items from the bank too.
+    DEBUG_LOG("STORAGE: DestroyItemCount item = %u, count = %u", item, count);
+    uint32 remcount = 0;
+
+    // in inventory
+    for (int i = INVENTORY_SLOT_ITEM_START; i < INVENTORY_SLOT_ITEM_END; ++i)
+    {
+        if (Item* pItem = GetItemByPos(INVENTORY_SLOT_BAG_0, i))
+        {
+            if (pItem->GetEntry() == item && !pItem->IsInTrade())
+            {
+                if (pItem->GetCount() + remcount <= count)
+                {
+                    // all items in inventory can unequipped
+                    remcount += pItem->GetCount();
+                    DestroyItem(INVENTORY_SLOT_BAG_0, i, update);
+
+                    if (remcount >= count)
+                        return;
+                }
+                else
+                {
+                    ItemRemovedQuestCheck(pItem->GetEntry(), count - remcount);
+                    pItem->SetCount(pItem->GetCount() - count + remcount);
+                    if (IsInWorld() & update)
+                        pItem->SendCreateUpdateToPlayer(this);
+                    pItem->SetState(ITEM_CHANGED, this);
+                    return;
+                }
+            }
+        }
+    }
+
+    for (int i = KEYRING_SLOT_START; i < KEYRING_SLOT_END; ++i)
+    {
+        if (Item* pItem = GetItemByPos(INVENTORY_SLOT_BAG_0, i))
+        {
+            if (pItem->GetEntry() == item && !pItem->IsInTrade())
+            {
+                if (pItem->GetCount() + remcount <= count)
+                {
+                    // all keys can be unequipped
+                    remcount += pItem->GetCount();
+                    DestroyItem(INVENTORY_SLOT_BAG_0, i, update);
+
+                    if (remcount >= count)
+                        return;
+                }
+                else
+                {
+                    ItemRemovedQuestCheck(pItem->GetEntry(), count - remcount);
+                    pItem->SetCount(pItem->GetCount() - count + remcount);
+                    if (IsInWorld() & update)
+                        pItem->SendCreateUpdateToPlayer(this);
+                    pItem->SetState(ITEM_CHANGED, this);
+                    return;
+                }
+            }
+        }
+    }
+
+    // in inventory bags
+    for (int i = INVENTORY_SLOT_BAG_START; i < INVENTORY_SLOT_BAG_END; ++i)
+    {
+        if (Bag *pBag = (Bag*)GetItemByPos(INVENTORY_SLOT_BAG_0, i))
+        {
+            for (uint32 j = 0; j < pBag->GetBagSize(); ++j)
+            {
+                if (Item* pItem = pBag->GetItemByPos(j))
+                {
+                    if (pItem->GetEntry() == item && !pItem->IsInTrade())
+                    {
+                        // all items in bags can be unequipped
+                        if (pItem->GetCount() + remcount <= count)
+                        {
+                            remcount += pItem->GetCount();
+                            DestroyItem(i, j, update);
+
+                            if (remcount >= count)
+                                return;
+                        }
+                        else
+                        {
+                            ItemRemovedQuestCheck(pItem->GetEntry(), count - remcount);
+                            pItem->SetCount(pItem->GetCount() - count + remcount);
+                            if (IsInWorld() && update)
+                                pItem->SendCreateUpdateToPlayer(this);
+                            pItem->SetState(ITEM_CHANGED, this);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // in equipment and bag list
+    for (int i = EQUIPMENT_SLOT_START; i < INVENTORY_SLOT_BAG_END; ++i)
+    {
+        if (Item* pItem = GetItemByPos(INVENTORY_SLOT_BAG_0, i))
+        {
+            if (pItem && pItem->GetEntry() == item && !pItem->IsInTrade())
+            {
+                if (pItem->GetCount() + remcount <= count)
+                {
+                    if (!unequip_check || CanUnequipItem(INVENTORY_SLOT_BAG_0 << 8 | i, false) == EQUIP_ERR_OK)
+                    {
+                        remcount += pItem->GetCount();
+                        DestroyItem(INVENTORY_SLOT_BAG_0, i, update);
+
+                        if (remcount >= count)
+                            return;
+                    }
+                }
+                else
+                {
+                    ItemRemovedQuestCheck(pItem->GetEntry(), count - remcount);
+                    pItem->SetCount(pItem->GetCount() - count + remcount);
+                    if (IsInWorld() & update)
+                        pItem->SendCreateUpdateToPlayer(this);
+                    pItem->SetState(ITEM_CHANGED, this);
+                    return;
+                }
+            }
+        }
+    }
+
+    // in bank
+    for (int i = BANK_SLOT_ITEM_START; i < BANK_SLOT_ITEM_END; ++i)
+    {
+        if (Item* pItem = GetItemByPos(INVENTORY_SLOT_BAG_0, i))
+        {
+            if (pItem->GetEntry() == item && !pItem->IsInTrade())
+            {
+                if (pItem->GetCount() + remcount <= count)
+                {
+                    remcount += pItem->GetCount();
+                    DestroyItem(INVENTORY_SLOT_BAG_0, i, update);
+
+                    if (remcount >= count)
+                        return;
+                }
+                else
+                {
+                    pItem->SetCount(pItem->GetCount() - count + remcount);
+                    if (IsInWorld() & update)
+                        pItem->SendCreateUpdateToPlayer(this);
+                    pItem->SetState(ITEM_CHANGED, this);
+                    return;
+                }
+            }
+        }
+    }
+
+    // in bank bags
+    for (int i = BANK_SLOT_BAG_START; i < BANK_SLOT_BAG_END; ++i)
+    {
+        if (Bag *pBag = (Bag*)GetItemByPos(INVENTORY_SLOT_BAG_0, i))
+        {
+            for (uint32 j = 0; j < pBag->GetBagSize(); ++j)
+            {
+                if (Item* pItem = pBag->GetItemByPos(j))
+                {
+                    if (pItem->GetEntry() == item && !pItem->IsInTrade())
+                    {
+                        if (pItem->GetCount() + remcount <= count)
+                        {
+                            remcount += pItem->GetCount();
+                            DestroyItem(i, j, update);
+
+                            if (remcount >= count)
+                                return;
+                        }
+                        else
+                        {
+                            pItem->SetCount(pItem->GetCount() - count + remcount);
+                            if (IsInWorld() && update)
+                                pItem->SendCreateUpdateToPlayer(this);
+                            pItem->SetState(ITEM_CHANGED, this);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 bool Player::DestroyEquippedItem(uint32 itemId)
 {
