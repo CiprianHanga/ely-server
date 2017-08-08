@@ -1084,17 +1084,6 @@ bool ChatHandler::HandleRemoveRidingCommand(char* args)
         { "tiger", 828 }, { "wolf", 825 }
     };
 
-    enum
-    {
-        SKILL_HORSE_RIDING  = 148,
-        SKILL_WORLF_RIDING  = 149,
-        SKILL_TIGER_RIDIING = 150,
-        SKILL_RAM_RIDING    = 152,
-        SKILL_RAPTOR_RIDING = 533,
-        SKILL_KODO_RIDING   = 713,
-        SKILL_RIDING        = 762
-    };
-
     Player* player;
     ObjectGuid target_guid;
     std::string name;
