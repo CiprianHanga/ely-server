@@ -2158,7 +2158,7 @@ bool ChatHandler::HandleDeleteItemCommand(char* args)
             return false;
         }
 
-        player->DestroyItemCountCheckBank(itemId, count, true, false);
+        player->DestroyItemCount(itemId, count, true, false, true);
         player->SaveInventoryAndGoldToDB();
     }
     else
