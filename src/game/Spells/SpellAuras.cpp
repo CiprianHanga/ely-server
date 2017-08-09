@@ -1683,6 +1683,19 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
 
                 return;
             }
+            case 20939: // Undying Soul - Dummy aura used for Unstuck command
+            {
+                if (m_removeMode == AURA_REMOVE_BY_EXPIRE)
+                { 
+                    Unit* caster = GetCaster();
+                    if (caster && (caster->GetTypeId() == TYPEID_PLAYER) && caster->isAlive() && !caster->isInCombat() && !caster->IsTaxiFlying())
+                    {
+                        caster->AddAura(15007); // Add Resurrection Sickness
+                        caster->DealDamage(caster, caster->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+                    }
+                }
+                return;
+            }
             case 24906:                                     // Emeriss Aura
             {
                 if (m_removeMode == AURA_REMOVE_BY_DEATH)

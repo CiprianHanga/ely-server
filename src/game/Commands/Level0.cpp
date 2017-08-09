@@ -112,6 +112,36 @@ bool ChatHandler::HandleStartCommand(char* /*args*/)
     return true;
 }
 
+bool ChatHandler::HandleUnstuckCommand(char* /*args*/)
+{
+    Player * pPlayer = m_session->GetPlayer();
+
+    if (!pPlayer)
+        return false;
+
+    if (pPlayer->isInCombat() || pPlayer->InBattleGround() || pPlayer->IsTaxiFlying() || pPlayer->HasSpellCooldown(20939) || (pPlayer->getDeathState() == CORPSE) || (pPlayer->getLevel() < 10))
+    {
+        SendSysMessage(LANG_UNSTUCK_UNAVAILABLE);
+        return false;
+    }
+
+    if (pPlayer->isAlive())
+    {
+        pPlayer->CastSpell(pPlayer, 20939, false);
+        SendSysMessage(LANG_UNSTUCK_ALIVE);
+    }
+    else
+    {
+        pPlayer->AddAura(15007); // Add Resurrection Sickness
+        pPlayer->AddSpellCooldown(20939, 0, time(nullptr) + 3600000); // Trigger 1 Hour Cooldown
+        pPlayer->RepopAtGraveyard(); // Send to nearest graveyard.
+        PSendSysMessage(LANG_UNSTUCK_DEAD);
+    }
+
+    sLog.outInfo("Player %s (guid %u) used unstuck command at map %u (%f, %f, %f).", pPlayer->GetName(), pPlayer->GetGUIDLow(), pPlayer->GetMapId(), pPlayer->GetPositionX(), pPlayer->GetPositionY(), pPlayer->GetPositionZ());
+    return true;
+}
+
 bool ChatHandler::HandleServerInfoCommand(char* /*args*/)
 {
     uint32 activeClientsNum = sWorld.GetActiveSessionCount();
