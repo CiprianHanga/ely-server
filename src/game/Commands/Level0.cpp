@@ -135,7 +135,7 @@ bool ChatHandler::HandleUnstuckCommand(char* /*args*/)
         pPlayer->AddAura(15007); // Add Resurrection Sickness
         pPlayer->AddSpellCooldown(20939, 0, time(nullptr) + 3600000); // Trigger 1 Hour Cooldown
         pPlayer->RepopAtGraveyard(); // Send to nearest graveyard.
-        PSendSysMessage(LANG_UNSTUCK_DEAD);
+        SendSysMessage(LANG_UNSTUCK_DEAD);
     }
 
     sLog.outInfo("Player %s (guid %u) used unstuck command at map %u (%f, %f, %f).", pPlayer->GetName(), pPlayer->GetGUIDLow(), pPlayer->GetMapId(), pPlayer->GetPositionX(), pPlayer->GetPositionY(), pPlayer->GetPositionZ());
