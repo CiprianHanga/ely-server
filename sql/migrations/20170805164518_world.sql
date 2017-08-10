@@ -22,12 +22,12 @@ CREATE TABLE IF NOT EXISTS `quest_greeting` (
 DELETE FROM `npc_text` WHERE `ID` BETWEEN 198 AND 225;
 DELETE FROM `npc_gossip` WHERE `textid` BETWEEN 198 AND 225;
 
--- Deputy Willem - http://www.youtube.com/watch?v=oLy8hMW-e48&t=6m50s
-INSERT INTO `quest_greeting` VALUES (823, 'Hello there, $c.  Normally I\'d be out on the beat looking after the folk of Stormwind, but a lot of the Stormwind guards are fighting in the other lands.  So here I am, deputized and offering bounties when I\'d rather be on patrol...', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0);
--- Remy "Two Times" - http://www.youtube.com/watch?v=4wIP0mdSVUA&t=1m32s
-INSERT INTO `quest_greeting` VALUES (241, 'Hey there, friend.  My name\'s Remy.$BI\'m from Redridge to the east, and came here looking for business, looking for business.  You got any...got any??', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0);
--- Guard Thomas - http://www.youtube.com/watch?v=RMF2a7Rg1FA&t=3m10s
-INSERT INTO `quest_greeting` VALUES (261, 'Hello, citizen.  You look like a $g man : woman; with a purpose - do you have business with the Stormwind Army?', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0);
+-- Deputy Willem - http://www.youtube.com/watch?v=oLy8hMW-e48&t=6m50s ; German https://youtu.be/nYLy1qAVSP8?t=31s
+INSERT INTO `quest_greeting` VALUES (823, 'Hello there, $c.  Normally I\'d be out on the beat looking after the folk of Stormwind, but a lot of the Stormwind guards are fighting in the other lands.  So here I am, deputized and offering bounties when I\'d rather be on patrol...', NULL, NULL, 'Guten Tag, $C. Normalerweise würde ich jetzt meine Runde machen und die Leute von Sturmwind beschützen, doch viele der Wachen von Sturmwind kämpfen in fremden Landen. Daher mache ich jetzt hier Vertretung und setze Kopfgelder aus, wo ich doch eigentlich lieber auf Patrouille sein würde...', NULL, NULL, NULL, NULL, NULL, 1, 0);
+-- Remy "Two Times" - http://www.youtube.com/watch?v=4wIP0mdSVUA&t=1m32s ; German https://youtu.be/DuFDfmLFTA4?t=8m30s
+INSERT INTO `quest_greeting` VALUES (241, 'Hey there, friend.  My name\'s Remy.$BI\'m from Redridge to the east, and came here looking for business, looking for business.  You got any...got any??', NULL, NULL, 'He, mein Freund. Man nennt mich Remy. Ich komme aus dem Rotkammgebirge im Osten und bin auf der Suche nach interessanten... Geschäften. Interessanten... Geschäften. Habt Ihr vielleicht welche... vielleicht welche?', NULL, NULL, NULL, NULL, NULL, 0, 0);
+-- Guard Thomas - http://www.youtube.com/watch?v=RMF2a7Rg1FA&t=3m10s ; German https://youtu.be/j5DXCRAcUCE?t=7m53s
+INSERT INTO `quest_greeting` VALUES (261, 'Hello, citizen.  You look like a $g man : woman; with a purpose - do you have business with the Stormwind Army?', NULL, NULL, 'Seid gegrüßt. Ihr seht aus wie ein $g Mann : Frau;, der weiß, was er will... habt ihr mit der Armee von Sturmwind zu tun?', NULL, NULL, NULL, NULL, NULL, 0, 0);
 -- Farmer Furlbrow - http://www.youtube.com/watch?v=PNqdaVzV6FI&t=1m4s ; German https://youtu.be/cWnT_Qndfx0?t=3m28s
 INSERT INTO `quest_greeting` VALUES (237, 'Nothing but trouble in these parts.  I tried to tell that fool Saldean to get out while he still could but he won\'t hear of it.  But I ain\'t no fool.  Verna and I are gonna mosey on out as soon as we get this wagon fixed.', NULL, NULL, 'In dieser Gegend gibt es wirklich nichts als Arger. Ich habe versucht, den Dummkopf Saldean dazu zu bringen, sich aus dem Staub zu machen, solange das noch geht, aber er will einfach nicht hören. Aber ich bin kein Dummkopf. Verna und ich hauen ab, sobald wir diesen Wagen repariert haben.', NULL, NULL, NULL, NULL, NULL, 0, 0);
 -- Gryan Stoutmantle - http://www.youtube.com/watch?v=PNqdaVzV6FI&t=1m41s ; German https://youtu.be/eYg-qOlsTTY?t=3m45s
@@ -78,5 +78,5 @@ INSERT INTO `quest_greeting` VALUES (1343, 'Well, if it isn\'t a young, bristlin
 INSERT INTO `quest_greeting` VALUES (3446, 'Yes yes yes! You\'re just the $r I\'m looking for!\r\n\r\nSit! We have much to discuss!!', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0);
 -- Wharfmaster Dizzywig - https://youtu.be/Jgcn0jgdyvE?t=25m7s
 INSERT INTO `quest_greeting` VALUES (3453, 'Something I can help you with, $n? There\'s a shipment I\'ve got to see to otherwise.', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0);
--- William Pestle - https://youtu.be/4wIP0mdSVUA?t=40s
-INSERT INTO `quest_greeting` VALUES (253, 'Aha! Good day, good day, Master $C! Come, sit down and have a drink. You have an enterprising look in your eye, and I think you\'ll find speaking to me worth your time...', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0);
+-- William Pestle - https://youtu.be/4wIP0mdSVUA?t=40s ; German https://youtu.be/DuFDfmLFTA4?t=7m55s
+INSERT INTO `quest_greeting` VALUES (253, 'Aha! Good day, good day, Master $C! Come, sit down and have a drink. You have an enterprising look in your eye, and I think you\'ll find speaking to me worth your time...', NULL, NULL, 'Aha! Guten Tag, guten Tag, Meister $C! Kommt, setzt Euch und trinkt etwas. Ihr habt so ein Leuchten in den Augen, als wolltet ihr gern etwas tun. Ich denke, Ihr solltet ein paar Wörtchen mit mir wechseln, es lohnt sich bestimmt...', NULL, NULL, NULL, NULL, NULL, 0, 0);
