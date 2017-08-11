@@ -134,7 +134,12 @@ bool ChatHandler::HandleUnstuckCommand(char* /*args*/)
     {
         pPlayer->AddAura(15007); // Add Resurrection Sickness
         pPlayer->AddSpellCooldown(20939, 0, time(nullptr) + 3600000); // Trigger 1 Hour Cooldown
-        pPlayer->RepopAtGraveyard(); // Send to nearest graveyard.
+        // Get nearest graveyard.
+        WorldSafeLocsEntry const *ClosestGrave = sObjectMgr.GetClosestGraveYard(pPlayer->GetPositionX(), pPlayer->GetPositionY(), pPlayer->GetPositionZ(), pPlayer->GetMapId(), pPlayer->GetTeam());
+        if (!ClosestGrave) //No nearby graveyards (stuck in void?). Send ally to Westfall, Horde to Barrens.
+            ClosestGrave = pPlayer->GetTeamId() ? sWorldSafeLocsStore.LookupEntry(10) : sWorldSafeLocsStore.LookupEntry(4);
+        if (ClosestGrave)
+            pPlayer->TeleportTo(ClosestGrave->map_id, ClosestGrave->x, ClosestGrave->y, ClosestGrave->z, 0, 0);
         SendSysMessage(LANG_UNSTUCK_DEAD);
     }
 
