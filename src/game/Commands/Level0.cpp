@@ -28,6 +28,7 @@
 #include "ObjectAccessor.h"
 #include "Language.h"
 #include "AccountMgr.h"
+#include "ObjectMgr.h"
 #include "ScriptMgr.h"
 #include "SystemConfig.h"
 #include "revision.h"
