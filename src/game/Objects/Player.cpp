@@ -1200,18 +1200,18 @@ void Player::Update(uint32 update_diff, uint32 p_time)
         }
     }
 
-    if (hasUnitState(UNIT_STAT_MELEE_ATTACKING))
+    // UpdateMeleeAttackingState() return true if a swing happened even if no damage was dealt
+    if (hasUnitState(UNIT_STAT_MELEE_ATTACKING) && UpdateMeleeAttackingState())
     {
-        UpdateMeleeAttackingState();
-
         Unit *pVictim = getVictim();
         if (pVictim && !IsNonMeleeSpellCasted(false))
         {
             Player *vOwner = pVictim->GetCharmerOrOwnerPlayerOrPlayerItself();
-            if (vOwner && vOwner->IsPvP() && !IsInDuelWith(vOwner) && (!IsFFAPvP() || !vOwner->IsFFAPvP()))
+            if (pVictim->IsPvP() && (!vOwner || (!IsInDuelWith(vOwner) && (!IsFFAPvP() || !vOwner->IsFFAPvP()))))
             {
                 UpdatePvP(true);
-                RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_ENTER_PVP_COMBAT);
+                // not vanilla
+                //RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_ENTER_PVP_COMBAT);
             }
         }
     }

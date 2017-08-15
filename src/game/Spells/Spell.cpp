@@ -601,11 +601,13 @@ void Spell::FillTargetMap()
             Player *me = (Player*)m_caster;
             for (UnitList::const_iterator itr = tmpUnitMap.begin(); itr != tmpUnitMap.end(); ++itr)
             {
-                Player *targetOwner = (*itr)->GetCharmerOrOwnerPlayerOrPlayerItself();
-                if (targetOwner && targetOwner != me && targetOwner->IsPvP() && !me->IsInDuelWith(targetOwner) && (!me->IsFFAPvP() || !targetOwner->IsFFAPvP()))
+                Unit* targetUnit = *itr;
+                Player *targetOwner = targetUnit->GetCharmerOrOwnerPlayerOrPlayerItself();
+                if (targetUnit->IsPvP() && (!targetOwner || (targetOwner != me && !me->IsInDuelWith(targetOwner) && (!me->IsFFAPvP() || !targetOwner->IsFFAPvP()))))
                 {
                     me->UpdatePvP(true);
-                    me->RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_ENTER_PVP_COMBAT);
+                    // not vanilla
+                    //me->RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_ENTER_PVP_COMBAT);
                     break;
                 }
             }
