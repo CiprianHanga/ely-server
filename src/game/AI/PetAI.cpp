@@ -120,9 +120,9 @@ void PetAI::UpdateAI(const uint32 diff)
             DoAttack(tauntTarget, true);
     }
 
-    if (m_creature->getVictim() && m_creature->getVictim()->isAlive())
+    Unit* victim = m_creature->getVictim();
+    if (victim && victim->isAlive() && (!playerControlled || owner->GetTargetGuid() == victim->GetObjectGuid()))
     {
-
         if (_needToStop())
         {
             _stopAttack();

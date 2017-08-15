@@ -438,6 +438,13 @@ void WorldSession::HandleSetActiveMoverOpcode(WorldPacket &recv_data)
             // out of range pet dismissed
             if (!pet->IsWithinDistInMap(_player, pet->GetMap()->GetGridActivationDistance()))
                 _player->RemovePet(PET_SAVE_REAGENTS);
+            else
+                if (CharmInfo* charmInfo = pet->GetCharmInfo())
+                    if (charmInfo->HasCommandState(COMMAND_STAY))
+                    {
+                        pet->StopMoving();
+                        charmInfo->SaveStayPosition();
+                    }
         }
 
     _clientMoverGuid = guid;
