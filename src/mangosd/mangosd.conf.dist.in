@@ -1493,8 +1493,8 @@ BattleGround.PremadeGroupWaitForMatch = 0
 BattleGround.PremadeQueue.MinGroupSize = 6
 BattleGround.QueuesCount            = 3
 BattleGround.TagInBattleGrounds     = 1
-BattleGround.RandomizeQueues = 0;
-BattleGround.GroupQueueLimit = 40;
+BattleGround.RandomizeQueues = 0
+BattleGround.GroupQueueLimit = 40
 
 ###################################################################################################################
 #
