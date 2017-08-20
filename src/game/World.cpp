@@ -1163,6 +1163,9 @@ void World::SetInitialWorldSettings()
 
         sLog.outString("Packing groups...");
         sObjectMgr.PackGroupIds();                              // must be after CleanupInstances
+
+        sLog.outString("Scheduling normal instance reset...");
+        sMapPersistentStateMgr.ScheduleInstanceResets();        // Must be after cleanup and packing
     }
 
     ///- Init highest guids before any guid using table loading to prevent using not initialized guids in some code.
@@ -1281,6 +1284,10 @@ void World::SetInitialWorldSettings()
     sLog.outString();
     sObjectMgr.LoadQuestRelations();                        // must be after quest load
     sLog.outString(">>> Quests Relations loaded");
+    sLog.outString();
+
+    sLog.outString("Loading Quests Greetings...");          // must be loaded after creature_template
+    sObjectMgr.LoadQuestGreetings();
     sLog.outString();
 
     sLog.outString("Loading Game Event Data...");           // must be after sPoolMgr.LoadFromDB and quests to properly load pool events and quests for events
@@ -2675,6 +2682,8 @@ void World::LogChat(WorldSession* sess, const char* type, std::string const& msg
 
     if (target)
         sLog.out(LOG_CHAT, "[%s] %s:%u -> %s:%u : %s", type, plr->GetName(), plr->GetObjectGuid().GetCounter(), target->GetName(), target->GetObjectGuid().GetCounter(), msg.c_str());
+    else if (chanId && chanStr)
+        sLog.out(LOG_CHAT, "[%s:%u:%s] %s:%u : %s", type, chanId, chanStr, plr->GetName(), plr->GetObjectGuid().GetCounter(), msg.c_str());
     else if (chanId)
         sLog.out(LOG_CHAT, "[%s:%u] %s:%u : %s", type, chanId, plr->GetName(), plr->GetObjectGuid().GetCounter(), msg.c_str());
     else if (chanStr)

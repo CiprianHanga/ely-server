@@ -680,6 +680,25 @@ bool IsExplicitPositiveTarget(uint32 targetA)
     return false;
 }
 
+bool IsCastableWhileCharmed(SpellEntry const *spellInfo)
+{
+    // Better way to do this?
+    switch (spellInfo->Id)
+    {
+        case 498: // Divine Protection
+        case 5573: // Divine Protection
+        case 642: // Divine Shield
+        case 1020: // Divine Shield
+        case 6724: // Light of Elune
+        case 7744: // Will of the Forsaken
+        case 23273: // PvP Trinket
+        case 23277: // PvP Trinket
+        case 11958: // Ice Block
+            return true;
+    }
+    return false;
+}
+
 bool IsExplicitNegativeTarget(uint32 targetA)
 {
     // non-positive targets that in target selection code expect target in m_targers, so not that auto-select target by spell data by m_caster and etc
@@ -1072,6 +1091,62 @@ SpellCastResult GetErrorAtShapeshiftedCast(SpellEntry const *spellInfo, uint32 f
     }
 
     return SPELL_CAST_OK;
+}
+
+bool IsTriggerAuraAllowedMultipleProc(SpellEntry const* spellInfo)
+{
+    // An aura which can proc multiple times is allowed to proc for each target
+    // hit in a spell cast
+    switch (spellInfo->Id)
+    {
+        // Inspiration (priest talent) can proc on all targets affected by Prayer of Healing
+        case 14892:
+        case 15362:
+        case 15363:
+        // Deep Wounds (warrior talent) crit bleed, can proc on all targets hit (cleave/ww)
+        case 12834:
+        case 12849:
+        case 12867:
+        // Healing Way (shaman talent) can proc on all targets with T1 8-set
+        case 29206:
+        case 29205:
+        case 29202:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool IsTriggerAuraSingleProcPerCast(SpellEntry const* spellInfo)
+{
+    // An aura which is a single proc per cast has a chance to proc on ALL targets hit
+    // but can only proc ONCE on those targets (i.e. PER CAST, but depends on target
+    // damage info)
+    // Known cases: Master of Elements (mage talent)
+    //              Sweeping Strikes (warrior skill), first target could be a miss
+    switch (spellInfo->Id)
+    {
+        // Master of Elements
+        case 29074:
+        case 29075:
+        case 29076:
+        // Sweeping Strikes
+        case 12292:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool IsTriggerAuraSingleChancePerCast(SpellEntry const* spellInfo)
+{
+    // The assumption is that any aura which is not allowed multiple procs per
+    // cast, and is not a single proc per cast only has 1 chance to proc on
+    // the cast, i.e. Regardless of the number of targets hit, the aura can
+    // only have 1 chance to proc, such as on the first target
+    // Known cases: Clearcasting (mage/shaman talents)
+    //              All other procs
+    return !IsTriggerAuraAllowedMultipleProc(spellInfo) && !IsTriggerAuraSingleProcPerCast(spellInfo);
 }
 
 void SpellMgr::LoadSpellTargetPositions()

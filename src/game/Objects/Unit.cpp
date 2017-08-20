@@ -2020,11 +2020,7 @@ uint32 Unit::CalcArmorReducedDamage(Unit* pVictim, const uint32 damage)
     if (armor < 0.0f)
         armor = 0.0f;
 
-    float levelModifier = (float)getLevel();
-    if (levelModifier > 59)
-        levelModifier = levelModifier + (4.5f * (levelModifier - 59));
-
-    float tmpvalue = 0.1f * armor / (8.5f * levelModifier + 40);
+    float tmpvalue = 0.1f * armor / (8.5f * (float)getLevel() + 40);
     tmpvalue = tmpvalue / (1.0f + tmpvalue);
 
     if (tmpvalue < 0.0f)
@@ -2752,11 +2748,11 @@ float Unit::MeleeSpellMissChance(Unit *pVictim, WeaponAttackType attType, int32 
 
     // PvP - PvE melee chances
     if (pVictim->GetTypeId() == TYPEID_PLAYER)
-        hitChance = 95.0f + skillDiff * 0.04f;
+        hitChance = 95.0f + skillDiff * 0.04f;  // PvP misschance base is 5.00%
     else if (skillDiff < -10)
-        hitChance = 93.0f + (skillDiff + 10) * 0.4f;        // 7% base chance to miss for big skill diff (%6 in 3.x)
+        hitChance = 93.4f + (skillDiff + 10) * 0.4f;        // 7% ~ 6.60% base chance to miss for big skill diff
     else
-        hitChance = 95.0f + skillDiff * 0.1f;
+        hitChance = 94.4f + skillDiff * 0.1f;
 
     // Hit chance depends from victim auras
     if (attType == RANGED_ATTACK)
@@ -3027,6 +3023,10 @@ SpellMissInfo Unit::SpellHitResult(Unit *pVictim, SpellEntry const *spell, Spell
     if (IsPositiveSpell(spell->Id, this, pVictim) || IsPositiveEffect(spell, effIndex))
         return SPELL_MISS_NONE;
 
+    // Farsight spells can't miss
+    if (spell->AttributesEx & SPELL_ATTR_EX_FARSIGHT)
+        return SPELL_MISS_NONE;
+
     // Check for immune (use charges)
     SpellSchoolMask schoolMask;
     if (spellPtr)
@@ -3093,10 +3093,13 @@ float Unit::MeleeMissChanceCalc(const Unit *pVictim, WeaponAttackType attType) c
     if (!pVictim)
         return 0.0f;
 
-    // Base misschance 5%
-    float missChance = 5.0f;
+    float missChance = 5.60f; // The base chance to miss is 5.60%
+    if (pVictim->GetTypeId() == TYPEID_PLAYER)
+    {
+        missChance = 5.00f;  // The base chance to miss in PvP is 5%
+    }
 
-    // DualWield - white damage has additional 19% miss penalty
+    // DualWield - white damage has an additional 19% miss penalty
     if (haveOffhandWeapon() && attType != RANGED_ATTACK)
     {
         bool isNormal = false;
@@ -3118,7 +3121,7 @@ float Unit::MeleeMissChanceCalc(const Unit *pVictim, WeaponAttackType attType) c
     if (pVictim->GetTypeId() == TYPEID_PLAYER)
         missChance -= skillDiff * 0.04f;
     else if (skillDiff < -10)
-        missChance -= (skillDiff + 10) * 0.4f - 2.0f;       // 7% base chance to miss for big skill diff (%6 in 3.x)
+        missChance -= (skillDiff + 10) * 0.4f - 1.0f;       // 7% ~ 6.60% base chance to miss for big skill diff
     else
         missChance -=  skillDiff * 0.1f;
 
@@ -3545,6 +3548,14 @@ bool Unit::IsNonMeleeSpellCasted(bool withDelayed, bool skipChanneled, bool skip
 
     // autorepeat spells may be finished or delayed, but they are still considered casted
     else if (!skipAutorepeat && m_currentSpells[CURRENT_AUTOREPEAT_SPELL])
+        return (true);
+
+    return (false);
+}
+
+bool Unit::IsNextSwingSpellCasted() const
+{
+    if (m_currentSpells[CURRENT_MELEE_SPELL] && m_currentSpells[CURRENT_MELEE_SPELL]->IsNextMeleeSwingSpell())
         return (true);
 
     return (false);
@@ -4576,7 +4587,8 @@ void Unit::RemoveSpellAuraHolder(SpellAuraHolder *holder, AuraRemoveMode mode)
     SpellEntry const* AurSpellInfo = holder->GetSpellProto();
     Totem* statue = nullptr;
     Unit* caster = holder->GetCaster();
-    if (holder->IsChanneled() && caster)
+    bool isChanneled = holder->IsChanneled(); // cache for after the holder is deleted
+    if (isChanneled && caster)
         if (caster->GetTypeId() == TYPEID_UNIT && ((Creature*)caster)->IsTotem() && ((Totem*)caster)->GetTotemType() == TOTEM_STATUE)
             statue = ((Totem*)caster);
 
@@ -4640,7 +4652,7 @@ void Unit::RemoveSpellAuraHolder(SpellAuraHolder *holder, AuraRemoveMode mode)
         }
     }
 
-    if (holder->IsChanneled() && caster)
+    if (isChanneled && caster)
     {
         Spell *channeled = caster->GetCurrentSpell(CURRENT_CHANNELED_SPELL);
         if (channeled && channeled->m_spellInfo->Id == auraSpellId)
@@ -5110,7 +5122,7 @@ public:
 
 typedef std::list<RemovedSpellData> RemoveSpellList;
 
-void Unit::ProcDamageAndSpell(Unit *pVictim, uint32 procAttacker, uint32 procVictim, uint32 procExtra, uint32 amount, WeaponAttackType attType, SpellEntry const *procSpell, Spell* spell)
+void Unit::ProcDamageAndSpell(Unit *pVictim, uint32 procAttacker, uint32 procVictim, uint32 procExtra, uint32 amount, WeaponAttackType attType, SpellEntry const *procSpell, Spell* spell, TriggeredAuraMapType *triggeredAuraMap)
 {
     if (!IsInWorld())
         return;
@@ -5119,17 +5131,17 @@ void Unit::ProcDamageAndSpell(Unit *pVictim, uint32 procAttacker, uint32 procVic
 
     // Not much to do if no flags are set.
     if (procAttacker)
-        ProcDamageAndSpellFor(false, pVictim, procAttacker, procExtra, attType, procSpell, amount, procTriggered, spell);
+        ProcDamageAndSpellFor(false, pVictim, procAttacker, procExtra, attType, procSpell, amount, procTriggered, spell, triggeredAuraMap);
 
     // Now go on with a victim's events'n'auras
     // Not much to do if no flags are set or there is no victim
     if (pVictim && pVictim->isAlive() && procVictim)
         pVictim->ProcDamageAndSpellFor(true, this, procVictim, procExtra, attType, procSpell, amount, procTriggered, spell);
 
-    HandleTriggers(pVictim, procExtra, amount, procSpell, procTriggered);
+    HandleTriggers(pVictim, procExtra, amount, procSpell, procTriggered, triggeredAuraMap);
 }
 
-void Unit::HandleTriggers(Unit *pVictim, uint32 procExtra, uint32 amount, SpellEntry const *procSpell, ProcTriggeredList const& procTriggered)
+void Unit::HandleTriggers(Unit *pVictim, uint32 procExtra, uint32 amount, SpellEntry const *procSpell, ProcTriggeredList const& procTriggered, TriggeredAuraMapType *triggeredAuraMap)
 {
     RemoveSpellList removedSpells;
     // Nothing found
@@ -5203,6 +5215,11 @@ void Unit::HandleTriggers(Unit *pVictim, uint32 procExtra, uint32 amount, SpellE
 
             anyAuraProc = true;
         }
+        // If we had any proc on the aura and it's a single proc per cast spell, add it to the triggered
+        // map
+        if (anyAuraProc && triggeredAuraMap && triggeredByHolder->GetSpellProto()->GetProcTarget() == PROC_TARGET_SINGLE)
+            triggeredAuraMap->insert(std::pair<uint32, bool>(triggeredByHolder->GetId(), true));
+
         // Remove charge (aura can be removed by triggers)
         if (useCharges && procSuccess && anyAuraProc && !triggeredByHolder->IsDeleted())
         {
@@ -5627,6 +5644,10 @@ bool Unit::Attack(Unit *victim, bool meleeAttack)
     {
         ((Creature*)this)->SendAIReaction(AI_REACTION_HOSTILE);
         ((Creature*)this)->CallAssistance();
+
+        if (Pet* pet = GetPet())
+            if (pet->isAlive())
+                pet->AI()->OwnerAttacked(victim);
     }
 
     // delay offhand weapon attack to next attack time
@@ -5636,9 +5657,6 @@ bool Unit::Attack(Unit *victim, bool meleeAttack)
     if (meleeAttack)
         SendMeleeAttackStart(victim);
 
-    if (Pet* pet = GetPet())
-        if (pet->isAlive())
-            pet->AI()->OwnerAttacked(victim);
     return true;
 }
 
@@ -7208,7 +7226,13 @@ void Unit::SetInCombatState(bool PvP, Unit* enemy)
         SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PET_IN_COMBAT);
     // set pet in combat
     if (Pet* pet = GetPet())
-        pet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PET_IN_COMBAT);
+        if (!pet->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PET_IN_COMBAT))
+        {
+            pet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PET_IN_COMBAT);
+
+            if (IsPlayer() && pet->isAlive() && enemy)
+                pet->AI()->OwnerAttacked(enemy);
+        }
 
     // interrupt all delayed non-combat casts
     if (!wasInCombat)
@@ -7345,8 +7369,8 @@ bool Unit::_IsValidAttackTarget(Unit const* target, SpellEntry const* bySpell, W
         if (playerAffectingTarget->IsPvP())
             return true;
 
-        if (playerAffectingAttacker->GetByteValue(UNIT_FIELD_BYTES_2, 1) & UNIT_BYTE2_FLAG_FFA_PVP
-                && playerAffectingTarget->GetByteValue(UNIT_FIELD_BYTES_2, 1) & UNIT_BYTE2_FLAG_FFA_PVP)
+        // UNIT_BYTE2_FLAG_FFA_PVP is not implemented
+        if (playerAffectingAttacker->IsFFAPvP() && playerAffectingTarget->IsFFAPvP())
             return true;
 
         return (playerAffectingAttacker->GetByteValue(UNIT_FIELD_BYTES_2, 1) & UNIT_BYTE2_FLAG_UNK1)
@@ -7799,8 +7823,9 @@ void Unit::UpdateSpeed(UnitMoveType mtype, bool forced, float ratio)
 
     if (GetTypeId() == TYPEID_UNIT)
     {
+        // Before patch 1.9 pets should retain their wild speed, after that they are normalised
         Creature* pCreature = (Creature*)this;
-        if (!(pCreature->IsPet() && pCreature->GetOwnerGuid().IsPlayer()))      // don't use DB values for player controlled pets
+        if (!(pCreature->IsPet() && pCreature->GetOwnerGuid().IsPlayer()) || sWorld.GetWowPatch() < WOW_PATCH_109)
         {
             switch (mtype)
             {
@@ -8894,6 +8919,7 @@ void Unit::CleanupsBeforeDelete()
                 getHostileRefManager().deleteReferences();
         }
         RemoveAllAuras(AURA_REMOVE_BY_DELETE);
+        CleanupDeletedAuras(); // any long range channeled spells need to be cleaned up after aura deletion
     }
     WorldObject::CleanupsBeforeDelete();
 }
@@ -9137,7 +9163,7 @@ bool CharmInfo::IsCommandFollow()
 void CharmInfo::SaveStayPosition()
 {
     //! At this point a new spline destination is enabled because of Unit::StopMoving()
-    G3D::Vector3 const stayPos = m_unit->movespline->FinalDestination();
+    G3D::Vector3 stayPos = m_unit->movespline->FinalDestination();
     _stayX = stayPos.x;
     _stayY = stayPos.y;
     _stayZ = stayPos.z;
@@ -9241,7 +9267,7 @@ uint32 createProcExtendMask(SpellNonMeleeDamage *damageInfo, SpellMissInfo missC
     return procEx;
 }
 
-void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* pTarget, uint32 procFlag, uint32 procExtra, WeaponAttackType attType, SpellEntry const* procSpell, uint32 damage, ProcTriggeredList& triggeredList, Spell* spell)
+void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* pTarget, uint32 procFlag, uint32 procExtra, WeaponAttackType attType, SpellEntry const* procSpell, uint32 damage, ProcTriggeredList& triggeredList, Spell* spell, TriggeredAuraMapType *triggeredAuraMap)
 {
     // For melee/ranged based attack need update skills and set some Aura states
     if (procFlag & MELEE_BASED_TRIGGER_MASK && pTarget)
@@ -9321,6 +9347,13 @@ void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* pTarget, uint32 procFlag, 
         // skip deleted auras (possible at recursive triggered call
         if (itr->second->IsDeleted())
             continue;
+            
+        // If this aura has procced already in the triggeredAuraMap, don't add it to the
+        // proc list. This is to prevent spells which hit multiple targets proccing some
+        // auras for each target hit. They are only added to the list if they should
+        // a) only successfully proc once, or b) only have 1 chance to proc per cast
+        if (!isVictim && triggeredAuraMap && triggeredAuraMap->count(itr->second->GetId()) > 0)
+            continue;
 
         // Aura that applies a modifier with charges. Gere? otherwise.
         bool hasmodifier = false;
@@ -9334,6 +9367,11 @@ void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* pTarget, uint32 procFlag, 
                     }
         if (hasmodifier)
             continue;
+
+        // If the aura is only allowed a single chance per cast to proc, add it to the triggered
+        // map now
+        if (!isVictim && triggeredAuraMap && itr->second->GetSpellProto()->GetProcTarget() == PROC_TARGET_SINGLE_CHANCE)
+            triggeredAuraMap->insert(std::pair<uint32, bool>(itr->second->GetId(), true));
 
         SpellProcEventEntry const* spellProcEvent = nullptr;
         if (!IsTriggeredAtSpellProcEvent(pTarget, itr->second, procSpell, procFlag, procExtra, attType, isVictim, spellProcEvent))

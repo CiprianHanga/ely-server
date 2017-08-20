@@ -1121,7 +1121,7 @@ class MANGOS_DLL_SPEC Player final: public Unit
                                                             // in trade, guild bank, mail....
         void RemoveItemDependentAurasAndCasts( Item * pItem );
         void DestroyItem( uint8 bag, uint8 slot, bool update );
-        void DestroyItemCount( uint32 item, uint32 count, bool update, bool unequip_check = false);
+        void DestroyItemCount( uint32 item, uint32 count, bool update, bool unequip_check = false, bool check_bank = false);
         void DestroyItemCount( Item* item, uint32& count, bool update );
         /**
          * @brief Destroys equipped item $itemId and updates the Player
@@ -1150,7 +1150,7 @@ class MANGOS_DLL_SPEC Player final: public Unit
             Item* mainItem = GetItemByPos(INVENTORY_SLOT_BAG_0, EQUIPMENT_SLOT_MAINHAND);
             return mainItem && mainItem->GetProto()->InventoryType == INVTYPE_2HWEAPON;
         }
-        void SendNewItem( Item *item, uint32 count, bool received, bool created, bool broadcast = false );
+        void SendNewItem( Item *item, uint32 count, bool received, bool created, bool broadcast = false, bool showInChat = true );
         bool BuyItemFromVendor(ObjectGuid vendorGuid, uint32 item, uint8 count, uint8 bag, uint8 slot);
         void OnReceivedItem(Item* item);
 
@@ -1231,6 +1231,7 @@ class MANGOS_DLL_SPEC Player final: public Unit
         void GiveQuestSourceItemIfNeed(Quest const *pQuest);
         bool TakeOrReplaceQuestStartItems( uint32 quest_id, bool msg, bool giveQuestStartItem );
         bool GetQuestRewardStatus( uint32 quest_id ) const;
+        const QuestStatusData* GetQuestStatusData(uint32 quest_id) const;
         QuestStatus GetQuestStatus( uint32 quest_id ) const;
         void SetQuestStatus( uint32 quest_id, QuestStatus status );
 
@@ -1943,6 +1944,14 @@ class MANGOS_DLL_SPEC Player final: public Unit
         void DoIgnoreRelocation() { if (m_bNextRelocationsIgnored) --m_bNextRelocationsIgnored; }
 
         ObjectGuid const& GetFarSightGuid() const { return GetGuidValue(PLAYER_FARSIGHT); }
+        // sometime it's needed to save the far sight object and set the view later
+        // case Eyes of the Beast + Eagle Eye
+        ObjectGuid const& GetPendingFarSightGuid() const { return m_pendingFarSightGuid;  }
+        void SetPendingFarSightGuid(ObjectGuid pendingFarSightGuid)
+        {
+            m_pendingFarSightGuid = pendingFarSightGuid;
+        }
+        ObjectGuid m_pendingFarSightGuid;
 
         uint32 GetSaveTimer() const { return m_nextSave; }
         void   SetSaveTimer(uint32 timer) { m_nextSave = timer; }

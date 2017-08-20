@@ -33,6 +33,7 @@
 #include "Map.h"
 #include "ThreadPool.h"
 
+
 typedef MaNGOS::ClassLevelLockable<MapManager, std::recursive_mutex> MapManagerLock;
 INSTANTIATE_SINGLETON_2(MapManager, MapManagerLock);
 INSTANTIATE_CLASS_MUTEX(MapManager, std::recursive_mutex);

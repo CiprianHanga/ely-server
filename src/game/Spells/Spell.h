@@ -639,6 +639,7 @@ class Spell
         typedef std::list<SpellEntry const*> SpellInfoList;
         SpellInfoList m_TriggerSpells;                      // casted by caster to same targets settings in m_targets at success finish of current spell
         SpellInfoList m_preCastSpells;                      // casted by caster to each target at spell hit before spell effects apply
+        TriggeredAuraMapType triggeredAuraMap;              // A map to spell aura IDs which have been procced by this spell to prevent multi-procs
 
         uint32 m_spellState;
         uint32 m_timer;

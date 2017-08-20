@@ -130,6 +130,9 @@ void SpellEntry::InitCachedValues()
 {
     ComputeBinary();
     ComputeDispel();
+    // Determine how many times this spell can be procced in a single
+    // cast (which hits multiple targets)
+    ComputeProcTarget();
 }
 
 void SpellEntry::ComputeBinary()
@@ -190,6 +193,18 @@ void SpellEntry::ComputeDispel()
     for (int i = 0; i < 3; ++i)
         if (_isDispel && Effect[i] != 0 && (Effect[i] != SPELL_EFFECT_DISPEL || EffectRadiusIndex[i] != 0))
             _isDispel = false;
+}
+
+void SpellEntry::ComputeProcTarget()
+{
+    // Computes how this spell can proc when multiple targets are hit in a single spell cast
+    // If this spell is not a proc spell, it doesn't really matter. We still set it.
+    if (IsTriggerAuraAllowedMultipleProc(this))
+        _procTarget = PROC_TARGET_MULTIPLE;
+    else if (IsTriggerAuraSingleProcPerCast(this))
+        _procTarget = PROC_TARGET_SINGLE;
+    else
+        _procTarget = PROC_TARGET_SINGLE_CHANCE;
 }
 DiminishingGroup SpellEntry::GetDiminishingReturnsGroup(bool triggered) const
 {
