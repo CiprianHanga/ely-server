@@ -530,6 +530,9 @@ class MANGOS_DLL_SPEC WorldSession
 
         uint32 m_idleTime;
 
+        // for possession spells, pending CMSG_SET_ACTIVE_MOVER
+        bool IsPendingMoverSwap() const;
+
     public:                                                 // opcodes handlers
 
         void Handle_NULL(WorldPacket& recvPacket);          // not used
@@ -664,6 +667,7 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleRaidReadyCheckFinishedOpcode( WorldPacket & recv_data );
         void HandleGroupRaidConvertOpcode( WorldPacket & recv_data );
         void HandleGroupChangeSubGroupOpcode( WorldPacket & recv_data );
+        void HandleGroupSwapSubGroupOpcode( WorldPacket & recv_data );
         void HandleGroupAssistantLeaderOpcode( WorldPacket & recv_data );
         void HandlePartyAssignmentOpcode( WorldPacket & recv_data );
 

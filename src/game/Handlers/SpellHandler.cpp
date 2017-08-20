@@ -258,7 +258,7 @@ void WorldSession::HandleGameObjectUseOpcode(WorldPacket & recv_data)
         return;
 
     GameObject *obj = GetPlayer()->GetMap()->GetGameObject(guid);
-    if (!obj)
+    if (!obj || obj->IsDeleted())
         return;
 
     // Additional check preventing exploits (ie loot despawned chests)
@@ -312,11 +312,6 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
 
     // ignore for remote control state (for player case)
     Unit* mover = _player->GetMover();
-    if (mover != _player && mover->GetTypeId() == TYPEID_PLAYER)
-    {
-        recvPacket.rpos(recvPacket.wpos());                 // prevent spam at ignore packet
-        return;
-    }
 
     DEBUG_LOG("WORLD: got cast spell packet, spellId - %u, data length = %i",
               spellId, (uint32)recvPacket.size());
@@ -329,21 +324,28 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
         return;
     }
 
-    if (mover->GetTypeId() == TYPEID_PLAYER)
+    Unit *caster = mover->hasUnitState(UNIT_STAT_CONTROLLED) && mover->GetCharmer() ?
+                mover->GetCharmer() : mover;
+
+    // Controlled players can cast some spells
+    if (_player->hasUnitState(UNIT_STAT_CONTROLLED) && IsCastableWhileCharmed(spellInfo))
+        caster = _player;
+
+    if (caster->GetTypeId() == TYPEID_PLAYER)
     {
         // not have spell in spellbook or spell passive and not casted by client
-        if (!((Player*)mover)->HasActiveSpell(spellId) || IsPassiveSpell(spellInfo))
+        if (!((Player*)caster)->HasActiveSpell(spellId) || IsPassiveSpell(spellInfo))
         {
-            sLog.outError("World: Player %u casts spell %u which he shouldn't have", mover->GetGUIDLow(), spellId);
+            sLog.outError("World: Player %u casts spell %u which he shouldn't have", caster->GetGUIDLow(), spellId);
             //cheater? kick? ban?
             recvPacket.rpos(recvPacket.wpos());                 // prevent spam at ignore packet
             return;
         }
     }
-    else
+    else if (caster->GetTypeId() == TYPEID_UNIT)
     {
         // not have spell in spellbook or spell passive and not casted by client
-        if (!((Creature*)mover)->HasSpell(spellId) || IsPassiveSpell(spellInfo))
+        if (!caster->HasSpell(spellId) || IsPassiveSpell(spellInfo))
         {
             //cheater? kick? ban?
             recvPacket.rpos(recvPacket.wpos());                 // prevent spam at ignore packet
@@ -390,8 +392,16 @@ void WorldSession::HandleCancelCastOpcode(WorldPacket& recvPacket)
     if (mover != _player && mover->GetTypeId() == TYPEID_PLAYER)
         return;
 
+    // ignore in the case of a pending possession which the player
+    // tries to cancel but it is already applied on server side
+    if (mover->GetObjectGuid() != _clientMoverGuid)
+        return;
+
     if (_player->IsNonMeleeSpellCasted(false))
         _player->InterruptNonMeleeSpells(false, spellId);
+
+    if (_player->IsNextSwingSpellCasted())
+        _player->InterruptSpell(CURRENT_MELEE_SPELL);
 }
 
 void WorldSession::HandleCancelAuraOpcode(WorldPacket& recvPacket)
@@ -446,13 +456,6 @@ void WorldSession::HandleCancelAuraOpcode(WorldPacket& recvPacket)
         if (spellInfo->Effect[i] == SPELL_EFFECT_SUMMON_POSSESSED)
         {
             _player->SetNextRelocationsIgnoredCount(1);
-            break;
-        }
-
-        // Eyes of the Beast case
-        if (spellInfo->EffectApplyAuraName[i] == SPELL_AURA_MOD_POSSESS_PET)
-        {
-            _player->SetNextRelocationsIgnoredCount(3);
             break;
         }
     }

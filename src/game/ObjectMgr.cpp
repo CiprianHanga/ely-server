@@ -1904,6 +1904,7 @@ void ObjectMgr::LoadItemPrototypes()
 {
     SQLItemLoader loader;
     loader.Load(sItemStorage);
+    mQuestStartingItems.clear();
     sLog.outString(">> Loaded %u item prototypes", sItemStorage.GetRecordCount());
     sLog.outString();
 
@@ -2162,6 +2163,16 @@ void ObjectMgr::LoadItemPrototypes()
                     const_cast<ItemPrototype*>(proto)->ExtraFlags &= ~ITEM_EXTRA_REAL_TIME_DURATION;
                 }
             }
+        }
+
+
+        if (proto->StartQuest > 0)
+        // Item starts a quest, insert it into the quest->startItem map
+        {
+            if (mQuestStartingItems.find(proto->StartQuest) == mQuestStartingItems.end())
+                mQuestStartingItems.insert( std::pair<uint32, uint32>(proto->StartQuest, proto->ItemId) );
+            else
+                sLog.outErrorDb("Item #%u also starts quest #%u.", i, proto->StartQuest);
         }
     }
 
@@ -3319,7 +3330,7 @@ void ObjectMgr::LoadQuests()
 
         // additional quest integrity checks (GO, creature_template and item_template must be loaded already)
 
-        if (qinfo->GetQuestMethod() >= 3)
+        if (qinfo->GetQuestMethod() >= QUEST_METHOD_LIMIT)
             sLog.outErrorDb("Quest %u has `Method` = %u, expected values are 0, 1 or 2.", qinfo->GetQuestId(), qinfo->GetQuestMethod());
 
         if (qinfo->m_SpecialFlags > QUEST_SPECIAL_FLAG_DB_ALLOWED)
@@ -3875,6 +3886,16 @@ void ObjectMgr::LoadQuests()
 
     sLog.outString();
     sLog.outString(">> Loaded %lu quests definitions", (unsigned long)mQuestTemplates.size());
+}
+
+uint32 ObjectMgr::GetQuestStartingItemID(uint32 quest_id) const
+{
+    auto questItemPair = mQuestStartingItems.find(quest_id);
+
+    if (questItemPair != mQuestStartingItems.end())
+        return questItemPair->second;
+
+    return 0;
 }
 
 void ObjectMgr::LoadQuestLocales()
@@ -7126,6 +7147,74 @@ const char *ObjectMgr::GetMangosString(int32 entry, int locale_idx) const
     else
         sLog.outErrorDb("Mangos string entry %i not found in DB.", entry);
     return "<error>";
+}
+
+bool ObjectMgr::LoadQuestGreetings()
+{
+    mQuestGreetingLocaleMap.clear(); // need for reload case
+
+    QueryResult *result = WorldDatabase.Query("SELECT entry,content_default,content_loc1,content_loc2,content_loc3,content_loc4,content_loc5,content_loc6,content_loc7,content_loc8,Emote,EmoteDelay FROM quest_greeting");
+
+    if (!result)
+    {
+        sLog.outString(">> Loaded 0 quest greetings. DB table `quest_greeting` is empty.");
+        return false;
+    }
+
+    uint32 count = 0;
+
+    do
+    {
+        Field *fields = result->Fetch();
+        int32 entry = fields[0].GetInt32();
+
+        if ((entry < 1) || !ObjectMgr::GetCreatureTemplate(entry))
+        {
+            sLog.outErrorDb("Table `quest_greeting` have entry for nonexistent creature template (Entry: %u), ignore", entry);
+            continue;
+        }
+
+        QuestGreetingLocale& data = mQuestGreetingLocaleMap[entry];
+
+        data.Content.resize(1);
+        ++count;
+
+        // 0 -> default, idx in to idx+1
+        data.Content[0] = fields[1].GetCppString();
+
+        for (int i = 1; i < MAX_LOCALE; ++i)
+        {
+            std::string str = fields[i + 1].GetCppString();
+            if (!str.empty())
+            {
+                int idx = GetOrNewIndexForLocale(LocaleConstant(i));
+                if (idx >= 0)
+                {
+                    // 0 -> default, idx in to idx+1
+                    if ((int32)data.Content.size() <= idx + 1)
+                        data.Content.resize(idx + 2);
+
+                    data.Content[idx + 1] = str;
+                }
+            }
+        }
+
+        data.Emote = fields[10].GetUInt16();
+        data.EmoteDelay = fields[11].GetUInt32();
+
+        if (data.Emote && !sEmotesStore.LookupEntry(data.Emote))
+        {
+            sLog.outErrorDb("Entry %i in table `quest_greeting` has Emote %u but emote does not exist.", entry, data.Emote);
+            data.Emote = EMOTE_ONESHOT_NONE;
+        }
+    } while (result->NextRow());
+
+    delete result;
+
+    sLog.outString();
+    sLog.outString(">> Loaded %u quest greetings.", count);
+
+    return true;
 }
 
 void ObjectMgr::LoadFishingBaseSkillLevel()

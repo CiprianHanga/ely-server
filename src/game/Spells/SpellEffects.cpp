@@ -417,9 +417,10 @@ void Spell::EffectSchoolDMG(SpellEffectIndex effect_idx)
                 // Ferocious Bite
                 if (m_spellInfo->IsFitToFamilyMask<CF_DRUID_RIP_BITE>() && m_spellInfo->SpellVisual == 6587)
                 {
-                    // converts each extra point of energy into ($f1+$AP/630) additional damage
-                    float multiple = m_caster->GetTotalAttackPowerValue(BASE_ATTACK) / 630 + m_spellInfo->DmgMultiplier[effect_idx];
-                    damage += int32(m_caster->GetPower(POWER_ENERGY) * multiple);
+                    // ( AP * 3% * combo + energy * 2,7 + damage )
+                    if (uint32 combo = ((Player*)m_caster)->GetComboPoints())
+                        damage += int32(m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * combo * 0.03f);
+                    damage += int32(m_caster->GetPower(POWER_ENERGY) * m_spellInfo->DmgMultiplier[effect_idx]);
                     m_caster->SetPower(POWER_ENERGY, 0);
                 }
                 break;
@@ -447,6 +448,10 @@ void Spell::EffectSchoolDMG(SpellEffectIndex effect_idx)
                 // Judgement of Command - receive bonus from spell damage
                 else if (m_spellInfo->SpellIconID == 561)
                 {
+                    // base damage halved if target not stunned.
+                    if (!unitTarget->hasUnitState(UNIT_STAT_STUNNED | UNIT_STAT_PENDING_STUNNED))
+                        damage = int32(damage * 0.5f);
+
                     damage = m_caster->SpellDamageBonusDone(unitTarget, m_spellInfo, damage, SPELL_DIRECT_DAMAGE);
                     damage = unitTarget->SpellDamageBonusTaken(m_caster, m_spellInfo, damage, SPELL_DIRECT_DAMAGE);
                 }
@@ -691,12 +696,12 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
 
                     sLog.outString("Quest 8606 item Dummy Effect.");
                     Player* pPlayer = (Player*)m_originalCaster;
-                    // Check si joueur a la tenue de Narain
+                    // Check for buff Narain!
                     if (!pPlayer->HasAura(25688))
                         return;
-                    // Lancement de l'event 9527
-                    pPlayer->GetMap()->ScriptsStart(sEventScripts, 9527, pPlayer, focusObject);
-                    // Suppression de l'item sac d'or 21041
+                    // Start event 9527 using custom spell to avoid db error
+                    pPlayer->CastSpell(pPlayer, 33031, true);
+                    // Delete item Bag of Gold (21041)
                     pPlayer->DestroyItemCount(21041, -1, true, false);
                     return;
                 }
@@ -752,17 +757,19 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
                         return;
 
                     uint32 spell_id = 0;
-                    switch (urand(1, 2))
-                    {
-                        // Flip Out - ninja
-                        case 1:
-                            spell_id = (m_caster->getGender() == GENDER_MALE ? 8219 : 8220);
-                            break;
-                        // Yaaarrrr - pirate
-                        case 2:
-                            spell_id = (m_caster->getGender() == GENDER_MALE ? 8221 : 8222);
-                            break;
-                    }
+                    uint32 spells[6] = { 
+                        (m_caster->getGender() == GENDER_MALE ? 8219 : 8220), // Flip Out - ninja
+                        (m_caster->getGender() == GENDER_MALE ? 8221 : 8222), // Yaaarrrr - pirate
+                        8223, // Oops - goo
+                        8215, // Rapid Cast
+                        8224, // Cowardice
+                        8226  // Fake Death
+                    };
+
+                    if (sWorld.GetWowPatch() < WOW_PATCH_107)
+                        spell_id = spells[urand(0, 5)];
+                    else
+                        spell_id = spells[urand(0, 1)];
 
                     m_caster->CastSpell(m_caster, spell_id, true, nullptr);
                     return;
@@ -2279,8 +2286,6 @@ void Spell::EffectHealthLeech(SpellEffectIndex effIndex)
 
     if (m_caster->isAlive())
     {
-        healthGain = m_caster->SpellHealingBonusDone(m_caster, m_spellInfo, healthGain, HEAL); // ?
-
         m_caster->DealHeal(m_caster, uint32(healthGain), m_spellInfo);
     }
 }
@@ -3041,7 +3046,19 @@ void Spell::EffectAddFarsight(SpellEffectIndex eff_idx)
     m_caster->AddDynObject(dynObj);
     m_caster->GetMap()->Add(dynObj);
 
-    ((Player*)m_caster)->GetCamera().SetView(dynObj);
+    Player* pCaster = m_caster->ToPlayer();
+
+    // the object could be created out of the hunter's update range
+    if (!dynObj->IsWithinDistInMap(pCaster, dynObj->GetMap()->GetGridActivationDistance()))
+        dynObj->SendCreateUpdateToPlayer(pCaster);
+
+
+    // case Eyes of the Beast + Eagle Eye, save the object
+    // so it'll be used in WorldSession::HandleFarSightOpcode
+    if (pCaster->GetSession()->IsPendingMoverSwap())
+        pCaster->SetPendingFarSightGuid(dynObj->GetObjectGuid());
+    else
+        pCaster->GetCamera().SetView(dynObj);
 }
 
 void Spell::EffectSummonWild(SpellEffectIndex eff_idx)
@@ -3136,6 +3153,35 @@ void Spell::EffectSummonWild(SpellEffectIndex eff_idx)
                 case 16381:
                     if (m_caster->getAttackerForHelper())
                         summon->AI()->AttackStart(m_caster->getAttackerForHelper());
+                    break;
+                // Chained Essence of Eranikus
+                case 12766:
+                    int EranikusText = -1001012;
+                    switch (urand(0, 7))
+                    {
+                        case 1:
+                            EranikusText = -1001013;
+                            break;
+                        case 2:
+                            EranikusText = -1001014;
+                            break;
+                        case 3:
+                            EranikusText = -1001015;
+                            break;
+                        case 4:
+                            EranikusText = -1001016;
+                            break;
+                        case 5:
+                            EranikusText = -1001017;
+                            break;
+                        case 6:
+                            EranikusText = -1001018;
+                            break;
+                        case 7:
+                            EranikusText = -1001019;
+                            break;
+                    }
+                    summon->MonsterWhisper(EranikusText, m_caster);
                     break;
 
             }
@@ -4755,7 +4801,7 @@ void Spell::EffectStuck(SpellEffectIndex /*eff_idx*/)
     Player* pTarget = (Player*)unitTarget;
 
     DEBUG_LOG("Spell Effect: Stuck");
-    sLog.outInfo("Player %s (guid %u) used auto-unstuck future at map %u (%f, %f, %f)", pTarget->GetName(), pTarget->GetGUIDLow(), m_caster->GetMapId(), m_caster->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ());
+    sLog.outInfo("Player %s (guid %u) used auto-unstuck feature at map %u (%f, %f, %f).", pTarget->GetName(), pTarget->GetGUIDLow(), m_caster->GetMapId(), m_caster->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ());
 
     if (pTarget->IsTaxiFlying())
         return;
@@ -4775,7 +4821,13 @@ void Spell::EffectSummonPlayer(SpellEffectIndex /*eff_idx*/)
         return;
 
     float x, y, z;
-    m_caster->GetClosePoint(x, y, z, unitTarget->GetObjectBoundingRadius());
+    WorldObject* landingObject = m_caster;
+    // summon to the ritual go location if any
+    if (GameObject* pGo = m_targets.getGOTarget())
+        if (pGo->GetGoType() == GAMEOBJECT_TYPE_SUMMONING_RITUAL)
+            landingObject = pGo;
+
+    landingObject->GetClosePoint(x, y, z, unitTarget->GetObjectBoundingRadius());
 
     ((Player*)unitTarget)->SetSummonPoint(m_caster->GetMapId(), x, y, z);
 
@@ -5651,11 +5703,16 @@ void Spell::EffectTransmitted(SpellEffectIndex eff_idx)
             if (m_caster->GetTypeId() == TYPEID_PLAYER)
             {
                 // Set the summoning target
-                if (m_caster->GetTypeId() == TYPEID_PLAYER && ((Player*)m_caster)->GetSelectionGuid())
-                    pGameObj->SetSummonTarget(((Player*)m_caster)->GetSelectionGuid());
+                if (m_caster->GetTypeId() == TYPEID_PLAYER && m_caster->ToPlayer()->GetSelectionGuid())
+                    pGameObj->SetSummonTarget(m_caster->ToPlayer()->GetSelectionGuid());
 
-                pGameObj->AddUniqueUse((Player*)m_caster);
-                m_caster->AddGameObject(pGameObj);          // will removed at spell cancel
+                // will be removed at Spell::Cancel or GameObject::RemoveUniqueUse if activated
+                m_caster->AddGameObject(pGameObj);
+
+                // the caster becomes a go user too
+                pGameObj->AddUniqueUse(m_caster->ToPlayer());
+                m_targets.setGOTarget(pGameObj);
+                SetChannelingVisual(true);
             }
             break;
         }
@@ -5698,6 +5755,11 @@ void Spell::EffectSummonDemon(SpellEffectIndex eff_idx)
     float px = m_targets.m_destX;
     float py = m_targets.m_destY;
     float pz = m_targets.m_destZ;
+
+    // summon to the ritual object location if any
+    if (GameObject* pGo = m_targets.getGOTarget())
+        if (pGo->GetGoType() == GAMEOBJECT_TYPE_SUMMONING_RITUAL)
+            pGo->GetPosition(px, py, pz);
 
     Creature* Charmed = m_caster->SummonCreature(m_spellInfo->EffectMiscValue[eff_idx], px, py, pz, m_caster->GetOrientation(), TEMPSUMMON_TIMED_COMBAT_OR_DEAD_DESPAWN, 3600000);
     if (!Charmed)
@@ -5751,25 +5813,25 @@ void Spell::EffectSkinPlayerCorpse(SpellEffectIndex eff_idx)
     DEBUG_LOG("Effect: SkinPlayerCorpse");
     if (m_caster->GetTypeId() != TYPEID_PLAYER)
         return;
-    // Soit on a 'corpseTarget', soit on a 'unitTarget'
-    if (unitTarget)
-    {
-        if (unitTarget->GetTypeId() != TYPEID_PLAYER || unitTarget->isAlive())
-            return;
 
-        ((Player*)unitTarget)->RemovedInsignia((Player*)m_caster);
-
-        AddExecuteLogInfo(eff_idx, ExecuteLogInfo(unitTarget->GetObjectGuid()));
-    }
-    else if (corpseTarget)
+    Unit *target = unitTarget;
+    if (!target && corpseTarget)
+        target = ObjectAccessor::FindPlayer(corpseTarget->GetOwnerGuid());
+    if (!target)
     {
-        if (corpseTarget->lootForBody)
-            return;
-        corpseTarget->SetFlag(CORPSE_FIELD_DYNAMIC_FLAGS, CORPSE_DYNFLAG_LOOTABLE);
-        corpseTarget->loot.gold = m_caster->getLevel();
-        corpseTarget->lootRecipient = m_caster->ToPlayer();
-        m_caster->ToPlayer()->SendLoot(corpseTarget->GetObjectGuid(), LOOT_INSIGNIA);
+        ASSERT(corpseTarget);
+        Corpse *bones = sObjectAccessor.ConvertCorpseForPlayer(corpseTarget->GetOwnerGuid(), true);
+        m_caster->ToPlayer()->SendLoot((bones?bones:corpseTarget)->GetObjectGuid(), LOOT_INSIGNIA);
+        DEBUG_LOG("Effect SkinPlayerCorpse: corpse owner was not found");
+        return;
     }
+
+    if (target->GetTypeId() != TYPEID_PLAYER || target->isAlive())
+        return;
+
+    ((Player*)target)->RemovedInsignia((Player*)m_caster, corpseTarget);
+
+    AddExecuteLogInfo(eff_idx, ExecuteLogInfo(target->GetObjectGuid()));
 }
 void Spell::EffectBind(SpellEffectIndex eff_idx)
 {
