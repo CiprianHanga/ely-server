@@ -324,8 +324,13 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
         return;
     }
 
-    Unit *caster = mover->hasUnitState(UNIT_STAT_CONTROLLED) && mover->GetCharmer()?
+    Unit *caster = mover->hasUnitState(UNIT_STAT_CONTROLLED) && mover->GetCharmer() ?
                 mover->GetCharmer() : mover;
+
+    // Controlled players can cast some spells
+    if (_player->hasUnitState(UNIT_STAT_CONTROLLED) && IsCastableWhileCharmed(spellInfo))
+        caster = _player;
+
     if (caster->GetTypeId() == TYPEID_PLAYER)
     {
         // not have spell in spellbook or spell passive and not casted by client
