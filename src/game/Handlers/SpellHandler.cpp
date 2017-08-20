@@ -328,7 +328,7 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
                 mover->GetCharmer() : mover;
 
     // Controlled players can cast some spells
-    if (mover->hasUnitState(UNIT_STAT_CONTROLLED) && IsCastableWhileCharmed(spellInfo))
+    if (_player->hasUnitState(UNIT_STAT_CONTROLLED) && IsCastableWhileCharmed(spellInfo))
         caster = _player;
 
     if (caster->GetTypeId() == TYPEID_PLAYER)
