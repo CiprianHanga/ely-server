@@ -3046,7 +3046,19 @@ void Spell::EffectAddFarsight(SpellEffectIndex eff_idx)
     m_caster->AddDynObject(dynObj);
     m_caster->GetMap()->Add(dynObj);
 
-    ((Player*)m_caster)->GetCamera().SetView(dynObj);
+    Player* pCaster = m_caster->ToPlayer();
+
+    // the object could be created out of the hunter's update range
+    if (!dynObj->IsWithinDistInMap(pCaster, dynObj->GetMap()->GetGridActivationDistance()))
+        dynObj->SendCreateUpdateToPlayer(pCaster);
+
+
+    // case Eyes of the Beast + Eagle Eye, save the object
+    // so it'll be used in WorldSession::HandleFarSightOpcode
+    if (pCaster->GetSession()->IsPendingMoverSwap())
+        pCaster->SetPendingFarSightGuid(dynObj->GetObjectGuid());
+    else
+        pCaster->GetCamera().SetView(dynObj);
 }
 
 void Spell::EffectSummonWild(SpellEffectIndex eff_idx)

@@ -392,6 +392,11 @@ void WorldSession::HandleCancelCastOpcode(WorldPacket& recvPacket)
     if (mover != _player && mover->GetTypeId() == TYPEID_PLAYER)
         return;
 
+    // ignore in the case of a pending possession which the player
+    // tries to cancel but it is already applied on server side
+    if (mover->GetObjectGuid() != _clientMoverGuid)
+        return;
+
     if (_player->IsNonMeleeSpellCasted(false))
         _player->InterruptNonMeleeSpells(false, spellId);
 

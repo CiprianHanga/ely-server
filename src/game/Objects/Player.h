@@ -1944,6 +1944,14 @@ class MANGOS_DLL_SPEC Player final: public Unit
         void DoIgnoreRelocation() { if (m_bNextRelocationsIgnored) --m_bNextRelocationsIgnored; }
 
         ObjectGuid const& GetFarSightGuid() const { return GetGuidValue(PLAYER_FARSIGHT); }
+        // sometime it's needed to save the far sight object and set the view later
+        // case Eyes of the Beast + Eagle Eye
+        ObjectGuid const& GetPendingFarSightGuid() const { return m_pendingFarSightGuid;  }
+        void SetPendingFarSightGuid(ObjectGuid pendingFarSightGuid)
+        {
+            m_pendingFarSightGuid = pendingFarSightGuid;
+        }
+        ObjectGuid m_pendingFarSightGuid;
 
         uint32 GetSaveTimer() const { return m_nextSave; }
         void   SetSaveTimer(uint32 timer) { m_nextSave = timer; }
