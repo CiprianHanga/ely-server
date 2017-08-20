@@ -1200,18 +1200,18 @@ void Player::Update(uint32 update_diff, uint32 p_time)
         }
     }
 
-    if (hasUnitState(UNIT_STAT_MELEE_ATTACKING))
+    // UpdateMeleeAttackingState() return true if a swing happened even if no damage was dealt
+    if (hasUnitState(UNIT_STAT_MELEE_ATTACKING) && UpdateMeleeAttackingState())
     {
-        UpdateMeleeAttackingState();
-
         Unit *pVictim = getVictim();
         if (pVictim && !IsNonMeleeSpellCasted(false))
         {
             Player *vOwner = pVictim->GetCharmerOrOwnerPlayerOrPlayerItself();
-            if (vOwner && vOwner->IsPvP() && !IsInDuelWith(vOwner))
+            if (pVictim->IsPvP() && (!vOwner || (!IsInDuelWith(vOwner) && (!IsFFAPvP() || !vOwner->IsFFAPvP()))))
             {
                 UpdatePvP(true);
-                RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_ENTER_PVP_COMBAT);
+                // not vanilla
+                //RemoveAurasWithInterruptFlags(AURA_INTERRUPT_FLAG_ENTER_PVP_COMBAT);
             }
         }
     }
@@ -16253,12 +16253,35 @@ void Player::UpdatePvPFlag(time_t currTime)
     UpdatePvP(false);
 }
 
+struct SetFFAPvPHelper
+{
+    explicit SetFFAPvPHelper(Unit* _source) : source(_source) {}
+    void operator()(Unit* unit) const
+    {
+        // the unit could still be attacking, stop if needed
+        Unit* victim = unit->getVictim();
+        if (victim && !unit->IsValidAttackTarget(victim))
+            unit->AttackStop();
+        // or be attacked
+        for (Unit* attacker : unit->getAttackers())
+            if (!attacker->IsValidAttackTarget(unit))
+                attacker->AttackStop();
+    }
+    Unit* source;
+};
+
 void Player::SetFFAPvP(bool state)
 {
     if (state)
         SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_FFA_PVP);
     else
+    {
         RemoveFlag(PLAYER_FLAGS, PLAYER_FLAGS_FFA_PVP);
+
+        SetFFAPvPHelper ffaUpdateHelper(this);
+        ffaUpdateHelper(this);
+        CallForAllControlledUnits(ffaUpdateHelper, CONTROLLED_PET | CONTROLLED_GUARDIANS | CONTROLLED_CHARM | CONTROLLED_TOTEMS);
+    }
 
     if (GetGroup())
         SetGroupUpdateFlag(GROUP_UPDATE_FLAG_STATUS);
