@@ -128,11 +128,14 @@ class SpellEntry
     protected:
         bool _isBinary;
         bool _isDispel;
+        uint32 _procTarget;
         void ComputeBinary();
         void ComputeDispel();
+        void ComputeProcTarget();
     public:
         bool IsBinary() const { return _isBinary; }
         bool IsDispel() const { return _isDispel; }
+        uint32 GetProcTarget() const { return _procTarget; }
         bool IsPvEHeartBeat() const;
         bool IsCCSpell() const;
         DiminishingGroup GetDiminishingReturnsGroup(bool triggered) const;

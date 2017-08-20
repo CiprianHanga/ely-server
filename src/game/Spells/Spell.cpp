@@ -1022,34 +1022,6 @@ void Spell::DoAllEffectOnTarget(TargetInfo *target)
     uint32 procAttacker = m_procAttacker;
     uint32 procVictim   = m_procVictim;
     uint32 procEx       = PROC_EX_NONE;
-    
-    // Drop some attacker proc flags if this is a secondary target. Do not need to change
-    // the victim proc flags.
-    if (m_targetNum > 1) {
-        // If this is a melee spell hit, strip the flag and apply a spell hit flag instead.
-        // This is required to proc things like Deep Wounds on the victim when hitting 
-        // multiple targets, but not proc additional melee-only beneficial auras on the 
-        // attacker like Sweeping Strikes. Leave the victim proc flags responding to a melee
-        // spell.
-        if (procAttacker & PROC_FLAG_SUCCESSFUL_MELEE_SPELL_HIT) {
-            procAttacker &= ~(PROC_FLAG_SUCCESSFUL_MELEE_SPELL_HIT);
-            procAttacker |= PROC_FLAG_SUCCESSFUL_NEGATIVE_SPELL_HIT;
-        }
-        else if (procAttacker & (PROC_FLAG_SUCCESSFUL_SPELL_CAST | PROC_FLAG_SUCCESSFUL_MANA_SPELL_CAST)) {
-            // Secondary target on a successful spell cast. Remove these flags so we're not
-            // proccing beneficial auras multiple times. Also remove negative spell hit for
-            // chain lightning + clearcasting. Leave positive effects
-            // eg. Chain heal/lightning & Zandalarian Hero Charm
-            procAttacker &= ~(PROC_FLAG_SUCCESSFUL_SPELL_CAST | PROC_FLAG_SUCCESSFUL_MANA_SPELL_CAST | 
-                              PROC_FLAG_SUCCESSFUL_NEGATIVE_SPELL_HIT);
-        }
-        else if (procAttacker & (PROC_FLAG_SUCCESSFUL_AOE_SPELL_HIT | PROC_FLAG_SUCCESSFUL_NEGATIVE_SPELL_HIT)) {
-            // Do not allow secondary hits for negative aoe spells (such as Arcane Explosion) 
-            // to proc beneficial abilities such as Clearcasting. Positive aoe spells can
-            // still trigger, as in the case of prayer of healing and inspiration...
-            procAttacker &= ~(PROC_FLAG_SUCCESSFUL_AOE_SPELL_HIT | PROC_FLAG_SUCCESSFUL_NEGATIVE_SPELL_HIT);
-        }
-    }
 
     // drop proc flags in case target not affected negative effects in negative spell
     // for example caster bonus or animation,
@@ -1167,7 +1139,7 @@ void Spell::DoAllEffectOnTarget(TargetInfo *target)
                 }
             }
 
-            caster->ProcDamageAndSpell(unitTarget, real_caster ? procAttacker : PROC_FLAG_NONE, procVictim, procEx, addhealth, m_attackType, spellInfo, this);
+            caster->ProcDamageAndSpell(unitTarget, real_caster ? procAttacker : PROC_FLAG_NONE, procVictim, procEx, addhealth, m_attackType, spellInfo, this, &triggeredAuraMap);
         }
 
         int32 gain = caster->DealHeal(unitTarget, addhealth, m_spellInfo, crit);
@@ -1211,8 +1183,8 @@ void Spell::DoAllEffectOnTarget(TargetInfo *target)
             m_canTrigger = true;
         // Do triggers for unit (reflect triggers passed on hit phase for correct drop charge)
         if (m_canTrigger)
-            caster->ProcDamageAndSpell(unitTarget, real_caster ? procAttacker : PROC_FLAG_NONE, procVictim, procEx, damageInfo.damage, m_attackType, m_spellInfo, this);
-        
+            caster->ProcDamageAndSpell(unitTarget, real_caster ? procAttacker : PROC_FLAG_NONE, procVictim, procEx, damageInfo.damage, m_attackType, m_spellInfo, this, &triggeredAuraMap);
+
         if (m_caster->GetTypeId() == TYPEID_PLAYER)
         {
             // trigger weapon enchants for weapon based spells; exclude spells that stop attack, because may break CC
@@ -1304,7 +1276,7 @@ void Spell::DoAllEffectOnTarget(TargetInfo *target)
             procVictim = 0;
             dmg = 1;
         }
-        caster->ProcDamageAndSpell(unit, real_caster ? procAttacker : PROC_FLAG_NONE, procVictim, procEx, dmg, m_attackType, m_spellInfo, this);
+        caster->ProcDamageAndSpell(unit, real_caster ? procAttacker : PROC_FLAG_NONE, procVictim, procEx, dmg, m_attackType, m_spellInfo, this, &triggeredAuraMap);
     }
 
     if (missInfo != SPELL_MISS_NONE)
@@ -3385,11 +3357,12 @@ void Spell::cast(bool skipCheck)
     if (m_procAttacker & (PROC_FLAG_SUCCESSFUL_POSITIVE_AOE_HIT | PROC_FLAG_SUCCESSFUL_AOE_SPELL_HIT) && m_canTrigger)
     {
         uint32 procAttacker = 0;
-        // Blizzard case. Should trigger at launch for clearcast.
+        // Blizzard procs (channeled spell, so proc Clearcast @ cast start)
         if (m_spellInfo->IsFitToFamily<SPELLFAMILY_MAGE, CF_MAGE_BLIZZARD, CF_MAGE_MISC_FROST>())
             procAttacker = m_procAttacker;
         else
             procAttacker = (m_procAttacker & PROC_FLAG_ON_TRAP_ACTIVATION);
+
         uint32 procAttackerFlags = procAttacker;
         if (!IsTriggered())
         {

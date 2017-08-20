@@ -441,6 +441,10 @@ inline bool IsReflectableSpell(SpellEntry const* spellInfo, Unit* caster = NULL,
       && !spellInfo->HasAttribute(SPELL_ATTR_PASSIVE) && !IsPositiveSpell(spellInfo, caster, victim);
 }
 
+bool IsTriggerAuraAllowedMultipleProc(SpellEntry const* spellInfo);
+bool IsTriggerAuraSingleProcPerCast(SpellEntry const* spellInfo);
+bool IsTriggerAuraSingleChancePerCast(SpellEntry const* spellInfo);
+
 inline bool NeedsComboPoints(SpellEntry const* spellInfo)
 {
     return (spellInfo->AttributesEx & (SPELL_ATTR_EX_REQ_TARGET_COMBO_POINTS | SPELL_ATTR_EX_REQ_COMBO_POINTS));
@@ -575,6 +579,13 @@ enum ProcFlagsEx
     PROC_EX_EX_ONE_TIME_TRIGGER = 0x0020000,                // If set trigger always but only one time (not used)
     PROC_EX_PERIODIC_POSITIVE   = 0x0040000,                // For periodic heal
     PROC_EX_NO_PERIODIC         = 0x0080000,                // Will never proc if periodic proc flag present
+};
+
+enum ProcTarget
+{
+    PROC_TARGET_SINGLE_CHANCE   = 0,                        // Can only proc once, only has a single chance to proc per cast
+    PROC_TARGET_SINGLE          = 1,                        // Can proc ONCE in a single cast, has as many chances to proc as there are targets
+    PROC_TARGET_MULTIPLE        = 2,                        // Can proc multiple times in a single cast, i.e. on each target
 };
 
 struct SpellProcEventEntry

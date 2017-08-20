@@ -5122,7 +5122,7 @@ public:
 
 typedef std::list<RemovedSpellData> RemoveSpellList;
 
-void Unit::ProcDamageAndSpell(Unit *pVictim, uint32 procAttacker, uint32 procVictim, uint32 procExtra, uint32 amount, WeaponAttackType attType, SpellEntry const *procSpell, Spell* spell)
+void Unit::ProcDamageAndSpell(Unit *pVictim, uint32 procAttacker, uint32 procVictim, uint32 procExtra, uint32 amount, WeaponAttackType attType, SpellEntry const *procSpell, Spell* spell, TriggeredAuraMapType *triggeredAuraMap)
 {
     if (!IsInWorld())
         return;
@@ -5131,17 +5131,17 @@ void Unit::ProcDamageAndSpell(Unit *pVictim, uint32 procAttacker, uint32 procVic
 
     // Not much to do if no flags are set.
     if (procAttacker)
-        ProcDamageAndSpellFor(false, pVictim, procAttacker, procExtra, attType, procSpell, amount, procTriggered, spell);
+        ProcDamageAndSpellFor(false, pVictim, procAttacker, procExtra, attType, procSpell, amount, procTriggered, spell, triggeredAuraMap);
 
     // Now go on with a victim's events'n'auras
     // Not much to do if no flags are set or there is no victim
     if (pVictim && pVictim->isAlive() && procVictim)
         pVictim->ProcDamageAndSpellFor(true, this, procVictim, procExtra, attType, procSpell, amount, procTriggered, spell);
 
-    HandleTriggers(pVictim, procExtra, amount, procSpell, procTriggered);
+    HandleTriggers(pVictim, procExtra, amount, procSpell, procTriggered, triggeredAuraMap);
 }
 
-void Unit::HandleTriggers(Unit *pVictim, uint32 procExtra, uint32 amount, SpellEntry const *procSpell, ProcTriggeredList const& procTriggered)
+void Unit::HandleTriggers(Unit *pVictim, uint32 procExtra, uint32 amount, SpellEntry const *procSpell, ProcTriggeredList const& procTriggered, TriggeredAuraMapType *triggeredAuraMap)
 {
     RemoveSpellList removedSpells;
     // Nothing found
@@ -5215,6 +5215,11 @@ void Unit::HandleTriggers(Unit *pVictim, uint32 procExtra, uint32 amount, SpellE
 
             anyAuraProc = true;
         }
+        // If we had any proc on the aura and it's a single proc per cast spell, add it to the triggered
+        // map
+        if (anyAuraProc && triggeredAuraMap && triggeredByHolder->GetSpellProto()->GetProcTarget() == PROC_TARGET_SINGLE)
+            triggeredAuraMap->insert(std::pair<uint32, bool>(triggeredByHolder->GetId(), true));
+
         // Remove charge (aura can be removed by triggers)
         if (useCharges && procSuccess && anyAuraProc && !triggeredByHolder->IsDeleted())
         {
@@ -9262,7 +9267,7 @@ uint32 createProcExtendMask(SpellNonMeleeDamage *damageInfo, SpellMissInfo missC
     return procEx;
 }
 
-void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* pTarget, uint32 procFlag, uint32 procExtra, WeaponAttackType attType, SpellEntry const* procSpell, uint32 damage, ProcTriggeredList& triggeredList, Spell* spell)
+void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* pTarget, uint32 procFlag, uint32 procExtra, WeaponAttackType attType, SpellEntry const* procSpell, uint32 damage, ProcTriggeredList& triggeredList, Spell* spell, TriggeredAuraMapType *triggeredAuraMap)
 {
     // For melee/ranged based attack need update skills and set some Aura states
     if (procFlag & MELEE_BASED_TRIGGER_MASK && pTarget)
@@ -9342,6 +9347,13 @@ void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* pTarget, uint32 procFlag, 
         // skip deleted auras (possible at recursive triggered call
         if (itr->second->IsDeleted())
             continue;
+            
+        // If this aura has procced already in the triggeredAuraMap, don't add it to the
+        // proc list. This is to prevent spells which hit multiple targets proccing some
+        // auras for each target hit. They are only added to the list if they should
+        // a) only successfully proc once, or b) only have 1 chance to proc per cast
+        if (!isVictim && triggeredAuraMap && triggeredAuraMap->count(itr->second->GetId()) > 0)
+            continue;
 
         // Aura that applies a modifier with charges. Gere? otherwise.
         bool hasmodifier = false;
@@ -9355,6 +9367,11 @@ void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* pTarget, uint32 procFlag, 
                     }
         if (hasmodifier)
             continue;
+
+        // If the aura is only allowed a single chance per cast to proc, add it to the triggered
+        // map now
+        if (!isVictim && triggeredAuraMap && itr->second->GetSpellProto()->GetProcTarget() == PROC_TARGET_SINGLE_CHANCE)
+            triggeredAuraMap->insert(std::pair<uint32, bool>(itr->second->GetId(), true));
 
         SpellProcEventEntry const* spellProcEvent = nullptr;
         if (!IsTriggeredAtSpellProcEvent(pTarget, itr->second, procSpell, procFlag, procExtra, attType, isVictim, spellProcEvent))
