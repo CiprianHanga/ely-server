@@ -249,6 +249,8 @@ bool IsExplicitNegativeTarget(uint32 targetA);
 bool IsSingleTargetSpell(SpellEntry const *spellInfo);
 bool IsSingleTargetSpells(SpellEntry const *spellInfo1, SpellEntry const *spellInfo2);
 
+bool IsCastableWhileCharmed(SpellEntry const *spellInfo);
+
 inline bool IsCasterSourceTarget(uint32 target)
 {
     switch (target )

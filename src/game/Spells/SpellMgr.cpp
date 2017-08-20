@@ -680,6 +680,25 @@ bool IsExplicitPositiveTarget(uint32 targetA)
     return false;
 }
 
+bool IsCastableWhileCharmed(SpellEntry const *spellInfo)
+{
+    // Better way to do this?
+    switch (spellInfo->Id)
+    {
+        case 498: // Divine Protection
+        case 5573: // Divine Protection
+        case 642: // Divine Shield
+        case 1020: // Divine Shield
+        case 6724: // Light of Elune
+        case 7744: // Will of the Forsaken
+        case 23273: // PvP Trinket
+        case 23277: // PvP Trinket
+        case 11958: // Ice Block
+            return true;
+    }
+    return false;
+}
+
 bool IsExplicitNegativeTarget(uint32 targetA)
 {
     // non-positive targets that in target selection code expect target in m_targers, so not that auto-select target by spell data by m_caster and etc
