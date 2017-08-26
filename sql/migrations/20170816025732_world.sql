@@ -55,3 +55,54 @@ CREATE TABLE IF NOT EXISTS `forbidden_items` (
   `AfterOrBefore` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`entry`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- Dumping structure for table mangos.battleground_template
+DROP TABLE IF EXISTS `battleground_template`;
+CREATE TABLE IF NOT EXISTS `battleground_template` (
+  `id` mediumint(8) unsigned NOT NULL,
+  `patch` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `MinPlayersPerTeam` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `MaxPlayersPerTeam` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `MinLvl` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `MaxLvl` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `AllianceStartLoc` mediumint(8) unsigned NOT NULL,
+  `AllianceStartO` float NOT NULL,
+  `HordeStartLoc` mediumint(8) unsigned NOT NULL,
+  `HordeStartO` float NOT NULL,
+  PRIMARY KEY (`id`,`patch`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- All battlegrounds disabled until 1.5.
+INSERT INTO `battleground_template` (`id`, `patch`, `MinPlayersPerTeam`, `MaxPlayersPerTeam`, `MinLvl`, `MaxLvl`, `AllianceStartLoc`, `AllianceStartO`, `HordeStartLoc`, `HordeStartO`) VALUES
+	(1, 0, 20, 40, 61, 61, 611, 2.72532, 610, 2.27452);
+INSERT INTO `battleground_template` (`id`, `patch`, `MinPlayersPerTeam`, `MaxPlayersPerTeam`, `MinLvl`, `MaxLvl`, `AllianceStartLoc`, `AllianceStartO`, `HordeStartLoc`, `HordeStartO`) VALUES
+	(2, 0, 4, 10, 61, 61, 769, 3.14159, 770, 3.14159);
+INSERT INTO `battleground_template` (`id`, `patch`, `MinPlayersPerTeam`, `MaxPlayersPerTeam`, `MinLvl`, `MaxLvl`, `AllianceStartLoc`, `AllianceStartO`, `HordeStartLoc`, `HordeStartO`) VALUES
+	(3, 0, 6, 15, 61, 61, 890, 3.40156, 889, 0.263892);
+
+-- World of Warcraft Client Patch 1.5.0 (2005-06-07)
+-- "Battlegrounds arrive!
+-- The Warsong Gulch and Alterac Valley battlegrounds are now available."
+INSERT INTO `battleground_template` (`id`, `patch`, `MinPlayersPerTeam`, `MaxPlayersPerTeam`, `MinLvl`, `MaxLvl`, `AllianceStartLoc`, `AllianceStartO`, `HordeStartLoc`, `HordeStartO`) VALUES
+	(2, 3, 4, 10, 21, 60, 769, 3.14159, 770, 3.14159);
+INSERT INTO `battleground_template` (`id`, `patch`, `MinPlayersPerTeam`, `MaxPlayersPerTeam`, `MinLvl`, `MaxLvl`, `AllianceStartLoc`, `AllianceStartO`, `HordeStartLoc`, `HordeStartO`) VALUES
+	(1, 3, 30, 40, 51, 60, 611, 2.72532, 610, 2.27452);
+
+-- World of Warcraft Client Patch 1.7.0 (2005-09-13)
+-- Arathi Basin added to the game.
+INSERT INTO `battleground_template` (`id`, `patch`, `MinPlayersPerTeam`, `MaxPlayersPerTeam`, `MinLvl`, `MaxLvl`, `AllianceStartLoc`, `AllianceStartO`, `HordeStartLoc`, `HordeStartO`) VALUES
+	(3, 5, 6, 15, 20, 60, 890, 3.40156, 889, 0.263892);
+-- "Warsong Gulch and Arathi Basin will now be level-banded as follows: 20-29, 30-39, 40-49, 50-59, 60."
+-- http://pc.gamespy.com/pc/world-of-warcraft/625886p4.html <- Mentions that 50s play against 60s in WSG.
+INSERT INTO `battleground_template` (`id`, `patch`, `MinPlayersPerTeam`, `MaxPlayersPerTeam`, `MinLvl`, `MaxLvl`, `AllianceStartLoc`, `AllianceStartO`, `HordeStartLoc`, `HordeStartO`) VALUES
+	(2, 5, 4, 10, 20, 60, 769, 3.14159, 770, 3.14159);
+	
+-- World of Warcraft Client Patch 1.8.0 (2005-10-11)
+-- "Players of levels 10 - 19 will now be able to participate in the battle for Warsong Gulch."
+-- Minimum level for WSG was 20 previously, 21 before 1.7.0.
+INSERT INTO `battleground_template` (`id`, `patch`, `MinPlayersPerTeam`, `MaxPlayersPerTeam`, `MinLvl`, `MaxLvl`, `AllianceStartLoc`, `AllianceStartO`, `HordeStartLoc`, `HordeStartO`) VALUES
+	(2, 6, 4, 10, 10, 60, 769, 3.14159, 770, 3.14159);
+-- "The minimum number of players required to start a battle in Alterac Valley has been lowered to 20 (the maximum is still 40)."
+INSERT INTO `battleground_template` (`id`, `patch`, `MinPlayersPerTeam`, `MaxPlayersPerTeam`, `MinLvl`, `MaxLvl`, `AllianceStartLoc`, `AllianceStartO`, `HordeStartLoc`, `HordeStartO`) VALUES
+	(1, 6, 20, 40, 51, 60, 611, 2.72532, 610, 2.27452);
+
