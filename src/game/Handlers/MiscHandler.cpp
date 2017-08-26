@@ -180,7 +180,7 @@ public:
                     // World of Warcraft Client Patch 1.7.0 (2005-09-13)
                     // Using the / who command while in a Battleground instance will now only display players in your instance.
                     const uint32 searcherzone = sess->GetPlayer()->GetZoneId();
-                    if (!isBattlegroundZoneId(searcherzone) || (searcherzone != pzoneid) || (sess->GetPlayer()->GetInstanceId() == pl->GetInstanceId()))
+                    if ((searcherzone != pzoneid) || !isBattlegroundZoneId(searcherzone) || (sess->GetPlayer()->GetInstanceId() == pl->GetInstanceId()))
                         z_show = true;
                     else
                         z_show = false;
