@@ -83,6 +83,17 @@ public:
     uint32 zoneids[10];                                     // 10 is client limit
     std::wstring str[4];                                    // 4 is client limit
     std::wstring wplayer_name, wguild_name;
+    bool isBattlegroundZoneId(uint32 zoneid)
+    {
+        switch (zoneid)
+        {
+            case 2597: // AV
+            case 3277: // WSG
+            case 3358: // AB
+                return true;
+        }
+        return false;
+    }
     void run()
     {
         WorldSession* sess = sWorld.FindSession(accountId);
@@ -166,7 +177,14 @@ public:
             {
                 if (zoneids[i] == pzoneid)
                 {
-                    z_show = true;
+                    // World of Warcraft Client Patch 1.7.0 (2005-09-13)
+                    // Using the / who command while in a Battleground instance will now only display players in your instance.
+                    const uint32 searcherzone = sess->GetPlayer()->GetZoneId();
+                    if (!isBattlegroundZoneId(searcherzone) || (searcherzone != pzoneid) || (sess->GetPlayer()->GetInstanceId() == pl->GetInstanceId()))
+                        z_show = true;
+                    else
+                        z_show = false;
+
                     break;
                 }
 
