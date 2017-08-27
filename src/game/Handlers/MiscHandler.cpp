@@ -75,18 +75,6 @@ void WorldSession::HandleRepopRequestOpcode(WorldPacket & /*recv_data*/)
     player->RepopAtGraveyard();
 }
 
-static bool isNotBattlegroundZoneId(const uint32 zoneid)
-{
-    switch (zoneid)
-    {
-        case 2597: // AV
-        case 3277: // WSG
-        case 3358: // AB
-            return false;
-    }
-    return true;
-}
-
 class WhoListClientQueryTask: public AsyncTask
 {
 public:
@@ -106,10 +94,11 @@ public:
         uint32 clientcount = 0;
         Team team = sess->GetPlayer()->GetTeam();
         AccountTypes security = sess->GetSecurity();
-        const uint32 zone = sess->GetPlayer()->GetCachedZoneId();
-        const bool notInBattleground = isNotBattlegroundZoneId(zone);
         bool allowTwoSideWhoList = sWorld.getConfig(CONFIG_BOOL_ALLOW_TWO_SIDE_WHO_LIST);
         AccountTypes gmLevelInWhoList = (AccountTypes)sWorld.getConfig(CONFIG_UINT32_GM_LEVEL_IN_WHO_LIST);
+
+        const uint32 zone = sess->GetPlayer()->GetCachedZoneId();
+        const bool notInBattleground = !((zone == 2597) || (zone == 3277) || (zone == 3358));
 
         WorldPacket data(SMSG_WHO, 50);                         // guess size
         data << uint32(clientcount);                            // clientcount place holder, listed count
@@ -182,11 +171,7 @@ public:
                 {
                     // World of Warcraft Client Patch 1.7.0 (2005-09-13)
                     // Using the / who command while in a Battleground instance will now only display players in your instance.
-                    if ((zone != pzoneid) || notInBattleground || (sess->GetPlayer()->GetInstanceId() == pl->GetInstanceId()))
-                        z_show = true;
-                    else
-                        z_show = false;
-
+                    z_show = (zone != pzoneid) || notInBattleground || (sess->GetPlayer()->GetInstanceId() == pl->GetInstanceId());
                     break;
                 }
 
