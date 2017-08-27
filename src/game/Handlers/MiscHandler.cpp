@@ -75,6 +75,18 @@ void WorldSession::HandleRepopRequestOpcode(WorldPacket & /*recv_data*/)
     player->RepopAtGraveyard();
 }
 
+static bool isNotBattlegroundZoneId(const uint32 zoneid)
+{
+    switch (zoneid)
+    {
+        case 2597: // AV
+        case 3277: // WSG
+        case 3358: // AB
+            return false;
+    }
+    return true;
+}
+
 class WhoListClientQueryTask: public AsyncTask
 {
 public:
@@ -83,17 +95,6 @@ public:
     uint32 zoneids[10];                                     // 10 is client limit
     std::wstring str[4];                                    // 4 is client limit
     std::wstring wplayer_name, wguild_name;
-    bool isBattlegroundZoneId(uint32 zoneid)
-    {
-        switch (zoneid)
-        {
-            case 2597: // AV
-            case 3277: // WSG
-            case 3358: // AB
-                return true;
-        }
-        return false;
-    }
     void run()
     {
         WorldSession* sess = sWorld.FindSession(accountId);
@@ -105,6 +106,8 @@ public:
         uint32 clientcount = 0;
         Team team = sess->GetPlayer()->GetTeam();
         AccountTypes security = sess->GetSecurity();
+        const uint32 zone = sess->GetPlayer()->GetCachedZoneId();
+        const bool notInBattleground = isNotBattlegroundZoneId(zone);
         bool allowTwoSideWhoList = sWorld.getConfig(CONFIG_BOOL_ALLOW_TWO_SIDE_WHO_LIST);
         AccountTypes gmLevelInWhoList = (AccountTypes)sWorld.getConfig(CONFIG_UINT32_GM_LEVEL_IN_WHO_LIST);
 
@@ -179,8 +182,7 @@ public:
                 {
                     // World of Warcraft Client Patch 1.7.0 (2005-09-13)
                     // Using the / who command while in a Battleground instance will now only display players in your instance.
-                    const uint32 searcherzone = sess->GetPlayer()->GetZoneId();
-                    if ((searcherzone != pzoneid) || !isBattlegroundZoneId(searcherzone) || (sess->GetPlayer()->GetInstanceId() == pl->GetInstanceId()))
+                    if ((zone != pzoneid) || notInBattleground || (sess->GetPlayer()->GetInstanceId() == pl->GetInstanceId()))
                         z_show = true;
                     else
                         z_show = false;
