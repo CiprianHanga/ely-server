@@ -34,6 +34,7 @@ npc_doctor              100%    Gustaf Vanhowzen and Gregory Victor, quest 6622 
 npc_lunaclaw_spirit     100%    Appears at two different locations, quest 6001/6002
 npc_mount_vendor        100%    Regular mount vendors all over the world. Display gossip if player doesn't meet the requirements to buy
 npc_sayge               100%    Darkmoon event fortune teller, buff player based on answers given
+npc_event_fireworks     100%    Shoots fireworks every hour. Used for New Year's Eve event.
 EndContentData */
 
 /*########
@@ -1611,7 +1612,6 @@ enum
     GO_FIREWORK_LAUNCHER            = 180771,
     GO_CLUSTER_LAUNCHER             = 180772,
     GO_OMEN_CLUSTER_LAUNCHER        = 180874,
-    GO_FIREWORK_ROCKET_WHITE_BIG    = 180864,
 
     SPELL_LUNAR_FORTUNE             = 26522
 };
@@ -1619,37 +1619,37 @@ enum
 struct FireworkStruct
 {
     uint32 m_uiNpcEntry;
-    uint32 m_uiGoEntry;
+    uint32 m_uiSpellEntry[5];
     bool m_bIsCluster;
 };
 
 const FireworkStruct Fireworks[] =
 {
-    { 15872, 180854,  true }, // Blue Firework Cluster
-    { 15873, 180851,  true }, // Red Firework Cluster
-    { 15874, 180855,  true }, // Green Firework Cluster
-    { 15875, 180856,  true }, // Purple Firework Cluster
-    { 15876, 180857,  true }, // White Firework Cluster
-    { 15877, 180858,  true }, // Yellow Firework Cluster
-    { 15879, 180854, false }, // Small Blue Rocket
-    { 15880, 180855, false }, // Small Green Rocket
-    { 15881, 180856, false }, // Small Purple Rocket
-    { 15882, 180851, false }, // Small Red Rocket
-    { 15883, 180858, false }, // Small Yellow Rocket
-    { 15884, 180857, false }, // Small White Rocket
-    { 15885, 180861, false }, // Large Blue Rocket
-    { 15886, 180862, false }, // Large Green Rocket
-    { 15887, 180863, false }, // Large Purple Rocket
-    { 15888, 180860, false }, // Large Red Rocket
-    { 15889, 180864, false }, // Large White Rocket
-    { 15890, 180865, false }, // Large Yellow Rocket
-    { 15911, 180861,  true }, // Large Blue Firework Cluster
-    { 15912, 180862,  true }, // Large Green Firework Cluster
-    { 15913, 180863,  true }, // Large Purple Firework Cluster
-    { 15914, 180860,  true }, // Large Red Firework Cluster
-    { 15915, 180864,  true }, // Large White Firework Cluster
-    { 15916, 180865,  true }, // Large Yellow Firework Cluster
-    { 15918, 180861,  true }, // Large Yellow Firework Cluster
+    { 15872, {26357, 26303, 26302, 26300, 26301}, true }, // Blue Firework Cluster
+    { 15873, {26360, 26308, 26307, 26306, 26305}, true }, // Red Firework Cluster
+    { 15874, {26358, 26312, 26311, 26310, 26309}, true }, // Green Firework Cluster
+    { 15875, {26359, 26316, 26315, 26314, 26313}, true }, // Purple Firework Cluster
+    { 15876, {26361, 26320, 26319, 26318, 26317}, true }, // White Firework Cluster
+    { 15877, {26362, 26324, 26323, 26322, 26321}, true }, // Yellow Firework Cluster
+    { 15879, {26344, 0,     0,     0,     0},     false}, // Small Blue Rocket
+    { 15880, {26345, 0,     0,     0,     0},     false}, // Small Green Rocket
+    { 15881, {26346, 0,     0,     0,     0},     false}, // Small Purple Rocket
+    { 15882, {26347, 0,     0,     0,     0},     false}, // Small Red Rocket
+    { 15883, {26349, 0,     0,     0,     0},     false}, // Small Yellow Rocket
+    { 15884, {26348, 0,     0,     0,     0},     false}, // Small White Rocket
+    { 15885, {26351, 0,     0,     0,     0},     false}, // Large Blue Rocket
+    { 15886, {26352, 0,     0,     0,     0},     false}, // Large Green Rocket
+    { 15887, {26353, 0,     0,     0,     0},     false}, // Large Purple Rocket
+    { 15888, {26354, 0,     0,     0,     0},     false}, // Large Red Rocket
+    { 15889, {26355, 0,     0,     0,     0},     false}, // Large White Rocket
+    { 15890, {26356, 0,     0,     0,     0},     false}, // Large Yellow Rocket
+    { 15911, {26487, 26486, 26485, 26484, 26483}, true }, // Large Blue Firework Cluster
+    { 15912, {26495, 26494, 26493, 26492, 26491}, true }, // Large Green Firework Cluster
+    { 15913, {26500, 26499, 26498, 26497, 26496}, true }, // Large Purple Firework Cluster
+    { 15914, {26505, 26504, 26503, 26502, 26501}, true }, // Large Red Firework Cluster
+    { 15915, {26510, 26509, 26508, 26507, 26506}, true }, // Large White Firework Cluster
+    { 15916, {26515, 26514, 26513, 26512, 26511}, true }, // Large Yellow Firework Cluster
+    { 15918, {26487, 26509, 26508, 26507, 26483}, true }, // Lucky Rocket Cluster
 };
 
 const uint32 Launcher[] = { 180772, 180859, 180869, 180874, 180771, 180850, 180868 };
@@ -1712,20 +1712,34 @@ struct npc_pats_firework_guyAI : ScriptedAI
 
         float x, y, z;
         m_creature->GetPosition(x, y, z);
-        m_creature->SummonGameObject(Fireworks[m_uiIndex].m_uiGoEntry, x, y, z, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1);
 
         if (Fireworks[m_uiIndex].m_bIsCluster)
         {
-            m_creature->SummonGameObject(Fireworks[m_uiIndex].m_uiGoEntry, x, y, z + 10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1);
-
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 5; ++i)
             {
-                uint32 entry = i && m_bisLucky ? uint32(GO_FIREWORK_ROCKET_WHITE_BIG) : Fireworks[m_uiIndex].m_uiGoEntry;
-
-                m_creature->GetNearPoint2D(x, y, i ? 2.0f : 1.0f, i * 2.0f * M_PI_F / 3.0f + M_PI_F / 2.0f);
-                m_creature->SummonGameObject(entry, x, y, z + 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1);
+                switch (i)
+                {
+                    case 0:
+                        m_creature->NearTeleportTo(x, y, z + 7.0f, 0.0f);
+                        break;
+                    case 1:
+                        m_creature->NearTeleportTo(x - 1.5f, y + 1.5f, z + 5.0f, 0.0f);
+                        break;
+                    case 2:
+                        m_creature->NearTeleportTo(x - 1.5f, y - 1.5f, z + 5.0f, 0.0f);
+                        break;
+                    case 3:
+                        m_creature->NearTeleportTo(x + 1.5f, y, z + 5.0f, 0.0f);
+                        break;
+                    case 4:
+                        m_creature->NearTeleportTo(x, y + 1.5f, z + 3.0f, 0.0f);
+                        break;
+                }
+                m_creature->CastSpell(m_creature, Fireworks[m_uiIndex].m_uiSpellEntry[i], true);
             }
         }
+        else
+            m_creature->CastSpell(m_creature, Fireworks[m_uiIndex].m_uiSpellEntry[0], true);
 
         if (m_bisLucky)
             m_creature->CastSpell(m_creature, SPELL_LUNAR_FORTUNE, true);
@@ -2697,6 +2711,62 @@ CreatureAI* GetAI_npc_explosive_sheep(Creature* pCreature)
     return new npc_explosive_sheepAI(pCreature);
 }
 
+struct npc_event_fireworksAI : public ScriptedAI
+{
+    npc_event_fireworksAI(Creature* pCreature) : ScriptedAI(pCreature)
+    {
+        Reset();
+    }
+
+    float x, y, z;
+    uint8 m_uiCounter;
+    uint32 m_uiFireworksTimer;
+
+    uint32 GetTimeUntilNextShow()
+    {
+        time_t theTime = time(NULL);
+        struct tm *aTime = localtime(&theTime);
+        int min = aTime->tm_min;
+        return min > 0 ? (60 - min) * 60 * IN_MILLISECONDS + 1 : 1000;
+    }
+
+    void Reset()
+    {
+        m_uiCounter = 0;
+        m_uiFireworksTimer = GetTimeUntilNextShow();
+        m_creature->GetPosition(x, y, z);
+    }
+
+    void UpdateAI(const uint32 uiDiff)
+    {
+        if (m_uiFireworksTimer <= uiDiff)
+        {
+            if (m_uiCounter < 30)
+            {
+                if (urand(0,4))
+                    m_creature->SummonCreature(Fireworks[urand(6, 11)].m_uiNpcEntry, x + urand(0, 5), y + urand(0, 5), z + urand(0, 15), urand(0,6), TEMPSUMMON_TIMED_DESPAWN, 10000, true);
+                else
+                    m_creature->SummonCreature(Fireworks[urand(12, 17)].m_uiNpcEntry, x + urand(0, 5), y + urand(0, 5), z + urand(0, 10), urand(0, 6), TEMPSUMMON_TIMED_DESPAWN, 10000, true);
+
+                m_uiFireworksTimer = urand(3, 6) * IN_MILLISECONDS;
+                m_uiCounter++;
+            }
+            else
+            {
+                m_uiCounter = 0;
+                m_uiFireworksTimer = GetTimeUntilNextShow();
+            }
+        }
+        else
+            m_uiFireworksTimer -= uiDiff;
+    }
+};
+
+CreatureAI* GetAI_npc_event_fireworks(Creature* pCreature)
+{
+    return new npc_event_fireworksAI(pCreature);
+}
+
 void AddSC_npcs_special()
 {
     Script *newscript;
@@ -2844,5 +2914,10 @@ void AddSC_npcs_special()
     newscript = new Script;
     newscript->Name = "npc_explosive_sheep";
     newscript->GetAI = &GetAI_npc_explosive_sheep;
+    newscript->RegisterSelf();
+
+    newscript = new Script;
+    newscript->Name = "npc_event_fireworks";
+    newscript->GetAI = &GetAI_npc_event_fireworks;
     newscript->RegisterSelf();
 }

@@ -1,0 +1,703 @@
+INSERT INTO `migrations` VALUES ('20170831145658'); 
+
+-- Fix Feast of Winter Veil event duration.
+REPLACE INTO `game_event` (`entry`, `start_time`, `end_time`, `occurence`, `length`, `holiday`, `description`, `hardcoded`, `disabled`) VALUES (2, '2006-12-17 23:00:00', '2021-01-01 23:59:59', 525600, 25920, 141, 'Feast of Winter Veil', 0, 0);
+
+-- Add New Year's Eve event.
+INSERT INTO `game_event` (`entry`, `start_time`, `end_time`, `occurence`, `length`, `holiday`, `description`, `hardcoded`, `disabled`) VALUES (80, '2017-12-31 06:00:00', '2021-01-01 06:00:05', 525600, 1445, 0, 'New Year\'s Eve', 0, 0);
+
+-- Add new year's quest to the event.
+INSERT INTO `game_event_quest` (`quest`, `event`) VALUES (8860, 80);
+INSERT INTO `game_event_quest` (`quest`, `event`) VALUES (8861, 80);
+
+-- Update data for Drunken Bruiser.
+UPDATE `creature_template` SET `unit_flags`=514 WHERE `entry`=15724;
+INSERT INTO `creature_template_addon` (`entry`, `mount`, `bytes1`, `b2_0_sheath`, `b2_1_flags`, `emote`, `moveflags`, `auras`) VALUES (15724, 0, 0, 0, 0, 12, 0, '26115');
+
+-- Make Booty Bay Bruisers turn into Drunken Bruisers during New Year's Eve.
+INSERT INTO `game_event_creature_data` VALUES (76, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (77, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (160, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (161, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (162, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (163, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (164, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (165, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (178, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (182, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (589, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (590, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (591, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (592, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (593, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (594, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (596, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (597, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (598, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (599, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (649, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (650, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (651, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (652, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (654, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (655, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (656, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (657, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (679, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (681, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (682, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (683, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (686, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (687, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (688, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (689, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (692, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (693, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (694, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (695, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (696, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (697, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (698, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (699, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (700, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (715, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (716, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (717, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (719, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (2164, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (2167, 15724, 0, 0, 26115, 0, 80);
+INSERT INTO `game_event_creature_data` VALUES (60007, 15724, 0, 0, 26115, 0, 80);
+
+-- Correct size of Festive Keg.
+UPDATE `gameobject_template` SET `size`=2 WHERE `entry`=180699;
+
+-- Add missing npc texts for the revelers.
+INSERT INTO `conditions` VALUES (112, 12, 80, 0);
+INSERT INTO `npc_text` (`ID`, `text0_0`, `text0_1`, `lang0`, `prob0`, `em0_0`, `em0_1`, `em0_2`, `em0_3`, `em0_4`, `em0_5`, `text1_0`, `text1_1`, `lang1`, `prob1`, `em1_0`, `em1_1`, `em1_2`, `em1_3`, `em1_4`, `em1_5`, `text2_0`, `text2_1`, `lang2`, `prob2`, `em2_0`, `em2_1`, `em2_2`, `em2_3`, `em2_4`, `em2_5`, `text3_0`, `text3_1`, `lang3`, `prob3`, `em3_0`, `em3_1`, `em3_2`, `em3_3`, `em3_4`, `em3_5`, `text4_0`, `text4_1`, `lang4`, `prob4`, `em4_0`, `em4_1`, `em4_2`, `em4_3`, `em4_4`, `em4_5`, `text5_0`, `text5_1`, `lang5`, `prob5`, `em5_0`, `em5_1`, `em5_2`, `em5_3`, `em5_4`, `em5_5`, `text6_0`, `text6_1`, `lang6`, `prob6`, `em6_0`, `em6_1`, `em6_2`, `em6_3`, `em6_4`, `em6_5`, `text7_0`, `text7_1`, `lang7`, `prob7`, `em7_0`, `em7_1`, `em7_2`, `em7_3`, `em7_4`, `em7_5`) VALUES (8218, 'They know how to throw a party here in Moonglade.  Who would have thought so?', 'They know how to throw a party here in Moonglade.  Who would have thought so?', 0, 1, 0, 1, 0, 0, 0, 0, 'Try these fireworks launchers.  They\'re a blast!', 'Try these fireworks launchers.  They\'re a blast!', 0, 1, 0, 5, 0, 0, 0, 0, 'This beam of moonlight leads to Stormwind.  Use your invitation when you\'re ready.', 'This beam of moonlight leads to Stormwind.  Use your invitation when you\'re ready.', 0, 1, 0, 1, 0, 0, 0, 0, 'Don\'t try to teleport to one of your enemies\' cities.  It won\'t work - we may all be friendly here, but back home old grudges remain...', 'Don\'t try to teleport to one of your enemies\' cities.  It won\'t work - we may all be friendly here, but back home old grudges remain...', 0, 1, 0, 1, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `npc_text` (`ID`, `text0_0`, `text0_1`, `lang0`, `prob0`, `em0_0`, `em0_1`, `em0_2`, `em0_3`, `em0_4`, `em0_5`, `text1_0`, `text1_1`, `lang1`, `prob1`, `em1_0`, `em1_1`, `em1_2`, `em1_3`, `em1_4`, `em1_5`, `text2_0`, `text2_1`, `lang2`, `prob2`, `em2_0`, `em2_1`, `em2_2`, `em2_3`, `em2_4`, `em2_5`, `text3_0`, `text3_1`, `lang3`, `prob3`, `em3_0`, `em3_1`, `em3_2`, `em3_3`, `em3_4`, `em3_5`, `text4_0`, `text4_1`, `lang4`, `prob4`, `em4_0`, `em4_1`, `em4_2`, `em4_3`, `em4_4`, `em4_5`, `text5_0`, `text5_1`, `lang5`, `prob5`, `em5_0`, `em5_1`, `em5_2`, `em5_3`, `em5_4`, `em5_5`, `text6_0`, `text6_1`, `lang6`, `prob6`, `em6_0`, `em6_1`, `em6_2`, `em6_3`, `em6_4`, `em6_5`, `text7_0`, `text7_1`, `lang7`, `prob7`, `em7_0`, `em7_1`, `em7_2`, `em7_3`, `em7_4`, `em7_5`) VALUES (8134, 'Starting at 6PM, they will show fireworks from the highest bluff!', 'Starting at 6PM, they will show fireworks from the highest bluff!', 0, 1, 0, 5, 0, 0, 0, 0, 'The kegs are filled with strong brew!  Drink, friend, and celebrate!', 'The kegs are filled with strong brew!  Drink, friend, and celebrate!', 0, 1, 0, 1, 0, 153, 0, 0, 'I heard that, after the fireworks show, goblets will be brought to the tables.  Fine toasts we shall raise!', 'I heard that, after the fireworks show, goblets will be brought to the tables.  Fine toasts we shall raise!', 0, 1, 0, 71, 0, 0, 0, 0, 'Hail, $c!  Welcome to the celebration!', 'Hail, $c!  Welcome to the celebration!', 0, 1, 0, 2, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0);
+
+-- Missing data for Stormwind Reveler.
+UPDATE `creature_template` SET `maxlevel`=60, `modelid_2`=15768, `modelid_3`=15767, `modelid_4`=15769, `gossip_menu_id`=6931, `AIName`='EventAI' WHERE `entry`=15694;
+INSERT INTO `gossip_menu` VALUES (6931, 8218, 0);
+INSERT INTO `gossip_menu` VALUES (6931, 8134, 112);
+INSERT INTO `creature_ai_scripts` (`id`, `creature_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES (1569401, 15694, 22, 0, 100, 1, 34, 0, 0, 0, 5, 94, 0, 0, 11, 26035, 6, 34, 0, 0, 0, 0, 'Stormwind Reveler - Buff and Dance on received Dance emote');
+-- Missing data for Orgrimmar Reveler.
+UPDATE `creature_template` SET `maxlevel`=60, `modelid_2`=15892, `modelid_3`=15893, `modelid_4`=15894, `gossip_menu_id`=6932, `AIName`='EventAI' WHERE `entry`=15908;
+INSERT INTO `gossip_menu` VALUES (6932, 8221, 0);
+INSERT INTO `gossip_menu` VALUES (6932, 8134, 112);
+INSERT INTO `creature_ai_scripts` (`id`, `creature_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES (1590801, 15908, 22, 0, 100, 1, 34, 0, 0, 0, 5, 94, 0, 0, 11, 26035, 6, 34, 0, 0, 0, 0, 'Orgrimmar Reveler - Buff and Dance on received Dance emote');
+-- Missing data for Booty Bay Reveler.
+UPDATE `creature_template` SET `minlevel`=1, `maxlevel`=60, `modelid_2`=15764, `modelid_3`=15763, `modelid_4`=15765, `AIName`='EventAI' WHERE `entry`=15723;
+INSERT INTO `creature_ai_scripts` (`id`, `creature_id`, `event_type`, `event_inverse_phase_mask`, `event_chance`, `event_flags`, `event_param1`, `event_param2`, `event_param3`, `event_param4`, `action1_type`, `action1_param1`, `action1_param2`, `action1_param3`, `action2_type`, `action2_param1`, `action2_param2`, `action2_param3`, `action3_type`, `action3_param1`, `action3_param2`, `action3_param3`, `comment`) VALUES (1572301, 15723, 22, 0, 100, 1, 34, 0, 0, 0, 5, 94, 0, 0, 11, 26035, 6, 34, 0, 0, 0, 0, 'Booty Bay Reveler - Buff and Dance on received Dance emote');
+
+-- Correct level for New Year's quests.
+UPDATE `quest_template` SET `MinLevel`=1, `QuestLevel`=60 WHERE `entry` IN (8860, 8861);
+
+-- Correct spawn position for specific Booty Bay Bruiser.
+REPLACE INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (715, 4624, 0, 7102, 0, -14471.4, 457.11, 30.5256, 3.889, 300, 0, 0, 7296, 0, 0, 0, 0);
+
+-- Add spawn points for Stormwind Reveler (15694)
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140001, 15694, 0, 0, 1322, -9020.52, 477.655, 96.1004, 4.51718, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140002, 15694, 0, 0, 1322, -9021.55, 477.194, 95.9688, 4.81168, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140003, 15694, 0, 0, 1322, -9020.78, 475.254, 95.8957, 1.44627, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140004, 15694, 0, 0, 1322, -9019.37, 461.162, 94.9183, 1.79027, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140005, 15694, 0, 0, 1322, -9017.54, 462.299, 95.2253, 2.1869, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140006, 15694, 0, 0, 1322, -8847.54, 633.845, 95.4912, 0.5873, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140007, 15694, 0, 0, 1322, -8846.61, 636.242, 95.457, 0.215285, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140008, 15694, 0, 0, 1322, -8830.82, 633.321, 94.2612, 1.12401, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140009, 15694, 0, 0, 1322, -8829.34, 635.003, 94.3105, 2.20392, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140010, 15694, 0, 0, 1322, -8829.21, 637.104, 94.2519, 3.93181, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140011, 15694, 0, 0, 1322, -8831.56, 637.247, 94.3474, 5.45547, 25, 0, 0, 5000, 0, 0, 0, 0);
+-- Add Stormwind Reveler spawns to event New Year's Eve.
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140001, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140002, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140003, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140004, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140005, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140006, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140007, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140008, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140009, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140010, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140011, 80);
+
+-- Add spawn points for Orgrimmar Reveler (15908)
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140012, 15908, 1, 0, 1322, 1313.73, -4395.97, 26.1721, 2.06602, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140013, 15908, 1, 0, 1322, 1311.27, -4395.37, 26.1188, 2.16419, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140014, 15908, 1, 0, 1322, 1293.23, -4398.46, 26.2878, 0.473975, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140015, 15908, 1, 0, 1322, 1301.39, -4372.47, 27.9273, 5.7585, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140016, 15908, 1, 0, 1322, 1303.85, -4373.78, 27.9919, 2.57371, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140017, 15908, 1, 0, 1322, 1316.75, -4378.09, 26.2345, 0.476688, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140018, 15908, 1, 0, 1322, 1318.68, -4377.1, 26.2275, 3.63792, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140019, 15908, 1, 0, 1322, 1341.81, -4401.32, 28.2144, 1.64352, 25, 0, 0, 5000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140020, 15908, 1, 0, 1322, 1335.44, -4356.78, 28.3946, 0.595001, 25, 0, 0, 5000, 0, 0, 0, 0);
+-- Add Orgrimmar Reveler spawns to event New Year's Eve.
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140012, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140013, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140014, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140015, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140016, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140017, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140018, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140019, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140020, 80);
+
+-- Add spawn points for Booty Bay Reveler (15723)
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140021, 15723, 0, 0, 0, -14402.2, 416.53, 22.5127, 2.72883, 25, 0, 0, 1900, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140022, 15723, 0, 0, 0, -14370.5, 378.007, 23.2575, 1.83685, 25, 0, 0, 2000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140023, 15723, 0, 0, 0, -14443, 459.639, 15.3879, 4.93171, 25, 0, 0, 1600, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140024, 15723, 0, 0, 0, -14442.6, 457.83, 15.3843, 2.01788, 25, 0, 0, 1600, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140025, 15723, 0, 0, 0, -14392, 420.187, 7.55336, 4.33318, 25, 0, 0, 1500, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140026, 15723, 0, 0, 0, -14393, 418.593, 7.63355, 0.959887, 25, 0, 0, 1500, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140027, 15723, 0, 0, 0, -14407.8, 419.014, 22.3671, 5.871, 25, 0, 0, 2000, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140028, 15723, 0, 0, 0, -14409.2, 421.247, 22.3167, 3.32707, 25, 0, 0, 1600, 0, 0, 0, 0);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140029, 15723, 0, 0, 0, -14342.4, 444.211, 7.48224, 3.48087, 25, 0, 0, 1500, 0, 0, 0, 0);
+-- Add Booty Bay Reveler spawns to event New Year's Eve.
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140021, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140022, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140023, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140024, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140025, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140026, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140027, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140028, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140029, 80);
+
+-- Add spawn points for Party Table (180698)
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137000, 180698, 1, 1313.08, -4398.37, 25.9532, 1.61633, 0, 0, 0.723019, 0.690828, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137001, 180698, 1, 1298.39, -4399.3, 26.2797, 1.64036, 0, 0, 0.731269, 0.68209, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137002, 180698, 1, 1308.99, -4370.22, 27.776, 5.02302, 0, 0, 0.58921, -0.80798, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137003, 180698, 1, 1316.67, -4368.36, 27.8124, 4.90522, 0, 0, 0.635751, -0.771894, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137004, 180698, 1, 1344.02, -4398.47, 28.5996, 1.64424, 0, 0, 0.73259, 0.68067, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137005, 180698, 1, 1341.18, -4354.06, 29.2606, 4.9304, 0, 0, 0.625983, -0.779837, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137006, 180698, 0, -8854.77, 589.803, 92.9236, 2.38223, 0, 0, 0.928784, 0.370622, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137007, 180698, 0, -8857.31, 587.264, 93.0036, 2.40186, 0, 0, 0.932376, 0.361491, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137008, 180698, 0, -8852.06, 592.656, 92.8035, 2.38223, 0, 0, 0.928784, 0.370622, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137009, 180698, 0, -8816.53, 628.468, 94.095, 2.20842, 0, 0, 0.893109, 0.44984, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137010, 180698, 0, -8846.03, 626.901, 94.4651, 0.445949, 0, 0, 0.221132, 0.975244, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137011, 180698, 0, -14448, 484.727, 15.0311, 2.38799, 0, 0, 0.929847, 0.367946, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137012, 180698, 0, -14400.2, 414.49, 22.5673, 1.13134, 0, 0, 0.535983, 0.844229, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137013, 180698, 0, -8839.96, 647.098, 96.0065, 2.19449, 0, 0, 0.889954, 0.45605, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137014, 180698, 0, -8842.11, 650.168, 96.4963, 2.17877, 0, 0, 0.886343, 0.46303, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137015, 180698, 0, -8826.08, 630.087, 94.095, 3.75195, 0, 0, 0.953793, -0.300465, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137016, 180698, 0, -8850.46, 664.59, 97.3669, 0.685716, 0, 0, 0.33618, 0.941798, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137017, 180698, 0, -14345.7, 439.989, 7.43887, 3.78359, 0, 0, 0.948921, -0.315515, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137018, 180698, 0, -14348.1, 438.18, 7.41806, 3.80715, 0, 0, 0.945139, -0.32667, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137019, 180698, 0, -14443.1, 453.254, 15.3917, 2.15091, 0, 0, 0.879807, 0.475331, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137020, 180698, 0, -14412.5, 423.686, 8.7847, 1.17435, 0, 0, 0.554012, 0.832509, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137021, 180698, 0, -14408.9, 422.391, 8.53366, 5.94168, 0, 0, 0.169922, -0.985457, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137022, 180698, 0, -14413.1, 420.051, 22.2403, 2.74741, 0, 0, 0.980641, 0.195816, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137023, 180698, 0, -14459.8, 427.824, 25.1764, 2.11399, 0, 0, 0.870882, 0.491493, 25, 100, 1, 0);
+-- Add Party Table spawns to event New Year's Eve.
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137000, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137001, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137002, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137003, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137004, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137005, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137006, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137007, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137008, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137009, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137010, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137011, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137012, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137013, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137014, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137015, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137016, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137017, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137018, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137019, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137020, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137021, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137022, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137023, 80);
+
+-- Add spawn points for Festive Keg (180699)
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137024, 180699, 1, 1315.91, -4398.29, 26.3055, 1.64144, 0, 0, 0.731637, 0.681694, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137025, 180699, 1, 1310.16, -4398.79, 25.8665, 1.60217, 0, 0, 0.718112, 0.695927, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137026, 180699, 1, 1301.25, -4399.22, 26.2723, 1.70392, 0, 0, 0.752572, 0.65851, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137027, 180699, 1, 1295.63, -4399.83, 26.2888, 1.6835, 0, 0, 0.74581, 0.666159, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137028, 180699, 1, 1313.09, -4369.27, 27.8094, 4.95233, 0, 0, 0.617394, -0.786654, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137029, 180699, 1, 1305.4, -4371.5, 27.9263, 5.09764, 0, 0, 0.558663, -0.829395, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137030, 180699, 1, 1321.12, -4367.68, 27.5433, 4.96413, 0, 0, 0.612745, -0.790281, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137031, 180699, 1, 1340.3, -4398.68, 28.3044, 1.64031, 0, 0, 0.731252, 0.682107, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137032, 180699, 1, 1347.73, -4398.26, 28.8488, 1.67958, 0, 0, 0.744504, 0.667618, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137033, 180699, 1, 1337.7, -4354.86, 28.7286, 4.94611, 0, 0, 0.619839, -0.784729, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137034, 180699, 1, 1344.47, -4353.32, 29.7006, 4.96182, 0, 0, 0.613656, -0.789574, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137035, 180699, 0, -9013.82, 482.597, 96.7343, 5.41646, 0, 0, 0.419925, -0.907559, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137036, 180699, 0, -9025.82, 472.579, 95.2, 5.43606, -0.06, 0.03, 0.411009, -0.911631, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137037, 180699, 0, -9037.57, 463.705, 93.2958, 5.30725, 0, 0, 0.468831, -0.883288, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137038, 180699, 0, -9014.58, 463.397, 95.5894, 2.22617, -0.02, -0.06, 0.897065, 0.441898, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137039, 180699, 0, -9022.14, 457.427, 94.2598, 2.26544, -0.02, -0.07, 0.905569, 0.424199, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137040, 180699, 0, -9029.89, 451.443, 93.2956, 2.28116, 0, 0, 0.908875, 0.417068, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137041, 180699, 0, -8868.08, 569.557, 94.5587, 2.29983, -0.02, 0, 0.912729, 0.408566, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137042, 180699, 0, -8870.43, 567.477, 94.5126, 2.2959, -0.03, 0, 0.911925, 0.410358, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137043, 180699, 0, -8890.14, 592.526, 94.1672, 5.33535, -0.04, -0.06, 0.456378, -0.889786, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137044, 180699, 0, -8841.93, 598.132, 93.7053, 2.46075, -0.05, -0.025, 0.942613, 0.333886, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137045, 180699, 0, -8809.78, 623.09, 94.45, 2.21568, -0.02, 0.02, 0.894735, 0.446597, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137046, 180699, 0, -8847.64, 631.465, 95.0691, 0.410606, 0.06, 0, 0.203864, 0.978999, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137047, 180699, 0, -8844.18, 623.708, 94.1, 0.398825, 0.04, 0, 0.198094, 0.980183, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137048, 180699, 0, -8824.46, 638.024, 94.2364, 3.82709, 0, 0, 0.941834, -0.336079, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137049, 180699, 0, -14323.8, 450.257, 23.0996, 6.00317, 0, 0, 0.13955, -0.990215, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137050, 180699, 0, -14317.5, 478.722, 8.56666, 2.76731, 0, 0, 0.98254, 0.186051, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137051, 180699, 0, -14365.4, 377.524, 23.3652, 1.82324, 0, 0, 0.790498, 0.612465, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137052, 180699, 0, -14368.3, 376.786, 23.3781, 1.8201, 0, 0, 0.789536, 0.613705, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137053, 180699, 0, -14395.2, 403.169, 22.701, 5.77559, 0, 0, 0.25108, -0.967966, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137054, 180699, 0, -8852.39, 662.564, 97.063, 5.3929, 0, 0, 0.430584, -0.90255, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137055, 180699, 0, -8847.84, 666.157, 97.443, 5.3929, 0, 0, 0.430584, -0.90255, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137056, 180699, 0, -8824.75, 648.1, 94.5048, 5.27168, 0, 0, 0.484465, -0.874811, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137057, 180699, 0, -14343.6, 441.844, 7.45943, 2.21279, 0, 0, 0.894091, 0.447886, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137058, 180699, 0, -14350.5, 436.866, 7.4002, 2.19708, 0, 0, 0.890543, 0.454898, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137059, 180699, 0, -14444.9, 455.941, 15.3949, 0.540859, 0, 0, 0.267146, 0.963656, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137060, 180699, 0, -14441.5, 450.745, 15.3921, 0.60522, 0, 0, 0.298013, 0.954562, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137061, 180699, 0, -14415.9, 424.885, 8.9119, 1.05655, 0, 0, 0.504043, 0.863678, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137062, 180699, 0, -14405.4, 420.973, 8.38279, 1.24498, 0, 0, 0.583058, 0.81243, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137063, 180699, 0, -14389.6, 422.592, 7.39937, 2.57387, 0, 0, 0.959981, 0.280064, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137064, 180699, 0, -14415.6, 421.395, 22.152, 1.17665, 0, 0, 0.554966, 0.831873, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137065, 180699, 0, -14410.5, 419.073, 22.3119, 1.14913, 0, 0, 0.543469, 0.839429, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137066, 180699, 0, -14453.3, 415.995, 25.045, 1.70916, 0, 0, 0.754294, 0.656537, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137067, 180699, 0, -14458.1, 425.013, 25.1324, 0.586671, 0, 0, 0.289147, 0.957285, 25, 100, 1, 0);
+-- Add Festive Keg spawns to event New Year's Eve.
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137024, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137025, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137026, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137027, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137028, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137029, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137030, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137031, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137032, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137033, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137034, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137035, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137036, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137037, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137038, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137039, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137040, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137041, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137042, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137043, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137044, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137045, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137046, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137047, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137048, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137049, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137050, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137051, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137052, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137053, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137054, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137055, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137056, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137057, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137058, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137059, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137060, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137061, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137062, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137063, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137064, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137065, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137066, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137067, 80);
+
+-- Add spawn points for Festive Mug (180905)
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137068, 180905, 1, 1313.76, -4398.34, 27.0812, 0.0408108, 0, 0, 0.020404, 0.999792, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137069, 180905, 1, 1312.98, -4397.79, 27.0812, 1.59197, 0, 0, 0.714554, 0.69958, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137070, 180905, 1, 1312.52, -4398.45, 27.0811, 3.21901, 0, 0, 0.999251, -0.0387009, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137071, 180905, 1, 1313.17, -4399.08, 27.0813, 4.84871, 0, 0, 0.657304, -0.753625, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137072, 180905, 1, 1298.29, -4398.67, 27.4084, 1.64036, 0, 0, 0.731268, 0.68209, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137073, 180905, 1, 1297.77, -4399.37, 27.4084, 3.18367, 0, 0, 0.999779, -0.0210351, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137074, 180905, 1, 1298.35, -4400.02, 27.4078, 4.8542, 0, 0, 0.655234, -0.755426, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137075, 180905, 1, 1298.93, -4399.27, 27.4076, 0.0859983, 0, 0, 0.0429859, 0.999076, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137076, 180905, 1, 1309.16, -4370.85, 28.9041, 5.07521, 0, 0, 0.567929, -0.823077, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137077, 180905, 1, 1309.56, -4369.99, 28.9041, 0.323544, 0, 0, 0.161068, 0.986943, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137078, 180905, 1, 1308.83, -4369.65, 28.9039, 1.96895, 0, 0, 0.832983, 0.553299, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137079, 180905, 1, 1308.36, -4370.39, 28.904, 3.41016, 0, 0, 0.990997, -0.133881, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137080, 180905, 1, 1316.78, -4368.9, 28.9403, 4.90241, 0, 0, 0.636836, -0.770999, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137081, 180905, 1, 1317.2, -4368.18, 28.9403, 0.209649, 0, 0, 0.104633, 0.994511, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137082, 180905, 1, 1316.57, -4367.74, 28.9405, 1.81186, 0, 0, 0.787, 0.616953, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137083, 180905, 1, 1316.09, -4368.45, 28.9404, 3.32768, 0, 0, 0.995675, -0.0929098, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137084, 180905, 1, 1344.11, -4399.13, 29.7276, 4.85973, 0, 0, 0.653144, -0.757233, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137085, 180905, 1, 1343.45, -4398.54, 29.7276, 3.21824, 0, 0, 0.999266, -0.038316, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137086, 180905, 1, 1344.04, -4397.83, 29.7276, 1.72206, 0, 0, 0.758514, 0.651657, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137087, 180905, 1, 1344.66, -4398.49, 29.7276, 0.104137, 0, 0, 0.0520452, 0.998645, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137088, 180905, 1, 1341.42, -4354.68, 30.3886, 4.96181, 0, 0, 0.613658, -0.789572, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137089, 180905, 1, 1341.85, -4353.81, 30.3887, 0.257278, 0, 0, 0.128284, 0.991737, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137090, 180905, 1, 1340.92, -4353.45, 30.3886, 1.83986, 0, 0, 0.795558, 0.605878, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137091, 180905, 1, 1340.62, -4354.15, 30.3887, 3.41458, 0, 0, 0.990699, -0.13607, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137092, 180905, 0, -8857.67, 586.767, 94.132, 4.09315, 0, 0, 0.888935, -0.458033, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137093, 180905, 0, -8857.65, 587.565, 94.1322, 2.45953, 0, 0, 0.94241, 0.334461, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137094, 180905, 0, -8856.78, 586.805, 94.1317, 5.54457, 0, 0, 0.360969, -0.932578, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137095, 180905, 0, -8856.78, 587.817, 94.1317, 0.940569, 0, 0, 0.45314, 0.891439, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137096, 180905, 0, -8855.18, 589.351, 94.0517, 3.98869, 0, 0, 0.911637, -0.410997, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137097, 180905, 0, -8852.48, 593.027, 93.9311, 4.02795, 0, 0, 0.903393, -0.428814, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137098, 180905, 0, -8854.34, 590.297, 94.0518, 0.845526, 0, 0, 0.410282, 0.911959, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137099, 180905, 0, -8855.13, 590.071, 94.0521, 0.76071, 0, 0, 0.37125, 0.928533, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137100, 180905, 0, -8851.62, 592.189, 93.9311, 0.784262, 0, 0, 0.382158, 0.924097, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137101, 180905, 0, -8852.51, 592.185, 93.9311, 5.58304, 0, 0, 0.342964, -0.939348, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137102, 180905, 0, -8854.37, 589.42, 94.0521, 5.57363, 0, 0, 0.347382, -0.937724, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137103, 180905, 0, -8851.55, 593.021, 93.9311, 2.41868, 0, 0, 0.935382, 0.353639, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137104, 180905, 0, -8816.14, 629.049, 95.2233, 4.82062, 0, 0, 0.667824, -0.744319, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137105, 180905, 0, -8815.54, 628.289, 95.2232, 3.83104, 0, 0, 0.941169, -0.337935, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137106, 180905, 0, -8816.95, 628.915, 95.2236, 1.20779, 0, 0, 0.567853, 0.82313, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137107, 180905, 0, -8817.22, 628.356, 95.2231, 5.39788, 0, 0, 0.428338, -0.903619, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137108, 180905, 0, -8816.64, 627.712, 95.223, 2.15814, 0, 0, 0.881518, 0.47215, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137109, 180905, 0, -8845.79, 627.698, 95.5934, 2.02146, 0, 0, 0.847219, 0.531244, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137110, 180905, 0, -8845.3, 626.607, 95.5934, 5.19446, 0, 0, 0.517871, -0.855459, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137111, 180905, 0, -8846.32, 626.081, 95.5931, 3.66765, 0, 0, 0.965607, -0.260007, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137112, 180905, 0, -8846.7, 627.176, 95.5931, 2.19739, 0, 0, 0.890614, 0.454761, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137113, 180905, 0, -14448.1, 485.324, 16.1598, 0.329461, 0, 0, 0.163986, 0.986463, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137114, 180905, 0, -14447.6, 484.241, 16.1599, 3.10271, 0, 0, 0.999811, 0.0194407, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137115, 180905, 0, -14447.2, 484.845, 16.1599, 4.05068, 0, 0, 0.898461, -0.439054, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137116, 180905, 0, -14448.4, 484.455, 16.1599, 4.88085, 0, 0, 0.64511, -0.76409, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137117, 180905, 0, -14400, 413.821, 23.6962, 1.11564, 0, 0, 0.529338, 0.848411, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137118, 180905, 0, -14400.3, 415.082, 23.6962, 0.208508, 0, 0, 0.104065, 0.99457, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137119, 180905, 0, -14399.5, 414.764, 23.6962, 5.92228, 0, 0, 0.179477, -0.983762, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137120, 180905, 0, -14400.8, 414.871, 23.6962, 1.07244, 0, 0, 0.510891, 0.859645, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137121, 180905, 0, -8842.37, 650.503, 97.6242, 2.29894, 0, 0, 0.912547, 0.408971, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137122, 180905, 0, -8842.58, 649.784, 97.6247, 3.81083, 0, 0, 0.944535, -0.328411, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137123, 180905, 0, -8841.79, 649.685, 97.6247, 5.4641, 0, 0, 0.398191, -0.917302, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137124, 180905, 0, -8841.64, 650.389, 97.6247, 0.750923, 0, 0, 0.366702, 0.930338, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137125, 180905, 0, -8839.64, 646.693, 97.1352, 5.3942, 0, 0, 0.430001, -0.902828, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137126, 180905, 0, -8839.36, 647.509, 97.1352, 0.74464, 0, 0, 0.363778, 0.931486, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137127, 180905, 0, -8840.33, 647.647, 97.1352, 2.21883, 0, 0, 0.895439, 0.445184, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137128, 180905, 0, -8840.46, 646.884, 97.1352, 3.74015, 0, 0, 0.955549, -0.294831, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137129, 180905, 0, -8826.06, 629.399, 95.2232, 3.95223, 0, 0, 0.918976, -0.394314, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137130, 180905, 0, -8825.23, 629.905, 95.2232, 3.18647, 0, 0, 0.999748, -0.0224382, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137131, 180905, 0, -8825.71, 630.648, 95.2232, 2.64612, 0, 0, 0.96947, 0.245211, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137132, 180905, 0, -8826.69, 630.247, 95.2232, 3.13856, 0, 0, 0.999999, 0.00151463, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137133, 180905, 0, -8850.47, 663.866, 98.4949, 3.8705, 0, 0, 0.934318, -0.356441, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137134, 180905, 0, -8849.82, 664.467, 98.4949, 5.49235, 0, 0, 0.385194, -0.922836, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137135, 180905, 0, -8850.44, 665.375, 98.4949, 3.82809, 0, 0, 0.941666, -0.336548, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137136, 180905, 0, -8851.14, 664.596, 98.4949, 2.35782, 0, 0, 0.924191, 0.381931, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137137, 180905, 0, -14348.3, 438.875, 8.54688, 2.63692, 0, 0, 0.968332, 0.249667, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137138, 180905, 0, -14348.6, 438.104, 8.54688, 2.29527, 0, 0, 0.911796, 0.410644, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137139, 180905, 0, -14347.9, 437.488, 8.54691, 0.0246918, 0, 0, 0.0123456, 0.999924, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137140, 180905, 0, -14347.3, 437.866, 8.54691, 1.24599, 0, 0, 0.583469, 0.812136, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137141, 180905, 0, -14347.5, 438.672, 8.54691, 3.881, 0, 0, 0.932435, -0.361338, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137142, 180905, 0, -14346, 440.577, 8.56736, 2.1924, 0, 0, 0.889478, 0.456978, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137143, 180905, 0, -14346.1, 439.706, 8.56736, 2.35341, 0, 0, 0.923346, 0.383969, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137144, 180905, 0, -14345.6, 439.266, 8.56736, 0.151152, 0, 0, 0.0755042, 0.997145, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137145, 180905, 0, -14345, 439.793, 8.56736, 1.47376, 0, 0, 0.671982, 0.740568, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137146, 180905, 0, -14345.3, 440.507, 8.56736, 3.87708, 0, 0, 0.93314, -0.359512, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137147, 180905, 0, -14442.5, 453.157, 16.5195, 0.532977, 0, 0, 0.263345, 0.964702, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137148, 180905, 0, -14442.9, 452.903, 16.5195, 0.544757, 0, 0, 0.269023, 0.963134, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137149, 180905, 0, -14443.4, 453.306, 16.5195, 4.33352, 0, 0, 0.827609, -0.561305, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137150, 180905, 0, -14443.8, 453.177, 16.5195, 5.26343, 0, 0, 0.488071, -0.872804, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137151, 180905, 0, -14443.8, 453.79, 16.5195, 4.67595, 0, 0, 0.719872, -0.694107, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137152, 180905, 0, -14413.1, 423.845, 9.91229, 1.50178, 0, 0, 0.682289, 0.731083, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137153, 180905, 0, -14413.5, 423.308, 9.91283, 5.30548, 0, 0, 0.469613, -0.882872, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137154, 180905, 0, -14412.4, 423.31, 9.91283, 0.718746, 0, 0, 0.351688, 0.936117, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137155, 180905, 0, -14412.5, 424.143, 9.91283, 2.77335, 0, 0, 0.983097, 0.183083, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137156, 180905, 0, -14408.5, 421.823, 9.66224, 1.36119, 0, 0, 0.629257, 0.777197, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137157, 180905, 0, -14408.2, 422.432, 9.66296, 6.08536, 0, 0, 0.0987507, -0.995112, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137158, 180905, 0, -14409.8, 422.075, 9.66224, 5.2018, 0, 0, 0.51473, -0.857352, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137159, 180905, 0, -14411.9, 423.946, 9.91229, 3.19902, 0, 0, 0.999588, -0.0287111, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137160, 180905, 0, -14409.4, 422.643, 9.66154, 5.28426, 0, 0, 0.478955, -0.877839, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137161, 180905, 0, -14408.7, 422.958, 9.66154, 6.02567, 0, 0, 0.128401, -0.991722, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137162, 180905, 0, -14413.3, 420.909, 23.3682, 1.81279, 0, 0, 0.787285, 0.616589, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137163, 180905, 0, -14412.7, 420.587, 23.3682, 5.99895, 0, 0, 0.141639, -0.989918, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137164, 180905, 0, -14412.2, 420.513, 23.3682, 3.03722, 0, 0, 0.998639, 0.0521647, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137165, 180905, 0, -14413.2, 419.456, 23.3682, 0.530226, 0, 0, 0.262019, 0.965063, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137166, 180905, 0, -14413.8, 419.863, 23.3682, 5.97775, 0, 0, 0.152126, -0.988361, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137167, 180905, 0, -14459.2, 427.712, 26.3046, 5.45612, 0, 0, 0.401845, -0.915708, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137168, 180905, 0, -14460.2, 428.305, 26.3052, 6.01768, 0, 0, 0.132363, -0.991201, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137169, 180905, 0, -14459.6, 428.788, 26.3052, 5.03202, 0, 0, 0.585571, -0.810621, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137170, 180905, 0, -14460.7, 428.017, 26.3048, 3.67721, 0, 0, 0.964353, -0.264618, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137171, 180905, 0, -14460, 427.119, 26.3051, 2.18495, 0, 0, 0.887769, 0.46029, 25, 100, 1, 0);
+-- Add Festive Mug spawns to event New Year's Eve.
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137068, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137069, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137070, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137071, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137072, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137073, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137074, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137075, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137076, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137077, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137078, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137079, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137080, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137081, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137082, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137083, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137084, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137085, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137086, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137087, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137088, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137089, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137090, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137091, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137092, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137093, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137094, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137095, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137096, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137097, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137098, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137099, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137100, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137101, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137102, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137103, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137104, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137105, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137106, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137107, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137108, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137109, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137110, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137111, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137112, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137113, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137114, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137115, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137116, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137117, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137118, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137119, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137120, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137121, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137122, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137123, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137124, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137125, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137126, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137127, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137128, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137129, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137130, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137131, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137132, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137133, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137134, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137135, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137136, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137137, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137138, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137139, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137140, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137141, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137142, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137143, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137144, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137145, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137147, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137148, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137149, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137150, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137151, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137152, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137153, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137154, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137155, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137156, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137157, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137158, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137159, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137160, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137161, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137162, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137163, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137164, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137165, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137166, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137167, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137168, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137169, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137170, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137171, 80);
+
+-- Add spawn points for Hay Bale 1 (180700)
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137172, 180700, 1, 1291.3, -4410.43, 26.6163, 1.82095, 0, 0, 0.789795, 0.613371, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137173, 180700, 1, 1293.71, -4416.06, 26.6318, 3.0501, 0, 0, 0.998954, 0.0457309, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137174, 180700, 1, 1289.83, -4416.13, 26.5994, 4.76619, 0, 0, 0.68783, -0.725872, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137175, 180700, 0, -9018.44, 480.107, 96.6816, 3.84174, -0.08, 0, 0.939347, -0.342968, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137176, 180700, 0, -9023.7, 475.576, 95.8444, 2.28115, -0.05, -0.08, 0.908874, 0.417071, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137177, 180700, 0, -9008.92, 467.201, 96.7118, 3.47103, -0.06, -0.02, 0.986464, -0.163975, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137178, 180700, 0, -9019.55, 459.339, 95.0326, 5.35989, -0.04, 0.02, 0.445422, -0.895321, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137179, 180700, 0, -9025.66, 453.638, 93.8851, 3.204, -0.05, -0.04, 0.999513, -0.0311975, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137180, 180700, 0, -8814.45, 619.393, 94.8821, 3.80219, 0, 0, 0.945945, -0.324327, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137181, 180700, 0, -8834.63, 644.471, 95.5545, 4.62292, 0.02, -0.08, 0.738019, -0.67478, 25, 100, 1, 0);
+-- Add Hay Bale 1 spawns to event New Year's Eve.
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137172, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137173, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137174, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137175, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137176, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137177, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137178, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137179, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137180, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137181, 80);
+
+-- Add spawn points for Haybail 02 (180038)
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137182, 180038, 1, 1327.28, -4353.31, 27.5965, 1.82024, 0, 0, 0.789579, 0.613649, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137183, 180038, 0, -9029.89, 469.726, 94.8014, 2.68325, -0.06, -0.07, 0.973855, 0.22717, 25, 100, 1, 0);
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `spawnFlags`) VALUES (137184, 180038, 0, -8829.03, 645.627, 94.7453, 0.174309, 0, 0, 0.0870441, 0.996204, 25, 100, 1, 0);
+-- Add Haybail 02 spawns to event New Year's Eve.
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137182, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137183, 80);
+INSERT INTO `game_event_gameobject` (`guid`, `event`) VALUES (137184, 80);
+
+-- Fixes for all rockets used on rocket launchers below:
+
+-- Normal Rockets
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26344, 1, 15879);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26345, 1, 15880);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26346, 1, 15881);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26347, 1, 15882);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26349, 1, 15883);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26348, 1, 15884);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26351, 1, 15885);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26352, 1, 15886);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26353, 1, 15887);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26354, 1, 15888);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26355, 1, 15889);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26356, 1, 15890);
+
+-- Blue Firework Cluster 15872
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26300, 1, 15872);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26301, 1, 15872);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26302, 1, 15872);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26303, 1, 15872);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26357, 1, 15872);
+-- Red Firework Cluster 15873
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26360, 1, 15873);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26308, 1, 15873);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26307, 1, 15873);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26306, 1, 15873);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26305, 1, 15873);
+-- Green Firework Cluster 15874
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26358, 1, 15874);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26312, 1, 15874);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26311, 1, 15874);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26310, 1, 15874);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26309, 1, 15874);
+-- Purple Firework Cluster 15875
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26359, 1, 15875);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26316, 1, 15875);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26315, 1, 15875);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26314, 1, 15875);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26313, 1, 15875);
+-- White Firework Cluster 15876
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26361, 1, 15876);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26320, 1, 15876);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26319, 1, 15876);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26318, 1, 15876);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26317, 1, 15876);
+-- Yellow Firework Cluster 15877
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26362, 1, 15877);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26324, 1, 15877);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26323, 1, 15877);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26322, 1, 15877);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26321, 1, 15877);
+-- Large Blue Firework Cluster 15911
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26487, 1, 15911);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26486, 1, 15911);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26485, 1, 15911);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26484, 1, 15911);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26483, 1, 15911);
+-- Large Green Firework Cluster 15912
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26495, 1, 15912);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26494, 1, 15912);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26493, 1, 15912);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26492, 1, 15912);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26491, 1, 15912);
+-- Large Purple Firework Cluster 15913
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26500, 1, 15913);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26499, 1, 15913);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26498, 1, 15913);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26497, 1, 15913);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26496, 1, 15913);
+-- Large Red Firework Cluster 15914
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26505, 1, 15914);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26504, 1, 15914);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26503, 1, 15914);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26502, 1, 15914);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26501, 1, 15914);
+-- Large White Firework Cluster 15915
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26510, 1, 15915);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26509, 1, 15915);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26508, 1, 15915);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26507, 1, 15915);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26506, 1, 15915);
+-- Large Yellow Firework Cluster 15916
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26515, 1, 15916);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26514, 1, 15916);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26513, 1, 15916);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26512, 1, 15916);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26511, 1, 15916);
+-- Lucky Rocket Cluster 15918
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26487, 1, 15918);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26507, 1, 15918);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26508, 1, 15918);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26509, 1, 15918);
+INSERT INTO `spell_script_target` (`entry`, `type`, `targetEntry`) VALUES (26483, 1, 15918);
+
+-- Add custom NPC for fireworks show.
+INSERT INTO `creature_template` (`entry`, `KillCredit1`, `KillCredit2`, `modelid_1`, `modelid_2`, `modelid_3`, `modelid_4`, `name`, `subname`, `gossip_menu_id`, `minlevel`, `maxlevel`, `minhealth`, `maxhealth`, `minmana`, `maxmana`, `armor`, `faction_A`, `faction_H`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `mindmg`, `maxdmg`, `dmgschool`, `attackpower`, `dmg_multiplier`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `minrangedmg`, `maxrangedmg`, `rangedattackpower`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `PetSpellDataId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `Civilian`, `RacialLeader`, `RegenHealth`, `equipment_id`, `trainer_id`, `vendor_id`, `MechanicImmuneMask`, `SchoolImmuneMask`, `flags_extra`, `ScriptName`) VALUES (20115, 0, 0, 11686, 0, 0, 0, 'New Year Firestarter', NULL, 0, 1, 1, 64, 64, 0, 0, 0, 35, 35, 0, 0.1, 0.1, 0, 0, 10, 11, 0, 44, 1, 2000, 2200, 0, 33686022, 0, 0, 0, 0, 0, 0, 1.76, 2.42, 100, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, '', 0, 4, 0, 0, 1, 0, 0, 0, 0, 0, 130, 'npc_event_fireworks');
+
+-- Add spawn points for New Year Firestarter (20115)
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140030, 20115, 1, 0, 0, 1397.95, -4414.56, 77.8805, 2.28419, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140031, 20115, 1, 0, 0, 1392.34, -4384, 75.6727, 1.66216, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140032, 20115, 1, 0, 0, 1388.06, -4354.94, 77.1365, 1.92919, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140033, 20115, 1, 0, 0, 1469.6, -4371.59, 77.933, 4.79773, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140034, 20115, 1, 0, 0, 1480.96, -4423.4, 77.9657, 0.733288, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140035, 20115, 1, 0, 0, 1484.92, -4466.93, 78.2011, 4.78594, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140036, 20115, 1, 0, 0, 1385.49, -4434.57, 109.291, 2.26395, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140037, 20115, 1, 0, 0, 1383.65, -4325.22, 77.8595, 2.79253, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140038, 20115, 1, 0, 0, 1371.26, -4312.22, 108.536, 4.34369, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140039, 20115, 0, 0, 0, -8929.24, 569.339, 156.052, 4.32556, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140040, 20115, 0, 0, 0, -8901.15, 534.421, 156.051, 3.28491, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140041, 20115, 0, 0, 0, -8945.94, 579.573, 159.434, 5.02454, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140042, 20115, 0, 0, 0, -8895.04, 516.118, 159.433, 3.68937, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140043, 20115, 0, 0, 0, -8913.8, 552.645, 139.543, 3.76616, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140044, 20115, 0, 0, 0, -8914.84, 565.374, 137.483, 3.85097, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140045, 20115, 0, 0, 0, -8900.12, 549.761, 137.327, 3.93579, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140046, 20115, 0, 0, 0, -8912.71, 578.382, 156.05, 5.30938, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140047, 20115, 0, 0, 0, -8889.45, 547.922, 156.051, 2.27382, 25, 0, 0, 64, 0, 0, 0, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140048, 20115, 0, 0, 0, -8891.58, 587.347, 127.899, 0.542279, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140049, 20115, 0, 0, 0, -8878.48, 563.902, 127.901, 1.04416, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140050, 20115, 0, 0, 0, -8892.8, 569.72, 129.763, 0.694664, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140051, 20115, 0, 0, 0, -14337.9, 555.866, 40.0421, 0.149406, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140052, 20115, 0, 0, 0, -14385.9, 544.141, 38.2412, 4.41354, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140053, 20115, 0, 0, 0, -14368.9, 608.13, 37.2545, 1.02454, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140054, 20115, 0, 0, 0, -14314.7, 683.222, 38.0592, 4.47716, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140055, 20115, 0, 0, 0, -14380, 675.768, 32.9524, 4.65996, 25, 1, 0, 64, 0, 0, 1, 1);
+INSERT INTO `creature` (`guid`, `id`, `map`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `DeathState`, `MovementType`, `spawnFlags`) VALUES (140056, 20115, 0, 0, 0, -14298.1, 632.158, 32.4499, 0.764714, 25, 1, 0, 64, 0, 0, 1, 1);
+-- Add New Year Firestarter spawns to event New Year's Eve.
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140030, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140031, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140032, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140033, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140034, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140035, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140036, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140037, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140038, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140039, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140040, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140041, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140042, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140043, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140044, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140045, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140046, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140047, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140048, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140049, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140050, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140051, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140052, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140053, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140054, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140055, 80);
+INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140056, 80);
