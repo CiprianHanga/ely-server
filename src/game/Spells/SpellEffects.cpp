@@ -468,7 +468,7 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
 {
     if (!unitTarget && !gameObjTarget && !itemTarget && !corpseTarget)
         return;
-    
+
     // selection by spell family
     switch (m_spellInfo->SpellFamilyName)
     {
@@ -3313,9 +3313,9 @@ void Spell::EffectSummonGuardian(SpellEffectIndex eff_idx)
         {
             case 126: // Eye of Kilrogg
             {
+                spawnCreature->SetWalk(false);
                 if (Player* p = m_caster->ToPlayer())
                 {
-                    spawnCreature->SetWalk(false);
                     // Stealth
                     spawnCreature->CastSpell(spawnCreature, 2585, true);
                     p->ModPossessPet(spawnCreature, true, AURA_REMOVE_BY_DEFAULT);
