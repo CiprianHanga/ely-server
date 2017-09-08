@@ -16,7 +16,7 @@ INSERT INTO `gossip_menu` VALUES (6644, 8701, 717);
 -- Add gossip text when Ouro is dead.
 INSERT INTO `gossip_menu` VALUES (6644, 8702, 718);
 
--- Add gossi menu options to teleport players.
+-- Add gossip menu options to teleport players.
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (6644, 0, 0, 'Teleport me to the lair of the Twin Emperors, please.', 1, 1, 0, 0, 66441, 0, 0, '', 717);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `action_script_id`, `box_coded`, `box_money`, `box_text`, `condition_id`) VALUES (6644, 1, 0, 'Please teleport me to the final chamber.', 1, 1, 0, 0, 66442, 0, 0, '', 718);
 REPLACE INTO `locales_gossip_menu_option` (`menu_id`, `id`, `option_text_loc1`, `option_text_loc2`, `option_text_loc3`, `option_text_loc4`, `option_text_loc5`, `option_text_loc6`, `option_text_loc7`, `option_text_loc8`, `box_text_loc1`, `box_text_loc2`, `box_text_loc3`, `box_text_loc4`, `box_text_loc5`, `box_text_loc6`, `box_text_loc7`, `box_text_loc8`) VALUES (6644, 0, '쌍둥이 제왕의 은신처로 보내 주십시오.', 'Téléportez-moi dans le repaire des empereurs jumeaux, s’il vous plaît.', 'Bitte teleportiert mich in den Unterschlupf der Imperatoren.', '请将我传送到双子皇帝的房间去。', '請將我傳送至雙子帝王的巢穴。', 'Por favor, teletranspórtame a la guarida de los Emperadores Gemelos.', 'Por favor, teletranspórtame a la guarida de los Emperadores Gemelos.', 'Пожалуйста, телепортируйте меня в логово императоров близнецов.', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -26,5 +26,5 @@ REPLACE INTO `locales_gossip_menu_option` (`menu_id`, `id`, `option_text_loc1`, 
 INSERT INTO `gossip_scripts` (`id`, `delay`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `comments`) VALUES (66441, 0, 15, 29182, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'AQ - Teleport to Twin Emperors lair.');
 INSERT INTO `gossip_scripts` (`id`, `delay`, `command`, `datalong`, `datalong2`, `datalong3`, `datalong4`, `data_flags`, `dataint`, `dataint2`, `dataint3`, `dataint4`, `x`, `y`, `z`, `o`, `comments`) VALUES (66442, 0, 15, 29188, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'AQ - Teleport to final chamber.');
 
--- Add gossip npcflag to Andorgos
+-- Add gossip npcflag to Andorgos.
 UPDATE `creature_template` SET `npcflag`=3 WHERE `entry`=15502;
