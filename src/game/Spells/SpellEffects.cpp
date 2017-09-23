@@ -4008,15 +4008,27 @@ void Spell::EffectWeaponDmg(SpellEffectIndex eff_idx)
     // + weapon damage with applied weapon% dmg to base weapon damage in call
     bonus += int32(m_caster->CalculateDamage(m_attackType, normalized) * weaponDamagePercentMod);
 
-    // prevent negative damage
-    m_damage += uint32(bonus > 0 ? bonus : 0);
-
-    // Seal of Command bonus damage
+    // Seal of Command
     if (m_spellInfo->School == SPELL_SCHOOL_HOLY)
     {
-        m_damage = m_caster->SpellDamageBonusDone(unitTarget, m_spellInfo, m_damage, SPELL_DIRECT_DAMAGE);
-        m_damage = unitTarget->SpellDamageBonusTaken(m_caster, m_spellInfo, m_damage, SPELL_DIRECT_DAMAGE);
+        // Prevent Vengeance double dipping
+        Unit::AuraList const& mModDamagePercentDone = m_caster->GetAurasByType(SPELL_AURA_MOD_DAMAGE_PERCENT_DONE);
+        for (Unit::AuraList::const_iterator i = mModDamagePercentDone.begin(); i != mModDamagePercentDone.end(); ++i)
+        {
+            if ((*i)->GetSpellProto()->SpellVisual == 6597)
+            {
+                bonus /= 1.0f + (*i)->GetModifier()->m_amount / 100.0f;
+                break;
+            }
+        }
+
+        // Add spell gear bonus and spell modifiers
+        bonus = m_caster->SpellDamageBonusDone(unitTarget, m_spellInfo, bonus, SPELL_DIRECT_DAMAGE);
+        bonus = unitTarget->SpellDamageBonusTaken(m_caster, m_spellInfo, bonus, SPELL_DIRECT_DAMAGE);
     }
+
+    // prevent negative damage
+    m_damage += uint32(bonus > 0 ? bonus : 0);
 }
 
 void Spell::EffectThreat(SpellEffectIndex eff_idx)
