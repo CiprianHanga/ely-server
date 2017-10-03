@@ -26,8 +26,6 @@ struct MANGOS_DLL_DECL guardAI : public ScriptedAI
 
     void UpdateAI(const uint32 diff);
 
-    void MoveInLineOfSight(Unit* pWho);
-
     //common used for guards in main cities
     void DoReplyToTextEmote(uint32 em);
 
