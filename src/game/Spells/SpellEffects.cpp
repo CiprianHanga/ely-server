@@ -373,6 +373,11 @@ void Spell::EffectSchoolDMG(SpellEffectIndex effect_idx)
                             damage *= 0.25;
                          break;
                     }
+                    case 24933:                             // Cannon (Darkmoon Steam Tonk)
+                    {
+                        m_caster->CastSpell(unitTarget, 27766, true);
+                        break;
+                    }
                 }
                 break;
             }
@@ -4426,6 +4431,18 @@ void Spell::EffectScriptEffect(SpellEffectIndex eff_idx)
                     // Treat / Trick
                     unitTarget->CastSpell(unitTarget, roll_chance_i(50) ? 24714 : 24715, true);
                     return;
+                }
+                case 24936:
+                {
+                    if (Creature* pTonk = m_caster->FindNearestCreature(15328, 5, true))
+                    {
+                        pTonk->SetWalk(false);
+                        pTonk->m_spells[0] = 24933;
+                        pTonk->m_spells[1] = urand(0,1) ? 25003 : 25024;
+                        pTonk->m_spells[2] = urand(0,1) ? 25026 : 25027;
+                        pTonk->m_spells[3] = urand(0,1) ? 27759 : 27746;
+                        m_caster->CastSpell(pTonk, 24937, true);
+                    }
                 }
                 case 26004:                                 // Mistletoe
                 {
