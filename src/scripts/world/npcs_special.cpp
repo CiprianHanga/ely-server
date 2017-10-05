@@ -990,7 +990,7 @@ struct npc_steam_tonkAI : public ScriptedAI
 
     void Reset()
     {
-        m_uiPossesedCheck = 5000;
+        m_uiPossesedCheck = 3000;
     }
 
     void Aggro(Unit* /*pWho*/) override {}
@@ -1003,7 +1003,7 @@ struct npc_steam_tonkAI : public ScriptedAI
         if (m_uiPossesedCheck < uiDiff)
         {
             if (!m_creature->GetCharmer())
-                m_creature->ForcedDespawn();
+                m_creature->DealDamage(m_creature, m_creature->GetMaxHealth(), nullptr, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, nullptr, false);
         }
         else
             m_uiPossesedCheck -= uiDiff;

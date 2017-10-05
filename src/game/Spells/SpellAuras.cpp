@@ -2716,6 +2716,13 @@ void Aura::HandleModPossess(bool apply, bool Real)
         return;
     caster->ModPossess(target, apply, m_removeMode);
     target->AddThreat(caster,target->GetHealth(), false, GetSpellSchoolMask(GetSpellProto()));
+
+    if (!apply && GetId() == 24937) // Controlling Steam Tonk
+    {
+        target->CastSpell(target, 27771, true); // Cast Damaged Tonk
+        caster->CastSpell(caster, 9179, true); // Cast 3 sec Stun on self
+        caster->RemoveAurasDueToSpell(24935); // Unroot player
+    }
 }
 
 void Unit::ModPossess(Unit* target, bool apply, AuraRemoveMode m_removeMode)
@@ -4913,9 +4920,6 @@ void Aura::HandleAuraModPacify(bool apply, bool /*Real*/)
         GetTarget()->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
     else
         GetTarget()->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PACIFIED);
-
-    if (!apply && (GetId() == 24937)) // Using Control Console - Unroot player.
-        GetCaster()->RemoveAurasDueToSpell(24935);
 }
 
 void Aura::HandleAuraModPacifyAndSilence(bool apply, bool Real)
