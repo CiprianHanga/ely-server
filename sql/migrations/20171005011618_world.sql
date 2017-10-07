@@ -1,6 +1,6 @@
-DELIMITER |
 DROP PROCEDURE IF EXISTS add_migration;
-CREATE PROCEDURE add_migration()
+delimiter ??
+CREATE PROCEDURE `add_migration`()
 BEGIN
 DECLARE v INT DEFAULT 1;
 SET v = (SELECT COUNT(*) FROM `migrations` WHERE `id`='20171005011618');
@@ -83,7 +83,7 @@ INSERT INTO `spell_scripts` (`id`, `delay`, `command`, `datalong`, `datalong2`, 
 
 -- End of migration.
 END IF;
-END;
-|
-CALL add_migration;
+END??
+delimiter ; 
+CALL add_migration();
 DROP PROCEDURE IF EXISTS add_migration;
