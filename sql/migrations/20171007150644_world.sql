@@ -1,4 +1,13 @@
-INSERT INTO `migrations` VALUES ('20170831145658'); 
+DELIMITER |
+DROP PROCEDURE IF EXISTS add_migration;
+CREATE PROCEDURE add_migration()
+BEGIN
+DECLARE v INT DEFAULT 1;
+SET v = (SELECT COUNT(*) FROM `migrations` WHERE `id`='20171007150644');
+IF v=0 THEN
+INSERT INTO `migrations` VALUES ('20171007150644');
+-- Add your query below.
+
 
 -- Fix Feast of Winter Veil event duration.
 REPLACE INTO `game_event` (`entry`, `start_time`, `end_time`, `occurence`, `length`, `holiday`, `description`, `hardcoded`, `disabled`) VALUES (2, '2006-12-17 23:00:00', '2021-01-01 23:59:59', 525600, 25920, 141, 'Feast of Winter Veil', 0, 0);
@@ -1796,3 +1805,11 @@ INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140130, 34);
 INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140131, 34);
 INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140132, 34);
 INSERT INTO `game_event_creature` (`guid`, `event`) VALUES (140133, 34);
+
+
+-- End of migration.
+END IF;
+END;
+|
+CALL add_migration;
+DROP PROCEDURE IF EXISTS add_migration;
