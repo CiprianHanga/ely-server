@@ -361,6 +361,9 @@ void WorldSession::HandleGossipHelloOpcode(WorldPacket & recv_data)
     if (!pCreature->IsStopped())
         pCreature->StopMoving();
 
+    // Request creature to wait for some time if possible.
+    pCreature->setMoveGenDelayRequest(STOP_TIME_FOR_PLAYER);
+
     if (pCreature->isSpiritGuide())
         pCreature->SendAreaSpiritHealerQueryOpcode(_player);
 
@@ -401,13 +404,6 @@ void WorldSession::HandleGossipSelectOptionOpcode(WorldPacket & recv_data)
             DEBUG_LOG("WORLD: HandleGossipSelectOptionOpcode - %s not found or you can't interact with it.", guid.GetString().c_str());
             return;
         }
-
-        // Clear possible StopMoving motion
-        if (pCreature->IsStopped())        
-            pCreature->GetMotionMaster()->Clear();
-            
-        pCreature->StopMoving();
-        
 
         if (!sScriptMgr.OnGossipSelect(_player, pCreature, sender, action, code.empty() ? NULL : code.c_str()))
             _player->OnGossipSelect(pCreature, gossipListId);

@@ -35,6 +35,8 @@
 
 #include <list>
 
+#define STOP_TIME_FOR_PLAYER 180 * IN_MILLISECONDS // 3 minutes, blizzlike timer.
+
 class SpellEntry;
 
 class CreatureAI;
@@ -818,6 +820,20 @@ class MANGOS_DLL_SPEC Creature : public Unit
 
         bool HasWeapon() const;
 
+        /** Used to set a temporary state, to safely modify "nextMove" timer inside Movement generators(if possible).
+         Once "nextMove" timer will be modified, state becomes "0".
+         It can also be used in conjunction with StopMoving(), to get "StopMovingFor(timeMs)"
+         For example: if player interacts with the vendor which is traveling across the zone, then npc will stop moving for some time.
+         Behavior depends on the MovementGenerator type. 
+         1. RandomMovementGenerator: creature will stop for "time_ms".
+         2. WaypointMovementGenerator:
+             - If creature is moving, it will stop for "time_ms".
+             - If creature is waiting/was stopped, then if a current waiting timer is less than "time_ms", it becomes "time_ms". */
+        void setMoveGenDelayRequest(uint32 time_ms = STOP_TIME_FOR_PLAYER) { m_moveGenDelayRequest = time_ms; }
+
+        //! Used to check if a "nextMove" timer was not modified yet. Returns a state value(time_ms).
+        uint32 moveGenDelayRequestPending() const { return m_moveGenDelayRequest; }
+
     protected:
         bool MeetsSelectAttackingRequirement(Unit* pTarget, SpellEntry const* pSpellInfo, uint32 selectFlags) const;
 
@@ -890,6 +906,8 @@ class MANGOS_DLL_SPEC Creature : public Unit
         // Used to compute XP.
         uint32 _playerDamageTaken;
         uint32 _nonPlayerDamageTaken;
+
+        uint32 m_moveGenDelayRequest;
     private:
         GridReference<Creature> m_gridRef;
         CreatureInfo const* m_creatureInfo;

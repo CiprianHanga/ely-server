@@ -119,6 +119,14 @@ void RandomMovementGenerator<Creature>::UpdateAsync(Creature &creature, uint32 d
     else if (creature.movespline->Finalized())
     {
         i_nextMoveTime.Update(diff);
+
+        if (creature.moveGenDelayRequestPending())
+        {
+            i_nextMoveTime.Reset(static_cast<int32>(creature.moveGenDelayRequestPending()));
+            // consume a request
+            creature.setMoveGenDelayRequest(0);
+        }
+
         if (i_nextMoveTime.Passed())
             _setRandomLocation(creature);
     }

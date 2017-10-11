@@ -207,11 +207,25 @@ bool WaypointMovementGenerator<Creature>::Update(Creature &creature, const uint3
     {
         if (CanMove(diff))
             StartMove(creature);
+        else
+        {
+            // if creature is in "waiting" state and expiration time is lower, than we need, then update is required.
+            if (i_nextMoveTime.GetExpiry() < static_cast<int32>(creature.moveGenDelayRequestPending()))
+            {
+                Stop(static_cast<int32>(creature.moveGenDelayRequestPending()));
+                // consume a request.
+                creature.setMoveGenDelayRequest(0);
+            }
+        }
     }
     else
     {
-        if (creature.IsStopped())
-            Stop(STOP_TIME_FOR_PLAYER);
+        if (creature.moveGenDelayRequestPending())
+        {
+            Stop(static_cast<int32>(creature.moveGenDelayRequestPending()));
+            // consume a request.
+            creature.setMoveGenDelayRequest(0);
+        }
         else if (creature.movespline->Finalized())
         {
             OnArrived(creature);

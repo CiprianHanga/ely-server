@@ -103,6 +103,9 @@ void WorldSession::HandleQuestgiverHelloOpcode(WorldPacket & recv_data)
     if (!pCreature->IsStopped())
         pCreature->StopMoving();
 
+    // Request creature to wait for some time if possible.
+    pCreature->setMoveGenDelayRequest(STOP_TIME_FOR_PLAYER);
+
     if (sScriptMgr.OnGossipHello(_player, pCreature))
         return;
 
