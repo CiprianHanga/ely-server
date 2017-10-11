@@ -8696,10 +8696,11 @@ void ObjectMgr::LoadFactionChangeMounts()
 }
 void ObjectMgr::RestoreDeletedItems()
 {
-    QueryResult* result = CharacterDatabase.Query("SELECT id, player_guid, item_entry FROM character_deleted_items");
+    QueryResult* result = CharacterDatabase.Query("SELECT id, player_guid, item_entry, stack_count FROM character_deleted_items");
 
     if (!result)
     {
+        sLog.outString();
         sLog.outString(">> Restored 0 prevously deleted items.");
         return;
     }
@@ -8713,21 +8714,23 @@ void ObjectMgr::RestoreDeletedItems()
         uint32 id = fields[0].GetUInt32();
         uint32 memberGuidlow = fields[1].GetUInt32();
         uint32 itemEntry = fields[2].GetUInt32();
+        uint32 stackCount = fields[3].GetUInt32();
         
         if (ItemPrototype const* itemProto = GetItemPrototype(itemEntry))
         {
             ObjectGuid memberGuid = ObjectGuid(HIGHGUID_PLAYER, memberGuidlow);
             Player* pPlayer = ObjectAccessor::FindPlayerNotInWorld(memberGuid);
 
-            if (Item* restoredItem = Item::CreateItem(itemEntry, 1, pPlayer ? pPlayer : (const Player *) 0))
+            if (Item* restoredItem = Item::CreateItem(itemEntry, stackCount ? stackCount : 1, pPlayer ? pPlayer : (const Player *) 0))
             {
                 // save new item before send
                 restoredItem->SaveToDB();
 
+                // subject
                 std::string subject = itemProto->Name1;
 
                 // text
-                std::string textFormat = GetMangosString(LANG_NOT_EQUIPPED_ITEM, 0);
+                std::string textFormat = GetMangosString(LANG_RESTORED_ITEM, LOCALE_enUS);
                 
                 MailDraft(subject, textFormat)
                     .AddItem(restoredItem)
