@@ -14,7 +14,7 @@ enum
     SPELL_FROSTBREATH           = 21099,
     SPELL_ARCANEVACUUM          = 21147,
     SPELL_REFLECT               = 22067,
-    SPELL_CLEAVE                = 19983,
+    SPELL_CLEAVE                = 15613,
 
     SAY_TELEPORT                = -1000100,
     SAY_GOOD_DAY                = -1000006,
@@ -43,6 +43,7 @@ struct boss_azuregosAI : ScriptedAI
 {
     explicit boss_azuregosAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
+        pCreature->SetLootAndXPModDist(150.0f);
         boss_azuregosAI::Reset();
     }
 

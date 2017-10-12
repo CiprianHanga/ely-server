@@ -311,7 +311,9 @@ enum AuraRemoveMode
     AURA_REMOVE_BY_DELETE,                                  // use for speedup and prevent unexpected effects at player logout/pet unsummon (must be used _only_ after save), delete.
     AURA_REMOVE_BY_SHIELD_BREAK,                            // when absorb shield is removed by damage
     AURA_REMOVE_BY_EXPIRE,                                  // at duration end
-
+    AURA_REMOVE_BY_CHANNEL,                                 // when removing an aura due to channel finish or cancel
+    AURA_REMOVE_BY_RANGE,                                   // when removing an area aura due to being out of range
+    AURA_REMOVE_BY_GROUP                                    // when removing an aura due to not being in the same group (includes pet ownership)
 };
 
 enum UnitMods
@@ -551,14 +553,6 @@ namespace Movement
     class MoveSpline;
 }
 
-enum DiminishingLevels
-{
-    DIMINISHING_LEVEL_1             = 0,
-    DIMINISHING_LEVEL_2             = 1,
-    DIMINISHING_LEVEL_3             = 2,
-    DIMINISHING_LEVEL_IMMUNE        = 3
-};
-
 struct DiminishingReturn
 {
     DiminishingReturn(DiminishingGroup group, uint32 t, uint32 count)
@@ -684,6 +678,7 @@ enum CurrentSpellTypes
 
 #define CURRENT_FIRST_NON_MELEE_SPELL 1
 #define CURRENT_MAX_SPELL             4
+#define UNIT_SPELL_UPDATE_TIME_BUFFER 60
 
 struct GlobalCooldown
 {
@@ -1053,7 +1048,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         void CombatStopWithPets(bool includingCast = false);
         void StopAttackFaction(uint32 faction_id);
         Unit* SelectNearestTarget(float dist) const;
-        Unit* SelectRandomUnfriendlyTarget(Unit* except = nullptr, float radius = ATTACK_DISTANCE) const;
+        Unit* SelectRandomUnfriendlyTarget(Unit* except = nullptr, float radius = ATTACK_DISTANCE, bool inFront = false) const;
         Unit* SelectRandomFriendlyTarget(Unit* except = nullptr, float radius = ATTACK_DISTANCE) const;
         Unit* SummonCreatureAndAttack(uint32 creatureEntry, Unit* pVictim= nullptr);
         bool IsSecondaryThreatTarget();
@@ -1205,7 +1200,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         int32 MagicSpellHitChance(Unit *pVictim, SpellEntry const *spell, Spell* spellPtr = nullptr);
         SpellMissInfo SpellHitResult(Unit *pVictim, SpellEntry const *spell, SpellEffectIndex effIndex, bool canReflect = false, Spell* spellPtr = nullptr);
         // Nostalrius : SPELL_AURA_MOD_MECHANIC_RESISTANCE
-        bool IsAuraResist(SpellEntry const *spell);
+        bool IsEffectResist(SpellEntry const* spell, int eff);
 
         float GetUnitDodgeChance()    const;
         float GetUnitParryChance()    const;
@@ -1304,8 +1299,8 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         void SendEnergizeSpellLog(Unit *pVictim, uint32 SpellID, uint32 Damage,Powers powertype);
         void EnergizeBySpell(Unit *pVictim, uint32 SpellID, uint32 Damage, Powers powertype);
         uint32 SpellNonMeleeDamageLog(Unit *pVictim, uint32 spellID, uint32 damage);
-        void CastSpell(Unit* Victim, uint32 spellId, bool triggered, Item *castItem = nullptr, Aura* triggeredByAura = nullptr, ObjectGuid originalCaster = ObjectGuid(), SpellEntry const* triggeredBy = nullptr);
-        void CastSpell(Unit* Victim,SpellEntry const *spellInfo, bool triggered, Item *castItem= nullptr, Aura* triggeredByAura = nullptr, ObjectGuid originalCaster = ObjectGuid(), SpellEntry const* triggeredBy = nullptr);
+        void CastSpell(Unit* Victim, uint32 spellId, bool triggered, Item *castItem = nullptr, Aura* triggeredByAura = nullptr, ObjectGuid originalCaster = ObjectGuid(), SpellEntry const* triggeredBy = nullptr, SpellEntry const* triggeredByParent = nullptr);
+        void CastSpell(Unit* Victim,SpellEntry const *spellInfo, bool triggered, Item *castItem= nullptr, Aura* triggeredByAura = nullptr, ObjectGuid originalCaster = ObjectGuid(), SpellEntry const* triggeredBy = nullptr, SpellEntry const* triggeredByParent = nullptr);
         void CastCustomSpell(Unit* Victim, uint32 spellId, int32 const* bp0, int32 const* bp1, int32 const* bp2, bool triggered, Item *castItem= nullptr, Aura* triggeredByAura = nullptr, ObjectGuid originalCaster = ObjectGuid(), SpellEntry const* triggeredBy = nullptr);
         void CastCustomSpell(Unit* Victim,SpellEntry const *spellInfo, int32 const* bp0, int32 const* bp1, int32 const* bp2, bool triggered, Item *castItem= nullptr, Aura* triggeredByAura = nullptr, ObjectGuid originalCaster = ObjectGuid(), SpellEntry const* triggeredBy = nullptr);
         void CastSpell(float x, float y, float z, uint32 spellId, bool triggered, Item *castItem = nullptr, Aura* triggeredByAura = nullptr, ObjectGuid originalCaster = ObjectGuid(), SpellEntry const* triggeredBy = nullptr);
@@ -1409,6 +1404,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         void RemoveGuardian(Pet* pet);
         void RemoveGuardians();
         Pet* FindGuardianWithEntry(uint32 entry);
+        uint32 GetGuardianCountWithEntry(uint32 entry);
 
         bool isCharmed() const { return !GetCharmerGuid().IsEmpty(); }
 
@@ -1446,7 +1442,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         // removing specific aura stacks by diff reasons and selections
         void RemoveAurasDueToSpell(uint32 spellId, SpellAuraHolder* except = nullptr, AuraRemoveMode mode = AURA_REMOVE_BY_DEFAULT);
         void RemoveAurasDueToItemSpell(Item* castItem,uint32 spellId);
-        void RemoveAurasByCasterSpell(uint32 spellId, ObjectGuid casterGuid);
+        void RemoveAurasByCasterSpell(uint32 spellId, ObjectGuid casterGuid, AuraRemoveMode mode = AURA_REMOVE_BY_DEFAULT);
         void RemoveAurasDueToSpellBySteal(uint32 spellId, ObjectGuid casterGuid, Unit *stealer);
         void RemoveAurasDueToSpellByCancel(uint32 spellId);
 
@@ -1492,6 +1488,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         // delayed+channeled spells are always accounted as casted
         // we can skip channeled or delayed checks using flags
         bool IsNonMeleeSpellCasted(bool withDelayed = false, bool skipChanneled = false, bool skipAutorepeat = false) const;
+        bool IsNextSwingSpellCasted() const;
         // for movement generators, check if current casted spell has movement interrupt flags
         bool IsNoMovementSpellCasted() const;
         
@@ -1555,6 +1552,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         virtual void UpdateArmor() = 0;
         virtual void UpdateMaxHealth() = 0;
         virtual void UpdateMaxPower(Powers power) = 0;
+        virtual void UpdateManaRegen() = 0;
         virtual void UpdateAttackPowerAndDamage(bool ranged = false) = 0;
         virtual void UpdateDamagePhysical(WeaponAttackType attType) = 0;
         float GetTotalAttackPowerValue(WeaponAttackType attType) const;
@@ -1583,6 +1581,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         // function for low level grid visibility checks in player/creature cases
         virtual bool IsVisibleInGridForPlayer(Player* pl) const = 0;
         bool isInvisibleForAlive() const;
+        bool isVisibleForDead() const;
 
         SingleCastSpellTargetMap      & GetSingleCastSpellTargets()       { return m_singleCastSpellTargets; }
         SingleCastSpellTargetMap const& GetSingleCastSpellTargets() const { return m_singleCastSpellTargets; }
@@ -1814,6 +1813,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         void GetRandomAttackPoint(const Unit* target, float &x, float &y, float &z) const;
 
         bool CanReachWithMeleeAttack(Unit const* pVictim, float flat_mod = 0.0f) const;
+        bool CanReachWithMeleeAttackAtPosition(Unit const* pVictim, float x, float y, float z, float flat_mod = 0.0f) const;
         bool CanReachWithMeleeSpellAttack(Unit const* pVictim, float flat_mod = 0.0f) const;
 
         // Caster movement
@@ -1832,7 +1832,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         virtual void OnLeaveCombat() {}
         virtual void OnMoveTo(float, float, float) {}
 
-        // Appelé dans SpellEffects::EffectSummonPet et apres un rez en BG.
+        // Appele dans SpellEffects::EffectSummonPet et apres un rez en BG.
         void EffectSummonPet(uint32 spellId, uint32 petEntry);
         void ModPossess(Unit* target, bool apply, AuraRemoveMode m_removeMode = AURA_REMOVE_BY_DEFAULT);
 
@@ -1849,6 +1849,10 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         SpellAuraHolder* RefreshAura(uint32 spellId, int32 duration);
 
         Movement::MoveSpline* movespline;
+        // Serialize access to the movespline to prevent thread race conditions in async
+        // move spline updates (one thread updates a spline, while another checks the
+        // spline for end point with targeted move gen)
+        ACE_Thread_Mutex asyncMovesplineLock;
 
         void ScheduleAINotify(uint32 delay);
         bool IsAINotifyScheduled() const { return m_AINotifyScheduled;}
@@ -1959,6 +1963,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         ObjectGuid m_reactiveTarget[MAX_REACTIVE];
         int32 m_regenTimer;
         uint32 m_lastManaUseTimer;
+        uint32 m_spellUpdateTimeBuffer;
 
         SpellCooldowns m_spellCooldowns;
         GlobalCooldownMgr m_GlobalCooldownMgr;
@@ -1970,6 +1975,9 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         typedef std::map<ObjectGuid /*attackerGuid*/, uint32 /*damage*/ > DamageTakenHistoryMap;
         DamageTakenHistoryMap   _damageTakenHistory;
         uint32                  _lastDamageTaken;
+
+        float m_nativeScale = 1.0f;
+        float m_nativeScaleOverride = 1.0f;
 
     private:
         void CleanupDeletedAuras();
@@ -2006,9 +2014,6 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         GuardianPetList m_guardianPets;
 
         ObjectGuid m_TotemSlot[MAX_TOTEM_SLOT];
-
-        float m_nativeScale = 1;
-        float m_nativeScaleOverride = 1;
 
         // Error traps for some wrong args using
         // this will catch and prevent build for any cases when all optional args skipped and instead triggered used non boolean type
