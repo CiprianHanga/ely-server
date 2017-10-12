@@ -31,12 +31,15 @@ enum
     TYPE_SAPPHIRON              = 16,
     TYPE_KELTHUZAD              = 17,
 
+    MAX_HEIGAN_TRAP_AREAS = 4,
+
     NPC_ANUB_REKHAN             = 15956,
     NPC_FAERLINA                = 15953,
 
     NPC_THADDIUS                = 15928,
     NPC_STALAGG                 = 15929,
     NPC_FEUGEN                  = 15930,
+    NPC_TESLA_COIL              = 16218,
 
     NPC_ZELIEK                  = 16063,
     NPC_THANE                   = 16064,
@@ -53,6 +56,12 @@ enum
     NPC_SPECT_DEATH_KNIGTH      = 16148,
     NPC_SPECT_RIDER             = 16150,
     NPC_SPECT_HORSE             = 16149,
+
+    NPC_SAPPHIRON               = 15989,
+    NPC_KELTHUZAD               = 15990,
+    NPC_THE_LICHKING            = 16980,
+    NPC_MR_BIGGLESWORTH         = 16998,
+
 
     // End boss adds
     NPC_SOLDIER_FROZEN          = 16427,
@@ -87,9 +96,11 @@ enum
     GO_CHEST_HORSEMEN_HERO      = 193426,
 
     // Construct Quarter
-    GO_CONS_PATH_EXIT_DOOR      = 181123,
-    GO_CONS_GLUT_EXIT_DOOR      = 181120,
-    GO_CONS_THAD_DOOR           = 181121,                   // Thaddius enc door
+    GO_CONS_PATH_EXIT_DOOR = 181123,
+    GO_CONS_GLUT_EXIT_DOOR = 181120,
+    GO_CONS_THAD_DOOR = 181121,                   // Thaddius enc door
+    GO_CONS_NOX_TESLA_FEUGEN = 181477,
+    GO_CONS_NOX_TESLA_STALAGG = 181478,
 
     // Frostwyrm Lair
     GO_KELTHUZAD_WATERFALL_DOOR = 181225,                   // exit, open after sapphiron is dead
@@ -105,6 +116,8 @@ enum
     GO_PLAG_PORTAL              = 181577,
     GO_MILI_PORTAL              = 181578,
     GO_CONS_PORTAL              = 181576,
+
+    SAY_KELTHUZAD_CAT_DIED = -1533089,
 
     AREATRIGGER_FROSTWYRM       = 4120,                    //not needed here, but AT to be scripted
     AREATRIGGER_KELTHUZAD       = 4112,
@@ -130,6 +143,8 @@ class instance_naxxramas : public ScriptedInstance
         void OnCreatureCreate(Creature* pCreature);
         void OnObjectCreate(GameObject* pGo);
 
+        void OnCreatureDeath(Creature* pCreature) override;
+
         void SetData(uint32 uiType, uint32 uiData);
         uint32 GetData(uint32 uiType);
         uint64 GetData64(uint32 uiData);
@@ -137,11 +152,19 @@ class instance_naxxramas : public ScriptedInstance
         const char* Save() { return strInstData.c_str(); }
         void Load(const char* chrIn);
 
+        // Heigan
+        void DoTriggerHeiganTraps(Creature* pHeigan, uint32 uiAreaIndex);
+        GuidList m_alHeiganTrapGuids[MAX_HEIGAN_TRAP_AREAS];
+
         // goth
         void SetGothTriggers();
         Creature* GetClosestAnchorForGoth(Creature* pSource, bool bRightSide);
         void GetGothSummonPointCreatures(std::list<Creature*> &lList, bool bRightSide);
         bool IsInRightSideGothArea(Unit* pUnit);
+
+        // thaddius
+        void GetThadTeslaCreatures(GuidList& lList) { lList = m_lThadTeslaCoilList; };
+        GuidList m_lThadTeslaCoilList;
 
         // kel
         void SetChamberCenterCoords(float fX, float fY, float fZ);
@@ -176,6 +199,8 @@ class instance_naxxramas : public ScriptedInstance
         uint64 m_uiPathExitDoorGUID;
         uint64 m_uiGlutExitDoorGUID;
         uint64 m_uiThadDoorGUID;
+        uint64 m_uiTeslaCoilStalaggGUID;
+        uint64 m_uiTeslaCoilFeugenGUID;
 
         uint64 m_uiAnubDoorGUID;
         uint64 m_uiAnubGateGUID;
@@ -200,6 +225,10 @@ class instance_naxxramas : public ScriptedInstance
         uint64 m_uiHeigExitDoorGUID;
         uint64 m_uiLoathebDoorGUID;
 
+        uint64 m_uiSapphironGUID;
+        uint64 m_uiKelthuzadGUID;
+        uint64 m_uiLichKingGUID;
+        uint64 m_uiMrBiggleworthGUID;
         uint64 m_uiKelthuzadDoorGUID;
         float m_fChamberCenterX;
         float m_fChamberCenterY;
