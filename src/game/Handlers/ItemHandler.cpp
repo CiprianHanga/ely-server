@@ -754,6 +754,9 @@ void WorldSession::SendListInventory(ObjectGuid vendorguid)
     if (!pCreature->IsStopped())
         pCreature->StopMoving();
 
+    // Request creature to wait for some time if possible.
+    pCreature->setMoveGenDelayRequest(STOP_TIME_FOR_PLAYER);
+
     VendorItemData const* vItems = pCreature->GetVendorItems();
     VendorItemData const* tItems = pCreature->GetVendorTemplateItems();
 

@@ -175,7 +175,7 @@ Creature::Creature(CreatureSubtype subtype) :
     m_combatStartX(0.0f), m_combatStartY(0.0f), m_combatStartZ(0.0f),
     m_HomeX(0.0f), m_HomeY(0.0f), m_HomeZ(0.0f), m_HomeOrientation(0.0f), m_reactState(REACT_PASSIVE),
     m_CombatDistance(0.0f), _lastDamageTakenForEvade(0), _playerDamageTaken(0), _nonPlayerDamageTaken(0), m_creatureInfo(nullptr),
-    m_AI_InitializeOnRespawn(false), m_combatPulseTimer(0), m_combatWithZoneState(false)
+    m_AI_InitializeOnRespawn(false), m_combatPulseTimer(0), m_combatWithZoneState(false), m_moveGenDelayRequest(0)
 {
     m_regenTimer = 200;
     m_valuesCount = UNIT_END;

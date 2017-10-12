@@ -55,6 +55,9 @@ void WorldSession::HandleBattlemasterHelloOpcode(WorldPacket & recv_data)
     if (!pCreature->IsStopped())
         pCreature->StopMoving();
 
+    // Request creature to wait for some time if possible.
+    pCreature->setMoveGenDelayRequest(STOP_TIME_FOR_PLAYER);
+
     BattleGroundTypeId bgTypeId = sBattleGroundMgr.GetBattleMasterBG(pCreature->GetEntry());
 
     if (bgTypeId == BATTLEGROUND_TYPE_NONE)
