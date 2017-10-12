@@ -68,7 +68,6 @@ REPLACE INTO `creature_loot_template` (`entry`, `item`, `ChanceOrQuestChance`) V
 
 -- Schematic: Red Firework
 -- https://github.com/elysium-project/server/issues/2969
-REPLACE INTO `npc_vendor` (`entry`, `item`, `maxcount`, `incrtime`) VALUES (3412, 18647, 1, 600);
 REPLACE INTO `npc_vendor` (`entry`, `item`, `maxcount`, `incrtime`) VALUES (3413, 18647, 1, 600);
 
 -- Pink Mageweave Shirt
