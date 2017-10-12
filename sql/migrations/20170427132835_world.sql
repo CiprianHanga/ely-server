@@ -1,4 +1,13 @@
-INSERT INTO `migrations` VALUES ('20170427132835'); 
+DROP PROCEDURE IF EXISTS add_migration;
+delimiter ??
+CREATE PROCEDURE `add_migration`()
+BEGIN
+DECLARE v INT DEFAULT 1;
+SET v = (SELECT COUNT(*) FROM `migrations` WHERE `id`='20170427132835');
+IF v=0 THEN
+INSERT INTO `migrations` VALUES ('20170427132835');
+-- Add your query below.
+
 
 -- Update wild creature speeds for some beasts. The existing default speed is ~115%.
 -- Categories are: 1.14286 (~115%), 1.42857 (~145%), 2.14286 (~215%), 2.42857 (~245%)
@@ -99,3 +108,11 @@ UPDATE `creature_template` SET `speed_run` = 1.42857
 
 -- --------- Turtles ---------
 -- All turtles at ~115% 
+
+
+-- End of migration.
+END IF;
+END??
+delimiter ; 
+CALL add_migration();
+DROP PROCEDURE IF EXISTS add_migration;
