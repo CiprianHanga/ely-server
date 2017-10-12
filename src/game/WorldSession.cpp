@@ -1379,3 +1379,8 @@ bool WorldSession::CharacterScreenIdleKick(uint32 currTime)
 
     return false;
 }
+
+bool  WorldSession::IsPendingMoverSwap() const
+{
+    return _clientMoverGuid != _player->GetMover()->GetObjectGuid();
+}

@@ -9209,16 +9209,11 @@ bool CharmInfo::IsCommandFollow()
 
 void CharmInfo::SaveStayPosition()
 {
-    // No Unit::StopMoving while possessed
-    if (m_unit->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PLAYER_CONTROLLED))
-        m_unit->GetPosition(_stayX, _stayY, _stayZ);
-    else //! At this point a new spline destination is enabled because of Unit::StopMoving()
-    {
-        G3D::Vector3 stayPos = m_unit->movespline->FinalDestination();
-        _stayX = stayPos.x;
-        _stayY = stayPos.y;
-        _stayZ = stayPos.z;
-    }
+    //! At this point a new spline destination is enabled because of Unit::StopMoving()
+    G3D::Vector3 stayPos = m_unit->movespline->FinalDestination();
+    _stayX = stayPos.x;
+    _stayY = stayPos.y;
+    _stayZ = stayPos.z;
 }
 
 void CharmInfo::GetStayPosition(float &x, float &y, float &z)

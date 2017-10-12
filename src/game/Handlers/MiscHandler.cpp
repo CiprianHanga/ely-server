@@ -1199,6 +1199,18 @@ void WorldSession::HandleFarSightOpcode(WorldPacket & recv_data)
     uint8 op;
     recv_data >> op;
 
+    if (WorldObject* obj = _player->GetMap()->GetWorldObject(_player->GetPendingFarSightGuid()))
+        if (obj->GetTypeId() == TYPEID_DYNAMICOBJECT)
+        {
+            _player->SetPendingFarSightGuid(ObjectGuid());
+            _player->GetCamera().SetView(obj);
+            // for the client to ask for a new far sight pov
+            // case Eyes of the Beast + Eagle Eye out of hunter's range
+            WorldPacket data(SMSG_CLEAR_FAR_SIGHT_IMMEDIATE);
+            _player->GetSession()->SendPacket(&data);
+            return;
+        }
+
     WorldObject* obj = _player->GetMap()->GetWorldObject(_player->GetFarSightGuid());
     if (!obj)
         return;

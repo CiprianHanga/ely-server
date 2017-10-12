@@ -530,6 +530,9 @@ class MANGOS_DLL_SPEC WorldSession
 
         uint32 m_idleTime;
 
+        // for possession spells, pending CMSG_SET_ACTIVE_MOVER
+        bool IsPendingMoverSwap() const;
+
     public:                                                 // opcodes handlers
 
         void Handle_NULL(WorldPacket& recvPacket);          // not used

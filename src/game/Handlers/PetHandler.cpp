@@ -95,6 +95,7 @@ void WorldSession::HandlePetAction(WorldPacket& recv_data)
                         pet->GetMotionMaster()->Clear(false);
                         pet->GetMotionMaster()->MoveIdle();
                         charmInfo->SetIsAtStay(true);
+                        charmInfo->SaveStayPosition();
                     }
                     charmInfo->SetCommandState(COMMAND_STAY);
 
@@ -102,7 +103,6 @@ void WorldSession::HandlePetAction(WorldPacket& recv_data)
                     charmInfo->SetIsCommandFollow(false);
                     charmInfo->SetIsFollowing(false);
                     charmInfo->SetIsReturning(false);
-                    charmInfo->SaveStayPosition();
                     break;
                 case COMMAND_FOLLOW:                        // spellid=1792  //FOLLOW
                     if (!pet->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PLAYER_CONTROLLED))
