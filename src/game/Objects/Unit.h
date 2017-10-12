@@ -1147,6 +1147,22 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
 
             return false;
         }
+        bool IsContestedUnit() const
+        {
+            if (FactionTemplateEntry const* entry = getFactionTemplateEntry())
+                switch (entry->faction)
+                {
+                    case 21:   // Booty Bay
+                    case 169:  // Steamwheedle Cartel
+                    case 369:  // Gadgetzan
+                    case 470:  // Ratchet
+                    case 529:  // Argent Dawn
+                    case 577:  // Everlook
+                    case 609:  // Cenarion Circle
+                        return true;
+                }
+            return false;
+        }
         bool IsPvP() const { return HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP); }
         void SetPvP(bool state);
         uint32 GetCreatureType() const;

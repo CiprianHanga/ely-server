@@ -691,6 +691,8 @@ uint32 Unit::DealDamage(Unit *pVictim, uint32 damage, CleanDamage const* cleanDa
             //PMonsterSay("-> Absorb %5u | Resist %5u. AttackType %u", cleanDamage->absorb, cleanDamage->resist, cleanDamage->hitOutCome);
             if (Player* attackedPlayer = pVictim->GetCharmerOrOwnerPlayerOrPlayerItself())
                 SetContestedPvP(attackedPlayer);
+            else if (pVictim->IsPvP() || pVictim->IsContestedUnit())
+                SetContestedPvP();
         }
         return 0;
     }
@@ -771,6 +773,8 @@ uint32 Unit::DealDamage(Unit *pVictim, uint32 damage, CleanDamage const* cleanDa
 
         if (Player* attackedPlayer = pVictim->GetCharmerOrOwnerPlayerOrPlayerItself())
             SetContestedPvP(attackedPlayer);
+        else if (pVictim->IsPvP() || pVictim->IsContestedUnit())
+            SetContestedPvP();
     }
     if (pVictim->GetTypeId() == TYPEID_UNIT)
         pVictim->ToCreature()->CountDamageTaken(damage, GetCharmerOrOwnerOrOwnGuid().IsPlayer() || pVictim == this);

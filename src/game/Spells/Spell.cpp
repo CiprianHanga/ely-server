@@ -1495,6 +1495,8 @@ void Spell::DoSpellHitOnUnit(Unit *unit, uint32 effectMask)
 
                 if (Player *attackedPlayer = unit->GetCharmerOrOwnerPlayerOrPlayerItself())
                     realCaster->SetContestedPvP(attackedPlayer);
+                else if (unit->IsPvP() || unit->IsContestedUnit())
+                    realCaster->SetContestedPvP();
             }
         }
         else
