@@ -849,6 +849,9 @@ bool Pet::UpdateStats(Stats stat)
             break;
     }
 
+    if (GetMaxPower(POWER_MANA))
+        UpdateManaRegen();
+
     return true;
 }
 
