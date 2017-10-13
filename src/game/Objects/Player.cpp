@@ -20235,6 +20235,10 @@ void Player::RewardHonor(Unit* uVictim, uint32 groupSize)
     if (!uVictim)
         return;
 
+    // Honor System was added in 1.4.
+    if (sWorld.GetWowPatch() < WOW_PATCH_104)
+        return;
+
     // Honorless Target
     if (uVictim->GetAura(2479, EFFECT_INDEX_0))
         return;
@@ -20245,6 +20249,10 @@ void Player::RewardHonor(Unit* uVictim, uint32 groupSize)
         if (cVictim->IsCivilian() && !isHonorOrXPTarget(cVictim))
         {
             if (!sWorld.getConfig(CONFIG_BOOL_ENABLE_VD))
+                return;
+
+            // Dishonorable kills were added in 1.5.
+            if (sWorld.GetWowPatch() < WOW_PATCH_105)
                 return;
 
             m_honorMgr.Add(HonorMgr::DishonorableKillPoints(getLevel()), DISHONORABLE, cVictim);
@@ -20264,6 +20272,10 @@ void Player::RewardHonor(Unit* uVictim, uint32 groupSize)
 
 void Player::RewardHonorOnDeath()
 {
+    // Honor System was added in 1.4.
+    if (sWorld.GetWowPatch() < WOW_PATCH_104)
+        return;
+
     if (GetAura(2479, EFFECT_INDEX_0))             // Honorless Target
         return;
 
